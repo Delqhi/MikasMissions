@@ -15,6 +15,7 @@ const defaultLabels = {
 
 export function EpisodeTile({ episode, labels }: EpisodeTileProps) {
   const text = labels ?? defaultLabels;
+  const tags = Array.isArray(episode.learning_tags) ? episode.learning_tags : [];
 
   return (
     <article className={styles.tile} aria-label={`${text.episodePrefix} ${episode.title}`}>
@@ -26,7 +27,7 @@ export function EpisodeTile({ episode, labels }: EpisodeTileProps) {
         </div>
         <p>{episode.summary}</p>
         <div className={styles.badges}>
-          {episode.learning_tags.map((tag) => (
+          {tags.map((tag) => (
             <LearningBadge key={`${episode.episode_id}-${tag}`} label={tag} />
           ))}
         </div>

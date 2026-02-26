@@ -8,7 +8,7 @@ export async function fetchKidsProgress(mode: KidsMode, childProfileID: string, 
   try {
     return await safeJSONFetch<KidsProgressResponse>(url.toString(), { token });
   } catch (error) {
-    if (useFallbackData()) {
+    if (useFallbackData() || process.env.NODE_ENV === "production") {
       return kidsProgressFallback[mode];
     }
     throw error;

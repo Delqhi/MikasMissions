@@ -32,7 +32,7 @@ export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
           { key: "stories", label: messages.kids.nav.stories, href: "/kids/early#featured" },
           { key: "missions", label: messages.kids.nav.missions, href: "/kids/early#continue" },
           { key: "favorites", label: messages.kids.nav.favorites, href: "/kids/early#recommended" },
-          { key: "bedtime", label: messages.kids.nav.bedtime, href: "/parents/onboarding" }
+          { key: "bedtime", label: messages.kids.nav.bedtime, href: "/kids/early#safety" }
         ]}
         profileName={messages.kids.page.missingProfileTitle}
         sessionLimitMinutes={0}
@@ -43,7 +43,9 @@ export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
           <section className={styles.focusCard}>
             <h3>{messages.kids.page.missingProfileTitle}</h3>
             <p>{messages.kids.page.missingProfileText}</p>
-            <a href={withLocalePath(locale, "/parents/onboarding")}>{messages.kids.page.goToOnboarding}</a>
+            <div className={styles.focusActions}>
+              <a href={withLocalePath(locale, "/parents/onboarding")}>{messages.kids.page.goToOnboarding}</a>
+            </div>
           </section>
         </div>
       </KidsShell>
@@ -56,8 +58,11 @@ export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
     fetchKidsProgress("early", childProfileID, token)
   ]);
 
-  const featured = home.rails[0];
-  const continueItems = home.rails.slice(0, 2);
+  const rails = Array.isArray(home.rails) ? home.rails : [];
+  const featured = rails[0] ?? null;
+  const continueItems = rails.slice(0, 2);
+  const quickItems = rails.slice(0, 4);
+  const minutesLeft = Math.max(0, progress.session_limit_minutes - progress.watched_minutes_today);
 
   return (
     <KidsShell
@@ -81,7 +86,7 @@ export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
         {
           key: "bedtime",
           label: messages.kids.nav.bedtime,
-          href: `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`
+          href: `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#safety`
         }
       ]}
       profileName="Mika Mini"
@@ -103,32 +108,54 @@ export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
           <a href={withLocalePath(locale, `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
             {messages.kids.switcher.teen}
           </a>
-          <a href={withLocalePath(locale, `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+          <a className={styles.parentSwitch} href={withLocalePath(locale, `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
             {messages.kids.switcher.parents}
           </a>
         </nav>
 
         <section className={styles.heroPanel} id="featured">
-          <img alt="" src={featured.thumbnail_url} />
+          {featured ? <img alt={featured.title} src={featured.thumbnail_url} /> : null}
           <div className={styles.heroShade} />
           <div className={styles.heroBody}>
             <span className={styles.heroKicker}>{messages.kids.page.featuredKicker.early}</span>
-            <h2>{featured.title}</h2>
-            <p>{featured.summary}</p>
+            <h2>{featured?.title ?? messages.kids.page.exploreTitle}</h2>
+            <p>{featured?.summary ?? messages.kids.page.exploreDescription}</p>
             <div className={styles.heroActions}>
-              <a className={styles.heroPlay} href={withLocalePath(locale, `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+              <a className={styles.heroPlay} href={withLocalePath(locale, `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#continue`)}>
                 {messages.kids.page.playFeatured}
               </a>
-              <a className={styles.heroInfo} href={withLocalePath(locale, `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
-                {messages.kids.page.parentControls}
+              <a className={styles.heroBrowse} href={withLocalePath(locale, `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#recommended`)}>
+                {messages.kids.nav.favorites}
               </a>
             </div>
             <ul className={styles.heroMeta}>
-              <li>{progress.session_limit_minutes} min limit</li>
-              <li>{progress.watched_minutes_today} min today</li>
-              <li>{messages.kids.page.audioGuidanceTitle}</li>
+              <li>
+                <strong>{progress.watched_minutes_today} min</strong>
+                <span>{messages.kids.nav.stories}</span>
+              </li>
+              <li>
+                <strong>{minutesLeft} min</strong>
+                <span>{messages.kids.cards.sessionCap}</span>
+              </li>
+              <li>
+                <strong>{progress.completion_percent}%</strong>
+                <span>{messages.kids.page.progressClarityTitle}</span>
+              </li>
             </ul>
           </div>
+        </section>
+
+        <section className={styles.quickStrip}>
+          {quickItems.map((item) => (
+            <a
+              className={styles.quickCard}
+              href={withLocalePath(locale, `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#recommended`)}
+              key={`${item.episode_id}-quick`}
+            >
+              <strong>{item.title}</strong>
+              <span>{item.learning_tags[0]?.replaceAll("_", " ") ?? messages.kids.nav.stories}</span>
+            </a>
+          ))}
         </section>
 
         <section className="railSection" id="continue">
@@ -143,7 +170,7 @@ export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
         <section className="railSection" id="recommended">
           <SectionHeading description={messages.kids.page.exploreDescription} title={messages.kids.page.exploreTitle} />
           <div className={styles.tileRow}>
-            {home.rails.map((item) => (
+            {rails.map((item) => (
               <EpisodeTile episode={item} key={item.episode_id} labels={messages.kids.cards} />
             ))}
           </div>
@@ -157,6 +184,15 @@ export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
           <article className={styles.focusCard}>
             <h3>{messages.kids.page.noOpenFeedTitle}</h3>
             <p>{messages.kids.page.noOpenFeedDescription}</p>
+          </article>
+          <article className={styles.focusCard}>
+            <h3>{messages.kids.page.parentControls}</h3>
+            <p>{messages.kids.page.safetyDescription}</p>
+            <div className={styles.focusActions}>
+              <a href={withLocalePath(locale, `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+                {messages.kids.switcher.parents}
+              </a>
+            </div>
           </article>
           <ParentGatePrompt
             actionLabel="Open external activity link"

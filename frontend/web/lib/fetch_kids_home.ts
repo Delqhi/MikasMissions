@@ -10,7 +10,7 @@ export async function fetchKidsHome(mode: KidsMode, childProfileID: string, toke
   try {
     return await safeJSONFetch<KidsHomeResponse>(url.toString(), { token });
   } catch (error) {
-    if (useFallbackData()) {
+    if (useFallbackData() || process.env.NODE_ENV === "production") {
       return kidsHomeFallback[mode];
     }
     throw error;

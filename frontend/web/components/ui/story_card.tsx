@@ -24,16 +24,18 @@ export function StoryCard({ item, index, labels }: StoryCardProps) {
     "--stagger-delay": `${index * 70}ms`
   } as CSSProperties;
   const text = labels ?? defaultLabels;
+  const reasonLabel = typeof item.reason_code === "string" ? item.reason_code.replaceAll("_", " ") : "recommended";
+  const tags = Array.isArray(item.learning_tags) ? item.learning_tags : [];
 
   return (
     <article className={styles.card} style={delayStyle}>
       <img alt="" className={styles.hero} loading="lazy" src={item.thumbnail_url} />
       <div className={styles.overlay}>
-        <p className={styles.reason}>{item.reason_code.replaceAll("_", " ")}</p>
+        <p className={styles.reason}>{reasonLabel}</p>
         <h3>{item.title}</h3>
         <p className={styles.summary}>{item.summary}</p>
         <div className={styles.badges}>
-          {item.learning_tags.map((tag) => (
+          {tags.map((tag) => (
             <LearningBadge key={`${item.episode_id}-${tag}`} label={tag} />
           ))}
         </div>
