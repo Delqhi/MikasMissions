@@ -36,4 +36,24 @@ assert_header "X-Content-Type-Options"
 assert_header "Permissions-Policy"
 assert_header "Referrer-Policy"
 
+page_status() {
+  local path="$1"
+  curl -sS -o /dev/null -w "%{http_code}" --max-time 25 "${url%/}${path}"
+}
+
+home_status="$(page_status "/de")"
+parents_status="$(page_status "/de/parents")"
+echo "[metric] de_home_status=${home_status}"
+echo "[metric] de_parents_status=${parents_status}"
+
+if [[ "$home_status" != "200" ]]; then
+  echo "[FAIL] /de must return 200 (actual: ${home_status})"
+  exit 1
+fi
+
+if [[ "$parents_status" != "200" ]]; then
+  echo "[FAIL] /de/parents must return 200 (actual: ${parents_status})"
+  exit 1
+fi
+
 echo "[OK] live Cloudflare smoke passed"
