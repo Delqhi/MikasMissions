@@ -26,6 +26,7 @@ export function StoryCard({ item, index, labels }: StoryCardProps) {
   const text = labels ?? defaultLabels;
   const reasonLabel = typeof item.reason_code === "string" ? item.reason_code.replaceAll("_", " ") : "recommended";
   const tags = Array.isArray(item.learning_tags) ? item.learning_tags : [];
+  const ageFitPercent = Math.round((Number(item.age_fit_score) || 0) * 100);
 
   return (
     <article className={styles.card} style={delayStyle}>
@@ -44,7 +45,7 @@ export function StoryCard({ item, index, labels }: StoryCardProps) {
           <dl>
             <div>
               <dt>{text.ageFit}</dt>
-              <dd>{Math.round(item.age_fit_score * 100)}%</dd>
+              <dd>{ageFitPercent}%</dd>
             </div>
             <div>
               <dt>{text.safety}</dt>

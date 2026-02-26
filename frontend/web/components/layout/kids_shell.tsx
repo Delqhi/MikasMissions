@@ -36,22 +36,44 @@ export function KidsShell(props: KidsShellProps) {
     sessionLimitMinutes,
     children
   } = props;
+  const remainingMinutes = Math.max(0, sessionLimitMinutes - watchedMinutes);
+  const modeBandLabel = mode === "early" ? messages.switcher.early : mode === "teen" ? messages.switcher.teen : messages.switcher.core;
 
   return (
     <div className={`${styles.page} ${modeClassName[mode]}`}>
+      <a className={styles.skipLink} href="#kids-main">
+        Skip to content
+      </a>
+
       <header className={styles.top}>
-        <div>
+        <div className={styles.headline}>
           <p className={styles.kicker}>{messages.shell.kicker}</p>
           <h1>{messages.shell.modeTitle[mode]}</h1>
           <p className={styles.note}>{messages.shell.note}</p>
+          <ul className={styles.statusRow}>
+            <li>
+              <span>{messages.cards.sessionCap}</span>
+              <strong>
+                {remainingMinutes} {messages.cards.minLeftSuffix}
+              </strong>
+            </li>
+            <li>
+              <span>{profileName}</span>
+              <strong>{modeBandLabel}</strong>
+            </li>
+          </ul>
         </div>
         <ProfileOrb ageBand={ageBand} name={profileName} subtitle={subtitle} />
       </header>
 
-      <KidsNav activeKey={activeNavKey} items={navItems} locale={locale} />
+      <section className={styles.navTray}>
+        <KidsNav activeKey={activeNavKey} items={navItems} locale={locale} />
+      </section>
       <SessionMeter labels={messages.cards} sessionLimitMinutes={sessionLimitMinutes} watchedMinutes={watchedMinutes} />
 
-      <main>{children}</main>
+      <main className={styles.main} id="kids-main">
+        {children}
+      </main>
     </div>
   );
 }

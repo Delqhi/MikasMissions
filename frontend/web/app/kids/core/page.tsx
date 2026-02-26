@@ -156,9 +156,7 @@ export default async function KidsCorePage({ searchParams }: KidsPageProps) {
               key={`${item.episode_id}-quick`}
             >
               <strong>{item.title}</strong>
-              <span>
-                {Math.round(item.age_fit_score * 100)}% {messages.kids.cards.ageFit}
-              </span>
+              <span>{Math.round((Number(item.age_fit_score) || 0) * 100)}% {messages.kids.cards.ageFit}</span>
             </a>
           ))}
         </section>

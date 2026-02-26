@@ -1,24 +1,35 @@
 .page {
+  --parent-primary: #2f6d4e;
+  --parent-secondary: #65966c;
+  --parent-soft: #d7ebd9;
+  --parent-ink: #173a2a;
+  --parent-ink-soft: #4e6b5b;
+  --parent-line: rgba(27, 74, 52, 0.18);
+  --parent-shadow: 0 22px 42px rgba(25, 58, 40, 0.14);
   background:
-    radial-gradient(circle at 11% -8%, rgba(255, 166, 82, 0.32), transparent 36%),
-    radial-gradient(circle at 88% 0%, rgba(71, 151, 111, 0.26), transparent 32%),
-    #0a0d13;
-  color: #f7f9ff;
+    radial-gradient(circle at 8% 3%, rgba(255, 197, 138, 0.48), transparent 34%),
+    radial-gradient(circle at 92% 1%, rgba(167, 216, 173, 0.46), transparent 36%),
+    radial-gradient(circle at 52% 112%, rgba(140, 198, 151, 0.34), transparent 56%),
+    linear-gradient(166deg, #f3faf4 0%, #f4fff7 44%, #f0f7f3 100%);
+  color: var(--parent-ink);
   display: grid;
-  gap: 0.95rem;
+  gap: 0.98rem;
   margin: 0 auto;
-  max-width: 1280px;
+  max-width: 100%;
   min-height: 100vh;
   overflow: clip;
-  padding: 1rem 1rem 2rem;
+  padding: clamp(0.72rem, 1.9vw, 1.28rem);
   position: relative;
 }
 
 .backdrop {
   background:
-    radial-gradient(circle at 25% 50%, rgba(255, 180, 122, 0.18), transparent 58%),
-    radial-gradient(circle at 73% 28%, rgba(106, 180, 137, 0.14), transparent 50%);
+    linear-gradient(45deg, rgba(255, 255, 255, 0.15) 0 24%, transparent 24% 49%, rgba(255, 255, 255, 0.15) 49% 74%, transparent 74%),
+    radial-gradient(circle at 24% 54%, rgba(255, 186, 138, 0.16), transparent 58%),
+    radial-gradient(circle at 72% 28%, rgba(116, 185, 130, 0.18), transparent 52%);
+  background-size: 20px 20px, 100% 100%, 100% 100%;
   inset: 0;
+  opacity: 0.5;
   pointer-events: none;
   position: absolute;
 }
@@ -31,44 +42,49 @@
 .header {
   align-items: end;
   backdrop-filter: blur(10px);
-  background: rgba(8, 11, 16, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.17);
-  border-radius: 24px;
-  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.35);
+  background:
+    radial-gradient(circle at 84% 2%, rgba(186, 229, 193, 0.32), transparent 32%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.93), rgba(247, 252, 248, 0.91));
+  border: 1px solid var(--parent-line);
+  border-radius: 28px;
+  box-shadow: var(--parent-shadow);
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
+  gap: 0.98rem;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 0.94rem;
 }
 
 .kicker {
-  color: rgba(253, 215, 161, 0.95);
-  font-size: 0.74rem;
+  color: color-mix(in srgb, var(--parent-primary) 78%, #153a2a 22%);
+  font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   margin: 0;
   text-transform: uppercase;
 }
 
 .header h1 {
+  color: var(--parent-ink);
   font-family: var(--font-display);
-  font-size: clamp(1.45rem, 2.5vw, 2.15rem);
-  line-height: 1.04;
-  margin: 0.25rem 0;
+  font-size: clamp(1.52rem, 2.9vw, 2.3rem);
+  line-height: 1.03;
+  margin: 0.22rem 0;
+  text-wrap: balance;
 }
 
 .header span {
-  color: rgba(242, 246, 255, 0.78);
+  color: var(--parent-ink-soft);
   display: block;
-  font-size: 0.92rem;
-  max-width: 62ch;
+  font-size: 0.94rem;
+  line-height: 1.48;
+  max-width: 63ch;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.48rem;
 }
 
 .primaryLink,
@@ -78,32 +94,46 @@
   display: inline-flex;
   font-size: 0.82rem;
   font-weight: 800;
-  min-height: 38px;
-  padding: 0.35rem 0.85rem;
+  min-height: 40px;
+  padding: 0.36rem 0.9rem;
   text-decoration: none;
+  transition:
+    transform var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .primaryLink {
-  background: linear-gradient(140deg, #ffd08b, #fff2d7);
-  color: #2a1e10;
+  background: linear-gradient(145deg, #dff1dd, #f8fff7);
+  border: 1px solid rgba(92, 148, 106, 0.4);
+  color: #234a35;
 }
 
 .switchLink {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(245, 248, 255, 0.95);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--parent-line);
+  color: #2a5440;
+}
+
+.primaryLink:hover,
+.switchLink:hover {
+  box-shadow: 0 12px 24px rgba(30, 63, 46, 0.14);
+  transform: translateY(-1px);
 }
 
 .main {
   display: grid;
+  gap: 0.9rem;
 }
 
 @media (max-width: 680px) {
   .page {
-    padding: 0.75rem 0.75rem 1.75rem;
+    gap: 0.86rem;
+    padding: 0.62rem 0.55rem 1.2rem;
   }
 
   .header {
-    padding: 0.85rem;
+    border-radius: 22px;
+    padding: 0.78rem;
   }
 }
