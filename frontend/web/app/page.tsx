@@ -2,10 +2,33 @@ import { demoProfiles, kidsHomeFallback } from "../lib/mock_payloads";
 import styles from "./page.module.css";
 
 const featured = kidsHomeFallback.core.rails[0];
+
+const modeDeck = [
+  {
+    key: "early",
+    title: "Early (3-5)",
+    detail: "Audio-guided play with calm pacing and simple interactions.",
+    href: "/kids/early?child_profile_id=child-early-01"
+  },
+  {
+    key: "core",
+    title: "Core (6-11)",
+    detail: "Mission arcs with learning checkpoints and progress rewards.",
+    href: "/kids/core?child_profile_id=child-core-01"
+  },
+  {
+    key: "teen",
+    title: "Teen (12-16)",
+    detail: "Studio-like discovery with guardrails and transparent reasoning.",
+    href: "/kids/teen?child_profile_id=child-teen-01"
+  }
+] as const;
+
 const controlHighlights = [
   { label: "Age modes", value: "3 adaptive worlds" },
-  { label: "Safety", value: "Strict by default" },
-  { label: "Parent controls", value: "Realtime updates" }
+  { label: "Safety filter", value: "Always-on strict baseline" },
+  { label: "Parent control", value: "Realtime sync" },
+  { label: "Session caps", value: "Daily limit enforcement" }
 ];
 
 const rows = [
@@ -29,22 +52,22 @@ const rows = [
 const trustRows = [
   {
     title: "Filter coverage",
-    detail: "Every recommendation rail ships with safety metadata and transparent reason codes."
+    detail: "Every recommendation rail includes safety metadata and transparent reason codes."
   },
   {
     title: "Session limits",
-    detail: "Daily watch caps are enforced and visible across all age modes without manual checks."
+    detail: "Daily watch caps are enforced across all modes without manual intervention."
   },
   {
     title: "Parent gate",
-    detail: "External links, purchases, and account changes always require adult verification."
+    detail: "External links, purchases, and sensitive actions require adult verification."
   }
 ];
 
 export default function HomePage() {
   return (
     <main className={styles.page}>
-      <div aria-hidden="true" className={styles.texture} />
+      <div aria-hidden="true" className={styles.noise} />
 
       <header className={styles.topBar}>
         <a className={styles.brand} href="/">
@@ -58,28 +81,30 @@ export default function HomePage() {
       </header>
 
       <section className={styles.hero} aria-label="Featured mission">
-        <img alt="" className={styles.heroImage} src={featured.thumbnail_url} />
-        <div className={styles.heroOverlay} />
+        <div className={styles.heroVisual}>
+          <img alt="" className={styles.heroImage} src={featured.thumbnail_url} />
+          <div className={styles.heroShade} />
 
-        <div className={styles.heroContent}>
-          <span className={styles.heroTag}>Heute im Fokus</span>
-          <h1>{featured.title}</h1>
-          <p>{featured.summary}</p>
+          <div className={styles.heroContent}>
+            <span className={styles.heroTag}>Spotlight mission</span>
+            <h1>{featured.title}</h1>
+            <p>{featured.summary}</p>
 
-          <div className={styles.heroActions}>
-            <a className={styles.primaryButton} href="/kids/core?child_profile_id=child-core-01">
-              Play now
-            </a>
-            <a className={styles.secondaryButton} href="/parents/onboarding">
-              Start family setup
-            </a>
+            <div className={styles.heroActions}>
+              <a className={styles.primaryButton} href="/kids/core?child_profile_id=child-core-01">
+                Play now
+              </a>
+              <a className={styles.secondaryButton} href="/parents/onboarding">
+                Start family setup
+              </a>
+            </div>
+
+            <ul className={styles.actionChips}>
+              {kidsHomeFallback.core.primary_actions.slice(0, 5).map((action) => (
+                <li key={action}>{action}</li>
+              ))}
+            </ul>
           </div>
-
-          <ul className={styles.chipRow}>
-            {kidsHomeFallback.core.primary_actions.slice(0, 5).map((action) => (
-              <li key={action}>{action}</li>
-            ))}
-          </ul>
         </div>
 
         <aside className={styles.heroPanel}>
@@ -96,9 +121,19 @@ export default function HomePage() {
         </aside>
       </section>
 
+      <section className={styles.modeDeck}>
+        {modeDeck.map((mode) => (
+          <article className={`${styles.modeCard} ${styles[`mode_${mode.key}`]}`} key={mode.key}>
+            <h3>{mode.title}</h3>
+            <p>{mode.detail}</p>
+            <a href={mode.href}>Open mode</a>
+          </article>
+        ))}
+      </section>
+
       <section className={styles.section}>
         <div className={styles.sectionHead}>
-          <h2>Who is watching?</h2>
+          <h2>Choose a profile</h2>
           <a href="/parents/onboarding">Create profile</a>
         </div>
 
@@ -106,12 +141,14 @@ export default function HomePage() {
           {demoProfiles.map((profile) => (
             <a
               key={profile.profile_id}
-              className={styles.profileCard}
+              className={`${styles.profileCard} ${styles[`profile_${profile.mode}`]}`}
               href={`${profile.href}?child_profile_id=${profile.profile_id}`}
             >
-              <span className={styles.profileMode}>{profile.mode}</span>
-              <strong>{profile.name}</strong>
-              <p>{profile.subtitle}</p>
+              <div className={styles.profileOrb}>{profile.name.slice(0, 1)}</div>
+              <div>
+                <strong>{profile.name}</strong>
+                <p>{profile.subtitle}</p>
+              </div>
               <span className={styles.profileMeta}>Age {profile.age_band}</span>
             </a>
           ))}

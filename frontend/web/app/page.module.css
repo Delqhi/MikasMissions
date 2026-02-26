@@ -1,32 +1,31 @@
 .page {
-  --surface-glass: rgba(9, 13, 20, 0.72);
-  --surface-glass-strong: rgba(8, 11, 18, 0.78);
-  --line-soft: rgba(255, 255, 255, 0.16);
-  --line-strong: rgba(255, 255, 255, 0.24);
-  --ink-high: #f6f8ff;
-  --ink-mid: rgba(233, 241, 255, 0.82);
-  --ink-low: rgba(196, 213, 238, 0.86);
-  --shadow-soft: 0 16px 28px rgba(0, 0, 0, 0.28);
-  --shadow-card: 0 20px 34px rgba(0, 0, 0, 0.34);
-  --shadow-card-hover: 0 28px 44px rgba(0, 0, 0, 0.42);
-  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+  --ink-100: #f6f7ff;
+  --ink-80: rgba(235, 241, 255, 0.86);
+  --ink-64: rgba(198, 212, 237, 0.82);
+  --line: rgba(255, 255, 255, 0.16);
+  --line-strong: rgba(255, 255, 255, 0.28);
+  --surface: rgba(9, 13, 20, 0.74);
+  --surface-strong: rgba(8, 11, 18, 0.82);
+  --shadow-soft: 0 16px 28px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 20px 38px rgba(0, 0, 0, 0.36);
+  --shadow-float: 0 30px 52px rgba(0, 0, 0, 0.44);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   background:
-    radial-gradient(circle at 8% -12%, rgba(255, 133, 80, 0.32), transparent 34%),
-    radial-gradient(circle at 92% -4%, rgba(57, 155, 255, 0.26), transparent 30%),
-    #070912;
-  color: var(--ink-high);
+    radial-gradient(circle at 10% -14%, rgba(255, 132, 84, 0.35), transparent 36%),
+    radial-gradient(circle at 92% -8%, rgba(84, 170, 255, 0.3), transparent 34%),
+    #060914;
+  color: var(--ink-100);
   min-height: 100vh;
   overflow: clip;
-  padding: 1rem clamp(0.8rem, 1.8vw, 1.25rem) clamp(1.9rem, 3.6vw, 2.5rem);
+  padding: 1rem clamp(0.8rem, 1.8vw, 1.3rem) clamp(2rem, 4vw, 2.8rem);
   position: relative;
 }
 
-.texture {
+.noise {
   background:
-    radial-gradient(circle at 20% 42%, rgba(255, 183, 118, 0.13), transparent 54%),
-    radial-gradient(circle at 76% 20%, rgba(95, 166, 255, 0.15), transparent 48%);
+    radial-gradient(circle at 22% 48%, rgba(255, 191, 130, 0.14), transparent 55%),
+    radial-gradient(circle at 74% 18%, rgba(121, 176, 255, 0.16), transparent 52%);
   inset: 0;
   pointer-events: none;
   position: absolute;
@@ -40,28 +39,27 @@
 .topBar {
   align-items: center;
   backdrop-filter: blur(12px);
-  background: rgba(8, 11, 18, 0.66);
-  border: 1px solid var(--line-soft);
-  border-radius: 20px;
+  background: rgba(7, 11, 18, 0.66);
+  border: 1px solid var(--line);
+  border-radius: 22px;
   box-shadow: var(--shadow-soft);
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
   justify-content: space-between;
-  margin: 0 auto clamp(0.9rem, 2vw, 1.2rem);
+  margin: 0 auto clamp(0.95rem, 2.2vw, 1.25rem);
   max-width: 1280px;
-  padding: 0.72rem 0.9rem;
+  padding: 0.72rem 0.92rem;
 }
 
 .brand {
-  background: linear-gradient(130deg, #ffd8ad, #ff8f73 45%, #9ec6ff 85%);
+  background: linear-gradient(122deg, #ffe2bc 0%, #ff9f74 44%, #9fcbff 88%);
   background-clip: text;
   color: transparent;
   font-family: var(--font-display);
-  font-size: clamp(1.26rem, 2.8vw, 1.85rem);
+  font-size: clamp(1.28rem, 2.8vw, 1.9rem);
   font-weight: 700;
   letter-spacing: 0.055em;
-  line-height: 1;
   text-decoration: none;
 }
 
@@ -73,37 +71,39 @@
 
 .navLinks a {
   align-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
-  color: rgba(245, 249, 255, 0.94);
+  color: rgba(245, 249, 255, 0.95);
   display: inline-flex;
   font-size: 0.8rem;
   font-weight: 800;
   min-height: 36px;
-  padding: 0.32rem 0.72rem;
+  padding: 0.32rem 0.74rem;
   text-decoration: none;
-  transition:
-    border-color 180ms var(--ease-standard),
-    background-color 180ms var(--ease-standard),
-    transform 180ms var(--ease-standard);
+  transition: border-color 180ms var(--ease), background-color 180ms var(--ease), transform 180ms var(--ease);
 }
 
 .navLinks a:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.33);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.36);
   transform: translateY(-1px);
 }
 
 .hero {
-  border: 1px solid var(--line-soft);
-  border-radius: 28px;
-  box-shadow: var(--shadow-card);
   display: grid;
-  grid-template-columns: 1.2fr 320px;
-  height: min(72vh, 620px);
+  gap: 0.72rem;
+  grid-template-columns: 1fr 330px;
   margin: 0 auto;
   max-width: 1280px;
+}
+
+.heroVisual {
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  box-shadow: var(--shadow-card);
+  min-height: min(72vh, 640px);
   overflow: hidden;
   position: relative;
 }
@@ -113,15 +113,15 @@
   inset: 0;
   object-fit: cover;
   position: absolute;
-  transform: scale(1.02);
+  transform: scale(1.04);
   transform-origin: center;
   width: 100%;
 }
 
-.heroOverlay {
+.heroShade {
   background:
-    linear-gradient(90deg, rgba(6, 8, 12, 0.94) 0%, rgba(6, 8, 12, 0.56) 54%, rgba(6, 8, 12, 0.18) 100%),
-    linear-gradient(180deg, rgba(6, 8, 12, 0.15), rgba(6, 8, 12, 0.9));
+    linear-gradient(90deg, rgba(5, 7, 11, 0.95) 0%, rgba(5, 7, 11, 0.58) 56%, rgba(5, 7, 11, 0.18) 100%),
+    linear-gradient(180deg, rgba(5, 7, 11, 0.08), rgba(5, 7, 11, 0.92));
   inset: 0;
   position: absolute;
 }
@@ -129,23 +129,23 @@
 .heroContent {
   align-content: end;
   display: grid;
-  gap: 0.86rem;
+  gap: 0.88rem;
   max-width: min(760px, 96%);
-  padding: clamp(1.05rem, 2.9vw, 2rem);
+  padding: clamp(1.1rem, 2.9vw, 2rem);
   position: relative;
   z-index: 1;
 }
 
 .heroTag {
   align-items: center;
-  background: rgba(255, 186, 126, 0.14);
-  border: 1px solid rgba(255, 199, 148, 0.54);
+  background: rgba(255, 194, 137, 0.16);
+  border: 1px solid rgba(255, 209, 161, 0.58);
   border-radius: 999px;
-  color: rgba(255, 224, 180, 0.98);
+  color: rgba(255, 226, 189, 0.98);
   display: inline-flex;
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.065em;
+  letter-spacing: 0.06em;
   padding: 0.27rem 0.66rem;
   text-transform: uppercase;
   width: fit-content;
@@ -153,16 +153,16 @@
 
 .heroContent h1 {
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 5.4vw, 4.2rem);
+  font-size: clamp(2.3rem, 5.6vw, 4.4rem);
   letter-spacing: 0.01em;
-  line-height: 0.93;
+  line-height: 0.91;
   margin: 0;
   text-wrap: balance;
 }
 
 .heroContent p {
   color: rgba(240, 245, 255, 0.9);
-  font-size: clamp(0.98rem, 1.8vw, 1.16rem);
+  font-size: clamp(0.98rem, 1.8vw, 1.18rem);
   line-height: 1.45;
   margin: 0;
   max-width: 58ch;
@@ -180,40 +180,36 @@
   font-size: 0.86rem;
   font-weight: 800;
   min-height: 42px;
-  padding: 0.5rem 0.92rem;
+  padding: 0.5rem 0.94rem;
   text-decoration: none;
-  transition:
-    transform 200ms var(--ease-standard),
-    box-shadow 200ms var(--ease-standard),
-    border-color 200ms var(--ease-standard),
-    background-color 200ms var(--ease-standard);
+  transition: transform 210ms var(--ease), box-shadow 210ms var(--ease), border-color 210ms var(--ease);
 }
 
 .primaryButton {
-  background: linear-gradient(140deg, #ffe0be, #fff6e5);
-  color: #2a1e10;
-  box-shadow: 0 8px 18px rgba(255, 203, 148, 0.24);
+  background: linear-gradient(140deg, #ffe2c2, #fff8eb);
+  box-shadow: 0 10px 20px rgba(255, 204, 147, 0.28);
+  color: #2d200f;
 }
 
 .primaryButton:hover {
-  box-shadow: 0 12px 24px rgba(255, 203, 148, 0.34);
+  box-shadow: 0 14px 26px rgba(255, 204, 147, 0.38);
   transform: translateY(-1px);
 }
 
 .secondaryButton {
   backdrop-filter: blur(4px);
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.26);
-  color: rgba(246, 250, 255, 0.96);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: rgba(247, 251, 255, 0.96);
 }
 
 .secondaryButton:hover {
   background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.36);
+  border-color: rgba(255, 255, 255, 0.38);
   transform: translateY(-1px);
 }
 
-.chipRow {
+.actionChips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.42rem;
@@ -222,40 +218,38 @@
   padding: 0;
 }
 
-.chipRow li {
+.actionChips li {
   backdrop-filter: blur(2px);
   background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
-  color: rgba(245, 249, 255, 0.94);
+  color: rgba(246, 250, 255, 0.95);
   font-size: 0.74rem;
   font-weight: 800;
   line-height: 1;
-  padding: 0.27rem 0.62rem;
+  padding: 0.28rem 0.62rem;
 }
 
 .heroPanel {
-  align-self: end;
-  backdrop-filter: blur(10px);
-  background: rgba(9, 12, 19, 0.76);
-  border-left: 1px solid var(--line-soft);
+  backdrop-filter: blur(11px);
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
   display: grid;
-  gap: 0.72rem;
-  padding: 1rem 0.86rem;
-  position: relative;
-  z-index: 1;
+  gap: 0.74rem;
+  padding: 1rem 0.9rem;
 }
 
 .heroPanel h2 {
   font-family: var(--font-display);
   font-size: 1.2rem;
-  letter-spacing: 0.01em;
   margin: 0;
 }
 
 .heroPanel ul {
   display: grid;
-  gap: 0.46rem;
+  gap: 0.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -263,43 +257,107 @@
 
 .heroPanel li {
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.17);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 12px;
   display: grid;
-  gap: 0.12rem;
-  padding: 0.54rem 0.58rem;
+  gap: 0.14rem;
+  padding: 0.55rem 0.58rem;
 }
 
 .heroPanel span {
-  color: rgba(192, 210, 241, 0.92);
+  color: var(--ink-64);
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .heroPanel strong {
-  color: rgba(251, 253, 255, 0.98);
+  color: var(--ink-100);
   font-size: 0.88rem;
 }
 
 .heroPanel a {
   align-items: center;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   border-radius: 10px;
-  color: #16243d;
+  color: #162640;
   display: inline-flex;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 800;
   justify-content: center;
-  min-height: 36px;
-  padding: 0.35rem 0.6rem;
+  min-height: 38px;
+  padding: 0.36rem 0.6rem;
   text-decoration: none;
-  transition: transform 190ms var(--ease-standard), box-shadow 190ms var(--ease-standard);
+  transition: transform 190ms var(--ease), box-shadow 190ms var(--ease);
 }
 
 .heroPanel a:hover {
-  box-shadow: 0 10px 18px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 18px rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
+}
+
+.modeDeck {
+  display: grid;
+  gap: 0.72rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: clamp(0.95rem, 2.4vw, 1.3rem) auto 0;
+  max-width: 1280px;
+}
+
+.modeCard {
+  backdrop-filter: blur(9px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.26);
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.86rem;
+  transition: transform 220ms var(--ease), box-shadow 220ms var(--ease), border-color 220ms var(--ease);
+}
+
+.modeCard:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+}
+
+.modeCard h3 {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  margin: 0;
+}
+
+.modeCard p {
+  color: var(--ink-80);
+  font-size: 0.84rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.modeCard a {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  color: #11243f;
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: 800;
+  min-height: 34px;
+  padding: 0.3rem 0.68rem;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.mode_early {
+  background: linear-gradient(155deg, rgba(255, 167, 108, 0.2), rgba(11, 16, 24, 0.78));
+}
+
+.mode_core {
+  background: linear-gradient(155deg, rgba(89, 201, 172, 0.18), rgba(11, 16, 24, 0.78));
+}
+
+.mode_teen {
+  background: linear-gradient(155deg, rgba(107, 151, 255, 0.2), rgba(11, 16, 24, 0.78));
 }
 
 .section {
@@ -313,12 +371,12 @@
   flex-wrap: wrap;
   gap: 0.4rem 0.72rem;
   justify-content: space-between;
-  margin-bottom: 0.68rem;
+  margin-bottom: 0.7rem;
 }
 
 .sectionHead h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.15rem, 2.2vw, 1.62rem);
+  font-size: clamp(1.16rem, 2.3vw, 1.66rem);
   letter-spacing: 0.01em;
   line-height: 1.08;
   margin: 0;
@@ -326,8 +384,8 @@
 
 .sectionHead a,
 .sectionHead span {
-  color: rgba(209, 222, 246, 0.86);
-  font-size: 0.8rem;
+  color: var(--ink-64);
+  font-size: 0.81rem;
   font-weight: 700;
 }
 
@@ -338,67 +396,91 @@
 }
 
 .profileCard {
-  backdrop-filter: blur(7px);
-  background: var(--surface-glass);
-  border: 1px solid rgba(255, 255, 255, 0.17);
-  border-radius: 17px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
-  color: #f7f9ff;
+  backdrop-filter: blur(9px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+  color: var(--ink-100);
   display: grid;
-  gap: 0.34rem;
-  min-height: 148px;
+  gap: 0.4rem;
+  min-height: 156px;
   padding: 0.9rem;
   text-decoration: none;
-  transition:
-    transform 220ms var(--ease-snap),
-    border-color 220ms var(--ease-standard),
-    box-shadow 220ms var(--ease-standard),
-    background-color 220ms var(--ease-standard);
+  transition: transform 220ms var(--ease), box-shadow 220ms var(--ease), border-color 220ms var(--ease);
 }
 
 .profileCard:hover {
-  background: rgba(11, 16, 25, 0.8);
-  border-color: rgba(255, 201, 144, 0.72);
-  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.34);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-card);
   transform: translateY(-3px);
 }
 
-.profileMode {
-  color: rgba(255, 211, 158, 0.96);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.profile_early {
+  background: linear-gradient(155deg, rgba(255, 160, 110, 0.18), rgba(10, 15, 23, 0.8));
+}
+
+.profile_core {
+  background: linear-gradient(155deg, rgba(90, 199, 170, 0.18), rgba(10, 15, 23, 0.8));
+}
+
+.profile_teen {
+  background: linear-gradient(155deg, rgba(106, 150, 255, 0.2), rgba(10, 15, 23, 0.8));
+}
+
+.profileOrb {
+  align-items: center;
+  border-radius: 50%;
+  display: inline-flex;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  height: 46px;
+  justify-content: center;
+  width: 46px;
+}
+
+.profile_early .profileOrb {
+  background: linear-gradient(140deg, #ffb36a, #ffd7aa);
+  color: #2f1f0f;
+}
+
+.profile_core .profileOrb {
+  background: linear-gradient(140deg, #53cbb4, #b9f4e6);
+  color: #133930;
+}
+
+.profile_teen .profileOrb {
+  background: linear-gradient(140deg, #7ca4ff, #d0deff);
+  color: #132747;
 }
 
 .profileCard strong {
-  font-size: 1rem;
+  font-size: 1.01rem;
   letter-spacing: 0.01em;
 }
 
 .profileCard p {
-  color: rgba(233, 241, 255, 0.79);
+  color: var(--ink-80);
   font-size: 0.86rem;
   line-height: 1.38;
-  margin: 0;
+  margin: 0.2rem 0 0;
 }
 
 .profileMeta {
-  color: rgba(188, 203, 231, 0.9);
+  color: var(--ink-64);
   font-size: 0.75rem;
   font-weight: 700;
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
 }
 
 .rail {
   display: grid;
-  gap: 0.66rem;
+  gap: 0.68rem;
   grid-auto-columns: minmax(262px, 1fr);
   grid-auto-flow: column;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   padding-bottom: 0.18rem;
-  scroll-padding-inline: 0.2rem;
   scroll-snap-type: x mandatory;
 }
 
@@ -407,26 +489,23 @@
 }
 
 .rail::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.24);
   border-radius: 999px;
 }
 
 .episodeCard {
-  background: rgba(10, 14, 22, 0.84);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+  background: rgba(10, 14, 22, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
   overflow: hidden;
   scroll-snap-align: start;
-  transition:
-    transform 220ms var(--ease-snap),
-    border-color 220ms var(--ease-standard),
-    box-shadow 220ms var(--ease-standard);
+  transition: transform 240ms var(--ease), border-color 240ms var(--ease), box-shadow 240ms var(--ease);
 }
 
 .episodeCard:hover {
-  border-color: rgba(146, 187, 255, 0.76);
-  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(151, 191, 255, 0.78);
+  box-shadow: var(--shadow-float);
   transform: translateY(-3px) scale(1.015);
 }
 
@@ -434,22 +513,22 @@
   aspect-ratio: 16 / 9;
   display: block;
   object-fit: cover;
-  transition: transform 380ms var(--ease-standard);
+  transition: transform 420ms var(--ease);
   width: 100%;
 }
 
 .episodeCard:hover img {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .episodeBody {
   display: grid;
-  gap: 0.32rem;
-  padding: 0.7rem;
+  gap: 0.34rem;
+  padding: 0.72rem;
 }
 
 .rank {
-  color: rgba(255, 211, 159, 0.95);
+  color: rgba(255, 214, 165, 0.96);
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.05em;
@@ -457,21 +536,21 @@
 }
 
 .episodeBody h3 {
-  font-size: 0.97rem;
+  font-size: 0.98rem;
   letter-spacing: 0.01em;
   line-height: 1.2;
   margin: 0;
 }
 
 .episodeBody p {
-  color: rgba(233, 241, 255, 0.8);
+  color: var(--ink-80);
   font-size: 0.82rem;
-  line-height: 1.38;
+  line-height: 1.4;
   margin: 0;
 }
 
 .episodeBody em {
-  color: rgba(167, 202, 255, 0.92);
+  color: rgba(170, 205, 255, 0.92);
   font-size: 0.73rem;
   font-style: normal;
   font-weight: 700;
@@ -481,40 +560,37 @@
 
 .trustGrid {
   display: grid;
-  gap: 0.72rem;
+  gap: 0.74rem;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .trustCard {
   backdrop-filter: blur(9px);
-  background: var(--surface-glass);
-  border: 1px solid var(--line-soft);
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 16px;
-  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
   display: grid;
   gap: 0.32rem;
-  padding: 0.88rem;
-  transition:
-    transform 220ms var(--ease-standard),
-    border-color 220ms var(--ease-standard),
-    box-shadow 220ms var(--ease-standard);
+  padding: 0.9rem;
+  transition: transform 220ms var(--ease), border-color 220ms var(--ease), box-shadow 220ms var(--ease);
 }
 
 .trustCard:hover {
   border-color: var(--line-strong);
-  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.32);
+  box-shadow: var(--shadow-card);
   transform: translateY(-2px);
 }
 
 .trustCard h3 {
   font-family: var(--font-display);
-  font-size: 1.03rem;
+  font-size: 1.04rem;
   line-height: 1.15;
   margin: 0;
 }
 
 .trustCard p {
-  color: rgba(233, 241, 255, 0.8);
+  color: var(--ink-80);
   font-size: 0.84rem;
   line-height: 1.42;
   margin: 0;
@@ -522,15 +598,15 @@
 
 .footer {
   align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.16);
-  color: rgba(213, 225, 246, 0.86);
+  border-top: 1px solid var(--line);
+  color: var(--ink-64);
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem 0.9rem;
   justify-content: space-between;
-  margin: clamp(1.15rem, 2.8vw, 1.5rem) auto 0;
+  margin: clamp(1.2rem, 2.9vw, 1.55rem) auto 0;
   max-width: 1280px;
-  padding-top: 0.82rem;
+  padding-top: 0.86rem;
 }
 
 .footer p {
@@ -544,11 +620,11 @@
 }
 
 .footer a {
-  color: rgba(230, 239, 255, 0.92);
+  color: rgba(233, 241, 255, 0.92);
   font-size: 0.8rem;
   font-weight: 700;
   text-decoration: none;
-  transition: opacity 170ms var(--ease-standard);
+  transition: opacity 170ms var(--ease);
 }
 
 .footer a:hover {
@@ -557,12 +633,13 @@
 
 .topBar,
 .hero,
+.modeDeck,
 .section,
 .footer {
-  animation: rise-in 560ms var(--ease-standard) both;
+  animation: rise-in 580ms var(--ease) both;
 }
 
-.section:nth-of-type(2) {
+.modeDeck {
   animation-delay: 80ms;
 }
 
@@ -578,29 +655,37 @@
   animation-delay: 200ms;
 }
 
-@media (max-width: 980px) {
+.section:nth-of-type(6) {
+  animation-delay: 240ms;
+}
+
+@media (max-width: 1080px) {
   .hero {
     grid-template-columns: 1fr;
-    height: auto;
-    min-height: 560px;
   }
 
-  .heroPanel {
-    border-left: none;
-    border-top: 1px solid var(--line-soft);
+  .heroVisual {
+    min-height: 560px;
+  }
+}
+
+@media (max-width: 900px) {
+  .modeDeck {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 760px) {
   .page {
-    padding: 0.8rem 0.75rem 1.85rem;
+    padding: 0.8rem 0.75rem 1.9rem;
   }
 
   .topBar {
-    padding: 0.65rem 0.7rem;
+    padding: 0.66rem 0.72rem;
   }
 
-  .hero {
+  .heroVisual {
+    border-radius: 24px;
     min-height: 0;
   }
 
