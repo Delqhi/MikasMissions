@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "media.transcode.requested.v1",
+  "type": "object",
+  "required": ["asset_id", "source_url", "trace_id"],
+  "properties": {
+    "asset_id": {"type": "string"},
+    "source_url": {"type": "string"},
+    "trace_id": {"type": "string"}
+  },
+  "additionalProperties": true
+}

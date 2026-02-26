@@ -1,0 +1,58 @@
+.page {
+  background:
+    radial-gradient(circle at 8% -8%, rgba(255, 122, 161, 0.25), transparent 36%),
+    radial-gradient(circle at 88% -2%, rgba(54, 131, 255, 0.18), transparent 30%),
+    #08080b;
+  color: #f7f8ff;
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 1rem 1rem 2rem;
+  position: relative;
+}
+
+.top {
+  align-items: end;
+  backdrop-filter: blur(10px);
+  background: rgba(9, 9, 14, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 22px;
+  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.kicker {
+  color: rgba(255, 180, 201, 0.86);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.top h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  line-height: 1.08;
+  margin: 0.2rem 0 0;
+}
+
+.note {
+  color: rgba(241, 244, 254, 0.76);
+  margin: 0.35rem 0 0;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 0.75rem 0.75rem 1.75rem;
+  }
+
+  .top {
+    padding: 0.85rem;
+  }
+}

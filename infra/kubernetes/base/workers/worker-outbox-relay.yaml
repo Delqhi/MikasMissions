@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-outbox-relay
+  namespace: mikasmissions-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker-outbox-relay
+  template:
+    metadata:
+      labels:
+        app: worker-outbox-relay
+    spec:
+      containers:
+        - name: worker-outbox-relay
+          image: ghcr.io/delqhi/mikasmissions/worker-outbox-relay:latest
+          envFrom:
+            - configMapRef:
+                name: platform-runtime
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: database-url
+                  optional: true
+            - name: OUTBOX_RELAY_INTERVAL_MS
+              value: "1000"

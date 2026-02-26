@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "playback.session.ended.v1",
+  "type": "object",
+  "required": ["playback_session_id", "child_profile_id", "episode_id", "ended_at", "watched_ms", "capped"],
+  "properties": {
+    "playback_session_id": {"type": "string"},
+    "child_profile_id": {"type": "string"},
+    "episode_id": {"type": "string"},
+    "ended_at": {"type": "string"},
+    "watched_ms": {"type": "integer"},
+    "capped": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

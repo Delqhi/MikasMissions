@@ -1,0 +1,176 @@
+.wrapper {
+  align-items: stretch;
+  background:
+    radial-gradient(circle at 10% -8%, rgba(255, 155, 92, 0.32), transparent 34%),
+    radial-gradient(circle at 88% 2%, rgba(78, 174, 126, 0.24), transparent 30%),
+    #090d14;
+  color: #f7f9ff;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 1fr);
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.hero,
+.card {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 24px;
+  box-shadow: 0 22px 36px rgba(0, 0, 0, 0.32);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.hero {
+  background: rgba(8, 12, 18, 0.72);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.kicker {
+  align-items: center;
+  background: rgba(255, 219, 170, 0.16);
+  border: 1px solid rgba(255, 220, 170, 0.42);
+  border-radius: 999px;
+  color: rgba(255, 224, 181, 0.96);
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 0.26rem 0.62rem;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 0.98;
+  margin: 0;
+}
+
+.hero p {
+  color: rgba(238, 244, 255, 0.84);
+  margin: 0;
+  max-width: 48ch;
+}
+
+.hero ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.hero li {
+  color: rgba(243, 248, 255, 0.9);
+}
+
+.card {
+  background: rgba(8, 12, 18, 0.8);
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 auto;
+  max-width: 640px;
+  width: 100%;
+}
+
+.card h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0;
+}
+
+.card p {
+  color: rgba(235, 242, 255, 0.8);
+  margin: 0;
+}
+
+.form {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.form label {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.form label span {
+  color: rgba(248, 251, 255, 0.95);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.row {
+  display: grid;
+  gap: 0.72rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form input,
+.form select {
+  background: rgba(7, 10, 15, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 11px;
+  color: rgba(247, 251, 255, 0.95);
+  font: inherit;
+  min-height: 2.7rem;
+  padding: 0.56rem 0.68rem;
+}
+
+.form input::placeholder {
+  color: rgba(200, 211, 232, 0.76);
+}
+
+.form button {
+  background: linear-gradient(140deg, #ffd08b, #fff1d6);
+  border: none;
+  border-radius: 12px;
+  color: #2b1f10;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 800;
+  min-height: 2.85rem;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.form button:hover {
+  box-shadow: 0 14px 24px rgba(255, 193, 102, 0.24);
+  transform: translateY(-1px);
+}
+
+.backLink {
+  color: rgba(247, 250, 255, 0.9);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(247, 250, 255, 0.45);
+  width: fit-content;
+}
+
+@media (max-width: 920px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 0.75rem;
+  }
+
+  .hero,
+  .card {
+    border-radius: 20px;
+    padding: 0.9rem;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/admin/runs/page": "app/admin/runs/page.js",
+  "/admin/studio/page": "app/admin/studio/page.js",
+  "/api/parents/controls/[child_profile_id]/route": "app/api/parents/controls/[child_profile_id]/route.js",
+  "/icon.svg/route": "app/icon.svg/route.js",
+  "/kids/core/page": "app/kids/core/page.js",
+  "/kids/early/page": "app/kids/early/page.js",
+  "/kids/teen/page": "app/kids/teen/page.js",
+  "/manifest.webmanifest/route": "app/manifest.webmanifest/route.js",
+  "/page": "app/page.js",
+  "/parents/onboarding/page": "app/parents/onboarding/page.js",
+  "/parents/page": "app/parents/page.js"
+}

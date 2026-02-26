@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "watch.event.v1",
+  "type": "object",
+  "required": ["child_profile_id", "episode_id", "watch_ms", "event_time"],
+  "properties": {
+    "child_profile_id": {"type": "string"},
+    "episode_id": {"type": "string"},
+    "watch_ms": {"type": "integer", "minimum": 0},
+    "event_time": {"type": "string"}
+  },
+  "additionalProperties": true
+}

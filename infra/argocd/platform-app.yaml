@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mikasmissions-platform
+  namespace: argocd
+spec:
+  destination:
+    namespace: mikasmissions-dev
+    server: https://kubernetes.default.svc
+  source:
+    path: infra/kubernetes/base
+    repoURL: https://github.com/Delqhi/MikasMissions.git
+    targetRevision: main
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

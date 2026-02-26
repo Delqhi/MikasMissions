@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-reco-feature
+  namespace: mikasmissions-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker-reco-feature
+  template:
+    metadata:
+      labels:
+        app: worker-reco-feature
+    spec:
+      containers:
+        - name: worker-reco-feature
+          image: ghcr.io/delqhi/mikasmissions/worker-reco-feature:latest
+          envFrom:
+            - configMapRef:
+                name: platform-runtime
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: database-url
+                  optional: true

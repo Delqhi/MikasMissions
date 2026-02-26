@@ -1,0 +1,201 @@
+.switchRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.switchRow a {
+  align-items: center;
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  color: #f8f8ff;
+  display: inline-flex;
+  font-size: 0.78rem;
+  font-weight: 700;
+  min-height: 38px;
+  padding: 0.35rem 0.8rem;
+  text-decoration: none;
+}
+
+.switchRow a[aria-current="page"] {
+  background: linear-gradient(130deg, #ff4d7c, #ff9f4f);
+  border-color: rgba(255, 159, 79, 0.9);
+  color: #150a13;
+}
+
+.heroPanel {
+  border-radius: 24px;
+  min-height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+.heroPanel img {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+}
+
+.heroShade {
+  background:
+    linear-gradient(90deg, rgba(8, 8, 12, 0.93), rgba(8, 8, 12, 0.46) 56%, rgba(8, 8, 12, 0.1)),
+    linear-gradient(180deg, rgba(8, 8, 12, 0.05), rgba(8, 8, 12, 0.84));
+  inset: 0;
+  position: absolute;
+}
+
+.heroBody {
+  display: grid;
+  gap: 0.75rem;
+  max-width: min(660px, 96%);
+  padding: clamp(0.95rem, 2.8vw, 1.8rem);
+  position: relative;
+  z-index: 1;
+}
+
+.heroBody h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 3.8vw, 2.8rem);
+  line-height: 0.98;
+  margin: 0;
+}
+
+.heroBody p {
+  color: rgba(244, 246, 252, 0.9);
+  margin: 0;
+}
+
+.heroKicker {
+  align-items: center;
+  background: rgba(255, 122, 161, 0.2);
+  border: 1px solid rgba(255, 122, 161, 0.6);
+  border-radius: 999px;
+  color: #ff9fbe;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  padding: 0.25rem 0.6rem;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.heroActions a {
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  min-height: 42px;
+  padding: 0.5rem 0.9rem;
+  text-decoration: none;
+}
+
+.heroPlay {
+  background: #ffffff;
+  color: #11121b;
+}
+
+.heroInfo {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.heroMeta li {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.24rem 0.58rem;
+}
+
+.storyRow {
+  display: grid;
+  gap: 0.75rem;
+  grid-auto-columns: minmax(320px, 1fr);
+  grid-auto-flow: column;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+}
+
+.tileRow {
+  display: grid;
+  gap: 0.65rem;
+  grid-auto-columns: minmax(240px, 1fr);
+  grid-auto-flow: column;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+}
+
+.storyRow::-webkit-scrollbar,
+.tileRow::-webkit-scrollbar {
+  height: 9px;
+}
+
+.storyRow::-webkit-scrollbar-thumb,
+.tileRow::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+}
+
+.focusCard {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.85rem;
+}
+
+.focusCard h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.focusCard p {
+  color: rgba(242, 245, 253, 0.78);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.calloutGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+@media (max-width: 760px) {
+  .storyRow {
+    grid-auto-columns: minmax(280px, 86vw);
+  }
+
+  .tileRow {
+    grid-auto-columns: minmax(220px, 72vw);
+  }
+
+  .heroActions {
+    flex-direction: column;
+  }
+
+  .heroActions a {
+    text-align: center;
+  }
+}

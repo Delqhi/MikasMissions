@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ux.flow.completed.v1",
+  "type": "object",
+  "required": ["flow_id", "parent_user_id", "child_profile_id", "step", "status", "completed_at"],
+  "properties": {
+    "flow_id": {"type": "string"},
+    "parent_user_id": {"type": "string"},
+    "child_profile_id": {"type": "string"},
+    "step": {"type": "string"},
+    "status": {"type": "string"},
+    "completed_at": {"type": "string"}
+  },
+  "additionalProperties": true
+}

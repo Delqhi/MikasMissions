@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "video.run.failed.v1",
+  "type": "object",
+  "required": ["run_id", "step", "error_code", "error_message", "failed_at"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "step": { "type": "string" },
+    "error_code": { "type": "string" },
+    "error_message": { "type": "string" },
+    "failed_at": { "type": "string", "format": "date-time" }
+  }
+}

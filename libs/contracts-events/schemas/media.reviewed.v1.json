@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "media.reviewed.v1",
+  "type": "object",
+  "required": ["asset_id", "policy_result", "age_band"],
+  "properties": {
+    "asset_id": {"type": "string"},
+    "policy_result": {"type": "string"},
+    "age_band": {"type": "string"}
+  },
+  "additionalProperties": true
+}

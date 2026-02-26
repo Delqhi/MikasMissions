@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - api-gateway-service.yaml
+  - identity-service.yaml
+  - profile-service.yaml
+  - catalog-service.yaml
+  - recommendation-service.yaml
+  - playback-service.yaml
+  - progress-service.yaml
+  - creator-studio-service.yaml
+  - admin-studio-service.yaml
+  - moderation-service.yaml
+  - billing-service.yaml
+  - web-frontend.yaml
+  - public-ingress.yaml

@@ -1,0 +1,140 @@
+.page {
+  background:
+    radial-gradient(circle at 12% -8%, rgba(82, 128, 255, 0.3), transparent 34%),
+    radial-gradient(circle at 88% 0%, rgba(30, 201, 168, 0.22), transparent 32%),
+    #070b13;
+  color: #f7f9ff;
+  display: grid;
+  gap: 0.9rem;
+  margin: 0 auto;
+  max-width: 1280px;
+  min-height: 100vh;
+  overflow: clip;
+  padding: 1rem 1rem 2rem;
+  position: relative;
+}
+
+.backdrop {
+  background:
+    radial-gradient(circle at 26% 45%, rgba(92, 141, 255, 0.18), transparent 56%),
+    radial-gradient(circle at 71% 28%, rgba(71, 184, 158, 0.16), transparent 54%);
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  align-items: end;
+  backdrop-filter: blur(10px);
+  background: rgba(8, 11, 17, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 24px;
+  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.33);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.kicker {
+  color: rgba(164, 205, 255, 0.95);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  line-height: 1.04;
+  margin: 0.25rem 0;
+}
+
+.header span {
+  color: rgba(234, 242, 255, 0.8);
+  display: block;
+  font-size: 0.92rem;
+  max-width: 64ch;
+}
+
+.actions {
+  display: flex;
+}
+
+.homeLink {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  color: rgba(246, 250, 255, 0.96);
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 800;
+  min-height: 38px;
+  padding: 0.35rem 0.86rem;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding-bottom: 0.1rem;
+}
+
+.nav::-webkit-scrollbar {
+  height: 8px;
+}
+
+.nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+}
+
+.nav a {
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 800;
+  min-height: 38px;
+  padding: 0.34rem 0.76rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.active {
+  background: linear-gradient(130deg, #b9d4ff, #edf4ff);
+  border-color: rgba(185, 212, 255, 0.92);
+  color: #11243f;
+}
+
+.idle {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(240, 246, 255, 0.9);
+}
+
+.main {
+  display: grid;
+  gap: 0.95rem;
+}
+
+@media (max-width: 680px) {
+  .page {
+    padding: 0.75rem 0.75rem 1.75rem;
+  }
+
+  .header {
+    padding: 0.85rem;
+  }
+}

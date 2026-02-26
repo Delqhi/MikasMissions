@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "parents.controls.v1.response",
+  "type": "object",
+  "required": ["child_profile_id", "controls"],
+  "properties": {
+    "child_profile_id": {"type": "string"},
+    "controls": {
+      "type": "object",
+      "required": ["autoplay", "chat_enabled", "external_links", "session_limit_minutes", "bedtime_window", "safety_mode"],
+      "properties": {
+        "autoplay": {"type": "boolean"},
+        "chat_enabled": {"type": "boolean"},
+        "external_links": {"type": "boolean"},
+        "session_limit_minutes": {"type": "integer"},
+        "bedtime_window": {"type": "string"},
+        "safety_mode": {"type": "string", "enum": ["strict", "balanced"]}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

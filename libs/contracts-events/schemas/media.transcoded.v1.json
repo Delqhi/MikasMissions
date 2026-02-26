@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "media.transcoded.v1",
+  "type": "object",
+  "required": ["asset_id", "renditions", "duration_ms"],
+  "properties": {
+    "asset_id": {"type": "string"},
+    "renditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["profile", "url"],
+        "properties": {
+          "profile": {"type": "string"},
+          "url": {"type": "string"}
+        }
+      }
+    },
+    "duration_ms": {"type": "integer", "minimum": 1}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,67 @@
+.card {
+  backdrop-filter: blur(10px);
+  background: rgba(8, 12, 19, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.32);
+  display: grid;
+  gap: 0.85rem;
+  margin: 0 auto;
+  max-width: 560px;
+  padding: 1rem;
+  width: 100%;
+}
+
+.card h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+  margin: 0;
+}
+
+.card p {
+  color: rgba(236, 243, 255, 0.8);
+  margin: 0;
+}
+
+.form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.form label {
+  color: rgba(248, 251, 255, 0.95);
+  display: grid;
+  gap: 0.3rem;
+}
+
+.form label span {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.form input {
+  background: rgba(7, 11, 16, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 11px;
+  color: rgba(247, 251, 255, 0.95);
+  font: inherit;
+  min-height: 2.6rem;
+  padding: 0.56rem 0.7rem;
+}
+
+.form button {
+  background: linear-gradient(130deg, #b7d2ff, #ecf4ff);
+  border: none;
+  border-radius: 12px;
+  color: #14253d;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  min-height: 2.75rem;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 0.85rem;
+  }
+}

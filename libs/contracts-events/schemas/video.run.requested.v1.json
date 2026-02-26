@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "video.run.requested.v1",
+  "type": "object",
+  "required": [
+    "run_id",
+    "workflow_id",
+    "model_profile_id",
+    "input_payload",
+    "auto_publish",
+    "priority",
+    "content_suitability",
+    "age_band",
+    "requested_by",
+    "requested_at",
+    "trace_id"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "workflow_id": { "type": "string" },
+    "model_profile_id": { "type": "string" },
+    "input_payload": { "type": "object" },
+    "auto_publish": { "type": "boolean" },
+    "priority": { "type": "string" },
+    "content_suitability": { "type": "string" },
+    "age_band": { "type": "string", "enum": ["3-5", "6-11", "12-16"] },
+    "requested_by": { "type": "string" },
+    "requested_at": { "type": "string", "format": "date-time" },
+    "trace_id": { "type": "string" }
+  }
+}

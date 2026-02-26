@@ -1,0 +1,763 @@
+openapi: 3.1.0
+info:
+  title: MikasMissions Public API
+  version: 1.0.0
+  description: Canonical v1 API contract for parent and child product flows.
+servers:
+  - url: http://localhost:8080
+paths:
+  /v1/parents/signup:
+    post:
+      operationId: parentSignup
+      tags: [Parents]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParentSignupRequest'
+      responses:
+        '201':
+          description: Parent account created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentSignupResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+  /v1/parents/consent/verify:
+    post:
+      operationId: parentConsentVerify
+      tags: [Parents]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParentConsentVerifyRequest'
+      responses:
+        '200':
+          description: Parent consent verified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentConsentVerifyResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+        '404':
+          $ref: '#/components/responses/APIError'
+  /v1/children/profiles:
+    post:
+      operationId: createChildProfile
+      tags: [Children]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChildProfileRequest'
+      responses:
+        '201':
+          description: Child profile created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateChildProfileResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+  /v1/home/rails:
+    get:
+      operationId: getHomeRails
+      tags: [Recommendations]
+      parameters:
+        - $ref: '#/components/parameters/ChildProfileIDQuery'
+      responses:
+        '200':
+          description: Safe rails payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeRailsResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+  /v1/kids/home:
+    get:
+      operationId: getKidsHome
+      tags: [Kids]
+      parameters:
+        - $ref: '#/components/parameters/ChildProfileIDQuery'
+        - name: mode
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/KidsMode'
+      responses:
+        '200':
+          description: Kids home payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KidsHomeResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+  /v1/kids/progress/{child_profile_id}:
+    get:
+      operationId: getKidsProgress
+      tags: [Kids]
+      parameters:
+        - $ref: '#/components/parameters/ChildProfileIDPath'
+      responses:
+        '200':
+          description: Kids progress payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KidsProgressResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+  /v1/catalog/episodes/{id}:
+    get:
+      operationId: getCatalogEpisode
+      tags: [Catalog]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Episode metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogEpisodeResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+        '404':
+          $ref: '#/components/responses/APIError'
+  /v1/playback/sessions:
+    post:
+      operationId: createPlaybackSession
+      tags: [Playback]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlaybackSessionRequest'
+      responses:
+        '201':
+          description: Playback session created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePlaybackSessionResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+        '403':
+          $ref: '#/components/responses/APIError'
+  /v1/progress/watch-events:
+    post:
+      operationId: upsertWatchEvent
+      tags: [Progress]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertWatchEventRequest'
+      responses:
+        '202':
+          description: Watch event accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertWatchEventResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+  /v1/parents/dashboard:
+    get:
+      operationId: getParentsDashboard
+      tags: [Parents]
+      parameters:
+        - name: parent_user_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parent dashboard data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentsDashboardResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+        '404':
+          $ref: '#/components/responses/APIError'
+  /v1/parents/controls/{child_profile_id}:
+    get:
+      operationId: getParentControls
+      tags: [Parents]
+      parameters:
+        - $ref: '#/components/parameters/ChildProfileIDPath'
+      responses:
+        '200':
+          description: Current parental controls.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentControlsResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+    put:
+      operationId: putParentControls
+      tags: [Parents]
+      parameters:
+        - $ref: '#/components/parameters/ChildProfileIDPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParentalControls'
+      responses:
+        '200':
+          description: Updated parental controls.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentControlsResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+  /v1/parents/gates/challenge:
+    post:
+      operationId: parentGateChallenge
+      tags: [Parents]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParentGateChallengeRequest'
+      responses:
+        '201':
+          description: Parent gate challenge issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentGateChallengeResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+        '404':
+          $ref: '#/components/responses/APIError'
+  /v1/parents/gates/verify:
+    post:
+      operationId: parentGateVerify
+      tags: [Parents]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParentGateVerifyRequest'
+      responses:
+        '200':
+          description: Parent gate challenge verified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentGateVerifyResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+        '403':
+          $ref: '#/components/responses/APIError'
+        '404':
+          $ref: '#/components/responses/APIError'
+  /v1/billing/entitlements:
+    get:
+      operationId: getBillingEntitlement
+      tags: [Billing]
+      parameters:
+        - name: parent_user_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Billing entitlement snapshot.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingEntitlementResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+  /v1/creator/assets/upload:
+    post:
+      operationId: creatorUploadAsset
+      tags: [Creator]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatorUploadRequest'
+      responses:
+        '202':
+          description: Upload accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatorUploadResponse'
+        '400':
+          $ref: '#/components/responses/APIError'
+
+components:
+  parameters:
+    ChildProfileIDPath:
+      name: child_profile_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ChildProfileIDQuery:
+      name: child_profile_id
+      in: query
+      required: true
+      schema:
+        type: string
+  responses:
+    APIError:
+      description: API error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIError'
+  schemas:
+    APIError:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+    AgeBand:
+      type: string
+      enum: [3-5, 6-11, 12-16]
+
+    SafetyMode:
+      type: string
+      enum: [strict, balanced]
+
+    KidsMode:
+      type: string
+      enum: [early, core, teen]
+
+    ParentSignupRequest:
+      type: object
+      required: [email, password, country, language, accepted_terms]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 10
+        country:
+          type: string
+        language:
+          type: string
+        marketing:
+          type: boolean
+        accepted_terms:
+          type: boolean
+
+    ParentSignupResponse:
+      type: object
+      required: [parent_user_id, status]
+      properties:
+        parent_user_id:
+          type: string
+        status:
+          type: string
+
+    ParentConsentVerifyRequest:
+      type: object
+      required: [parent_user_id, method, challenge]
+      properties:
+        parent_user_id:
+          type: string
+        method:
+          type: string
+        challenge:
+          type: string
+
+    ParentConsentVerifyResponse:
+      type: object
+      required: [consent_id, verified]
+      properties:
+        consent_id:
+          type: string
+        verified:
+          type: boolean
+
+    CreateChildProfileRequest:
+      type: object
+      required: [parent_user_id, display_name, age_band, avatar]
+      properties:
+        parent_user_id:
+          type: string
+        display_name:
+          type: string
+        age_band:
+          $ref: '#/components/schemas/AgeBand'
+        avatar:
+          type: string
+
+    CreateChildProfileResponse:
+      type: object
+      required: [child_profile_id, safe_defaults]
+      properties:
+        child_profile_id:
+          type: string
+        safe_defaults:
+          type: boolean
+
+    RailItem:
+      type: object
+      required:
+        - episode_id
+        - title
+        - summary
+        - thumbnail_url
+        - duration_ms
+        - age_band
+        - content_suitability
+        - learning_tags
+        - reason_code
+        - safety_applied
+        - age_fit_score
+      properties:
+        episode_id:
+          type: string
+        title:
+          type: string
+        summary:
+          type: string
+        thumbnail_url:
+          type: string
+          format: uri
+        duration_ms:
+          type: integer
+        age_band:
+          $ref: '#/components/schemas/AgeBand'
+        content_suitability:
+          type: string
+          enum: [early, core, teen]
+        learning_tags:
+          type: array
+          items:
+            type: string
+        reason_code:
+          type: string
+        safety_applied:
+          type: boolean
+        age_fit_score:
+          type: number
+
+    HomeRailsResponse:
+      type: object
+      required: [child_profile_id, rails]
+      properties:
+        child_profile_id:
+          type: string
+        rails:
+          type: array
+          items:
+            $ref: '#/components/schemas/RailItem'
+
+    KidsHomeResponse:
+      type: object
+      required: [child_profile_id, mode, safety_mode, primary_actions, rails]
+      properties:
+        child_profile_id:
+          type: string
+        mode:
+          $ref: '#/components/schemas/KidsMode'
+        safety_mode:
+          $ref: '#/components/schemas/SafetyMode'
+        primary_actions:
+          type: array
+          items:
+            type: string
+        rails:
+          type: array
+          items:
+            $ref: '#/components/schemas/RailItem'
+
+    CatalogEpisodeResponse:
+      type: object
+      required:
+        - episode_id
+        - show_id
+        - title
+        - summary
+        - age_band
+        - duration_ms
+        - learning_tags
+        - playback_ready
+        - thumbnail_url
+        - published_at_iso
+      properties:
+        episode_id:
+          type: string
+        show_id:
+          type: string
+        title:
+          type: string
+        summary:
+          type: string
+        age_band:
+          $ref: '#/components/schemas/AgeBand'
+        duration_ms:
+          type: integer
+        learning_tags:
+          type: array
+          items:
+            type: string
+        playback_ready:
+          type: boolean
+        thumbnail_url:
+          type: string
+          format: uri
+        published_at_iso:
+          type: string
+          format: date-time
+
+    CreatePlaybackSessionRequest:
+      type: object
+      required: [child_profile_id, episode_id, device_type]
+      properties:
+        child_profile_id:
+          type: string
+        episode_id:
+          type: string
+        device_type:
+          type: string
+        safety_mode:
+          $ref: '#/components/schemas/SafetyMode'
+        parent_gate_token:
+          type: string
+        session_limit_minutes:
+          type: integer
+        session_minutes_used:
+          type: integer
+        entitlement_status:
+          type: string
+          enum: [active, inactive]
+        autoplay_requested:
+          type: boolean
+
+    CreatePlaybackSessionResponse:
+      type: object
+      required:
+        - playback_session_id
+        - token
+        - stream_url
+        - expires_at
+        - safety_applied
+        - safety_reason
+        - session_capped
+        - session_max_minutes
+      properties:
+        playback_session_id:
+          type: string
+        token:
+          type: string
+        stream_url:
+          type: string
+          format: uri
+        expires_at:
+          type: string
+          format: date-time
+        safety_applied:
+          type: boolean
+        safety_reason:
+          type: string
+        session_capped:
+          type: boolean
+        session_max_minutes:
+          type: integer
+
+    UpsertWatchEventRequest:
+      type: object
+      required: [child_profile_id, episode_id, watch_ms, event_time]
+      properties:
+        child_profile_id:
+          type: string
+        episode_id:
+          type: string
+        watch_ms:
+          type: integer
+          minimum: 0
+        event_time:
+          type: string
+          format: date-time
+
+    UpsertWatchEventResponse:
+      type: object
+      required: [accepted]
+      properties:
+        accepted:
+          type: boolean
+
+    KidsProgressResponse:
+      type: object
+      required:
+        - child_profile_id
+        - watched_minutes_today
+        - watched_minutes_7d
+        - completion_percent
+        - mission_streak_days
+        - session_limit_minutes
+        - session_minutes_used
+        - session_capped
+        - last_episode_id
+      properties:
+        child_profile_id:
+          type: string
+        watched_minutes_today:
+          type: integer
+        watched_minutes_7d:
+          type: integer
+        completion_percent:
+          type: integer
+        mission_streak_days:
+          type: integer
+        session_limit_minutes:
+          type: integer
+        session_minutes_used:
+          type: integer
+        session_capped:
+          type: boolean
+        last_episode_id:
+          type: string
+
+    ParentsDashboardResponse:
+      type: object
+      required: [parent_user_id, child_profiles, weekly_watch_ms, weekly_learning_events]
+      properties:
+        parent_user_id:
+          type: string
+        child_profiles:
+          type: integer
+        weekly_watch_ms:
+          type: integer
+        weekly_learning_events:
+          type: integer
+
+    ParentalControls:
+      type: object
+      required: [autoplay, chat_enabled, external_links, session_limit_minutes, bedtime_window, safety_mode]
+      properties:
+        autoplay:
+          type: boolean
+        chat_enabled:
+          type: boolean
+        external_links:
+          type: boolean
+        session_limit_minutes:
+          type: integer
+        bedtime_window:
+          type: string
+        safety_mode:
+          $ref: '#/components/schemas/SafetyMode'
+
+    ParentControlsResponse:
+      type: object
+      required: [child_profile_id, controls]
+      properties:
+        child_profile_id:
+          type: string
+        controls:
+          $ref: '#/components/schemas/ParentalControls'
+
+    ParentGateChallengeRequest:
+      type: object
+      required: [parent_user_id, child_profile_id, method]
+      properties:
+        parent_user_id:
+          type: string
+        child_profile_id:
+          type: string
+        method:
+          type: string
+
+    ParentGateChallengeResponse:
+      type: object
+      required: [challenge_id, method, expires_at]
+      properties:
+        challenge_id:
+          type: string
+        method:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+
+    ParentGateVerifyRequest:
+      type: object
+      required: [parent_user_id, child_profile_id, challenge_id, response]
+      properties:
+        parent_user_id:
+          type: string
+        child_profile_id:
+          type: string
+        challenge_id:
+          type: string
+        response:
+          type: string
+
+    ParentGateVerifyResponse:
+      type: object
+      required: [verified, gate_token]
+      properties:
+        verified:
+          type: boolean
+        gate_token:
+          type: string
+
+    BillingEntitlementResponse:
+      type: object
+      required: [parent_user_id, plan, active]
+      properties:
+        parent_user_id:
+          type: string
+        plan:
+          type: string
+        active:
+          type: boolean
+
+    CreatorUploadRequest:
+      type: object
+      required: [source_url, uploader_id]
+      properties:
+        source_url:
+          type: string
+          format: uri
+        uploader_id:
+          type: string
+
+    CreatorUploadResponse:
+      type: object
+      required: [asset_id, status]
+      properties:
+        asset_id:
+          type: string
+        status:
+          type: string

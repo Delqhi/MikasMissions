@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "media.approved.v1",
+  "type": "object",
+  "required": ["asset_id", "age_band", "learning_tags"],
+  "properties": {
+    "asset_id": {"type": "string"},
+    "age_band": {"type": "string"},
+    "learning_tags": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": true
+}

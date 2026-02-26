@@ -1,0 +1,25 @@
+# Go
+bin/
+*.test
+*.out
+
+# Env
+.env
+.env.*
+
+# Tooling
+.coverage
+.idea/
+.vscode/
+.DS_Store
+.cache/
+
+# Node
+node_modules/
+
+# Local infra
+*.local.yaml
+
+# Launch evidence artifacts
+docs/runbooks/evidence/*
+!docs/runbooks/evidence/.gitkeep

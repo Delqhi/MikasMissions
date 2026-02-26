@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "video.asset.ready.v1",
+  "type": "object",
+  "required": [
+    "run_id",
+    "asset_id",
+    "source_url",
+    "duration_ms",
+    "content_suitability",
+    "age_band",
+    "uploader_id",
+    "ready_at"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "asset_id": { "type": "string" },
+    "source_url": { "type": "string", "format": "uri" },
+    "duration_ms": { "type": "integer", "minimum": 1 },
+    "content_suitability": { "type": "string" },
+    "age_band": { "type": "string", "enum": ["3-5", "6-11", "12-16"] },
+    "uploader_id": { "type": "string" },
+    "ready_at": { "type": "string", "format": "date-time" }
+  }
+}

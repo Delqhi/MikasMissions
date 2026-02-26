@@ -1,0 +1,15 @@
+.git
+.gitignore
+.cache
+.DS_Store
+
+**/node_modules
+**/.next
+**/dist
+**/coverage
+
+frontend/web/.turbo
+frontend/web/out
+
+*.log
+*.tmp

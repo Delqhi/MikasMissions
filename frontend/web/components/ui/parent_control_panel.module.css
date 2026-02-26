@@ -1,0 +1,197 @@
+.panel {
+  backdrop-filter: blur(8px);
+  background: rgba(11, 15, 21, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.3);
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.header {
+  align-items: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: space-between;
+}
+
+.header h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.header p {
+  color: rgba(244, 247, 255, 0.78);
+  margin: 0.25rem 0 0;
+}
+
+.badges {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.badges span {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: rgba(249, 251, 255, 0.95);
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: 800;
+  min-height: 34px;
+  padding: 0.3rem 0.7rem;
+}
+
+.grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.grid label {
+  color: rgba(248, 251, 255, 0.92);
+  display: grid;
+  font-size: 0.84rem;
+  font-weight: 700;
+  gap: 0.35rem;
+}
+
+.grid input,
+.grid select {
+  background: rgba(6, 9, 14, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  color: rgba(248, 252, 255, 0.95);
+  font: inherit;
+  padding: 0.5rem;
+}
+
+.grid strong {
+  color: rgba(255, 223, 174, 0.97);
+  font-size: 0.82rem;
+}
+
+.grid input[type="range"] {
+  accent-color: #ffcc84;
+}
+
+.grid input::placeholder {
+  color: rgba(203, 211, 228, 0.75);
+}
+
+.grid input:focus-visible,
+.grid select:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 206, 130, 0.34);
+  outline: none;
+}
+
+.toggles {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toggles button {
+  align-items: start;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f9fbff;
+  cursor: pointer;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  min-height: 92px;
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+}
+
+.toggles button div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.toggles button span {
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.toggles button small {
+  color: rgba(231, 237, 250, 0.74);
+  font-size: 0.74rem;
+  line-height: 1.32;
+}
+
+.toggles button strong {
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  min-width: 48px;
+  padding: 0.26rem 0.55rem;
+  text-align: center;
+}
+
+.enabled {
+  background: linear-gradient(150deg, rgba(35, 163, 93, 0.3), rgba(22, 90, 58, 0.22));
+}
+
+.enabled strong {
+  background: rgba(165, 247, 202, 0.24);
+  color: rgba(210, 255, 230, 0.98);
+}
+
+.disabled {
+  background: linear-gradient(150deg, rgba(194, 74, 56, 0.24), rgba(90, 32, 24, 0.18));
+}
+
+.disabled strong {
+  background: rgba(255, 203, 194, 0.2);
+  color: rgba(255, 227, 222, 0.98);
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.footer p {
+  color: rgba(233, 239, 252, 0.84);
+  font-size: 0.86rem;
+  margin: 0;
+}
+
+.footer button {
+  background: linear-gradient(140deg, #ffd08c, #fff2d6);
+  border: none;
+  border-radius: 12px;
+  color: #2a1d10;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  min-height: 42px;
+  padding: 0.55rem 0.95rem;
+}
+
+.footer button:disabled {
+  cursor: wait;
+  opacity: 0.74;
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 0.85rem;
+  }
+
+  .toggles button {
+    min-height: 84px;
+  }
+}

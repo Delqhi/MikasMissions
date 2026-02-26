@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "parent.controls.updated.v1",
+  "type": "object",
+  "required": ["parent_user_id", "child_profile_id", "safety_mode", "session_limit_minutes", "external_links", "audit_event_id"],
+  "properties": {
+    "parent_user_id": {"type": "string"},
+    "child_profile_id": {"type": "string"},
+    "safety_mode": {"type": "string"},
+    "session_limit_minutes": {"type": "integer"},
+    "external_links": {"type": "boolean"},
+    "audit_event_id": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: progress-service
+  namespace: mikasmissions-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: progress-service
+  template:
+    metadata:
+      labels:
+        app: progress-service
+    spec:
+      containers:
+        - name: progress-service
+          image: ghcr.io/delqhi/mikasmissions/progress-service:latest
+          envFrom:
+            - configMapRef:
+                name: platform-runtime
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: database-url
+                  optional: true
+          ports:
+            - containerPort: 8086
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8086
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8086
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: progress-service
+  namespace: mikasmissions-dev
+spec:
+  selector:
+    app: progress-service
+  ports:
+    - port: 80
+      targetPort: 8086

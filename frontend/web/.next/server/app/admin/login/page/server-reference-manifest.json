@@ -1,0 +1,20 @@
+{
+  "node": {
+    "40f04aab1c41d1e928efe7d3d825c397c8962b1941": {
+      "workers": {
+        "app/admin/login/page": {
+          "moduleId": 72169,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "app/admin/login/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/login/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "app/admin/login/page.tsx"
+    }
+  },
+  "edge": {}
+}

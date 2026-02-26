@@ -1,0 +1,44 @@
+.card {
+  align-items: center;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.9rem;
+}
+
+.orb {
+  align-items: center;
+  background: radial-gradient(circle at 20% 20%, #ff9fbe, #ff4d7c);
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  color: #1d0d16;
+  display: inline-flex;
+  font-size: 1.12rem;
+  font-weight: 800;
+  height: 56px;
+  justify-content: center;
+  width: 56px;
+}
+
+.meta h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.meta p {
+  color: rgba(241, 245, 255, 0.82);
+  font-size: 0.86rem;
+  margin: 0.08rem 0;
+}
+
+.meta span {
+  color: rgba(201, 210, 237, 0.88);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}

@@ -1,0 +1,1 @@
+{"name":"MikasMissions","short_name":"Mikas","description":"Kinderfreundliche Streaming-Plattform mit strikten Safety-Defaults.","display":"standalone","background_color":"#f3f4f6","theme_color":"#0f766e","start_url":"/","scope":"/","lang":"de-DE","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml"},{"src":"/apple-icon.svg","sizes":"any","type":"image/svg+xml"}]}

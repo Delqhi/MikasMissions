@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "consent.verified.v1",
+  "type": "object",
+  "required": ["consent_id", "parent_user_id", "method", "verified_at"],
+  "properties": {
+    "consent_id": {"type": "string"},
+    "parent_user_id": {"type": "string"},
+    "method": {"type": "string"},
+    "verified_at": {"type": "string"}
+  },
+  "additionalProperties": true
+}

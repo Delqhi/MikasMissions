@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kids.home.v1.response",
+  "type": "object",
+  "required": ["child_profile_id", "mode", "safety_mode", "primary_actions", "rails"],
+  "properties": {
+    "child_profile_id": {"type": "string"},
+    "mode": {"type": "string", "enum": ["early", "core", "teen"]},
+    "safety_mode": {"type": "string", "enum": ["strict", "balanced"]},
+    "primary_actions": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "rails": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["episode_id", "title", "summary", "thumbnail_url", "duration_ms", "age_band", "content_suitability", "learning_tags", "reason_code", "safety_applied", "age_fit_score"],
+        "properties": {
+          "episode_id": {"type": "string"},
+          "title": {"type": "string"},
+          "summary": {"type": "string"},
+          "thumbnail_url": {"type": "string"},
+          "duration_ms": {"type": "integer"},
+          "age_band": {"type": "string", "enum": ["3-5", "6-11", "12-16"]},
+          "content_suitability": {"type": "string", "enum": ["early", "core", "teen"]},
+          "learning_tags": {"type": "array", "items": {"type": "string"}},
+          "reason_code": {"type": "string"},
+          "safety_applied": {"type": "boolean"},
+          "age_fit_score": {"type": "number"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

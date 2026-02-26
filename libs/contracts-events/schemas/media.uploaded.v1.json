@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "media.uploaded.v1",
+  "type": "object",
+  "required": ["asset_id", "source_url", "uploader_id", "trace_id"],
+  "properties": {
+    "asset_id": {"type": "string"},
+    "source_url": {"type": "string"},
+    "uploader_id": {"type": "string"},
+    "trace_id": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "parent.gate.challenge.v1",
+  "type": "object",
+  "required": ["gate_id", "parent_user_id", "child_profile_id", "method", "verified", "challenge_time"],
+  "properties": {
+    "gate_id": {"type": "string"},
+    "parent_user_id": {"type": "string"},
+    "child_profile_id": {"type": "string"},
+    "method": {"type": "string"},
+    "verified": {"type": "boolean"},
+    "challenge_time": {"type": "string"}
+  },
+  "additionalProperties": true
+}

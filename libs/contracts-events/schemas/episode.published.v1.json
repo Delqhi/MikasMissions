@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "episode.published.v1",
+  "type": "object",
+  "required": ["episode_id", "age_band", "learning_tags"],
+  "properties": {
+    "episode_id": {"type": "string"},
+    "age_band": {"type": "string"},
+    "learning_tags": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": true
+}

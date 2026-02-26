@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "video.run.step.completed.v1",
+  "type": "object",
+  "required": ["run_id", "step", "status", "details", "completed_at"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "step": { "type": "string" },
+    "status": { "type": "string" },
+    "details": { "type": "string" },
+    "completed_at": { "type": "string", "format": "date-time" }
+  }
+}

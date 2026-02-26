@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-gen-nim
+  namespace: mikasmissions-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker-gen-nim
+  template:
+    metadata:
+      labels:
+        app: worker-gen-nim
+    spec:
+      containers:
+        - name: worker-gen-nim
+          image: ghcr.io/delqhi/mikasmissions/worker-gen-nim:latest
+          envFrom:
+            - configMapRef:
+                name: platform-runtime
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: database-url
+                  optional: true

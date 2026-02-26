@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playback-service
+  namespace: mikasmissions-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playback-service
+  template:
+    metadata:
+      labels:
+        app: playback-service
+    spec:
+      containers:
+        - name: playback-service
+          image: ghcr.io/delqhi/mikasmissions/playback-service:latest
+          envFrom:
+            - configMapRef:
+                name: platform-runtime
+          ports:
+            - containerPort: 8085
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8085
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8085
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: playback-service
+  namespace: mikasmissions-dev
+spec:
+  selector:
+    app: playback-service
+  ports:
+    - port: 80
+      targetPort: 8085

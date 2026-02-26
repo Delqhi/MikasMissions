@@ -1,0 +1,67 @@
+.tile {
+  animation: pop-in 0.35s ease both;
+  background: #12131b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.35);
+  display: grid;
+  gap: 0;
+  min-width: 0;
+  overflow: hidden;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.thumb {
+  height: 150px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.tile:hover {
+  border-color: rgba(255, 122, 161, 0.72);
+  transform: translateY(-2px);
+}
+
+.body {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.85rem;
+}
+
+.topline {
+  align-items: baseline;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.topline h3 {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  margin: 0;
+}
+
+.topline span {
+  color: rgba(203, 211, 236, 0.86);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.body p {
+  color: rgba(243, 246, 255, 0.8);
+  font-size: 0.9rem;
+  line-height: 1.42;
+  margin: 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    animation: none;
+  }
+}

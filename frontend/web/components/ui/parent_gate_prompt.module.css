@@ -1,0 +1,21 @@
+.card {
+  background: color-mix(in srgb, var(--surface-elevated) 80%, var(--accent-soft));
+  border: 1px solid color-mix(in srgb, var(--ink-primary) 18%, transparent);
+  border-radius: 18px;
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem;
+}
+
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.card p {
+  color: var(--ink-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
+}

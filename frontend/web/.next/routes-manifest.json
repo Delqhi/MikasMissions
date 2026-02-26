@@ -1,0 +1,131 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/parents/controls/[child_profile_id]",
+      "regex": "^/api/parents/controls/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPchild_profile_id": "nxtPchild_profile_id"
+      },
+      "namedRegex": "^/api/parents/controls/(?<nxtPchild_profile_id>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/admin/login",
+      "regex": "^/admin/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/login(?:/)?$"
+    },
+    {
+      "page": "/admin/runs",
+      "regex": "^/admin/runs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/runs(?:/)?$"
+    },
+    {
+      "page": "/admin/studio",
+      "regex": "^/admin/studio(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/studio(?:/)?$"
+    },
+    {
+      "page": "/icon.svg",
+      "regex": "^/icon\\.svg(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/icon\\.svg(?:/)?$"
+    },
+    {
+      "page": "/kids/core",
+      "regex": "^/kids/core(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/kids/core(?:/)?$"
+    },
+    {
+      "page": "/kids/early",
+      "regex": "^/kids/early(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/kids/early(?:/)?$"
+    },
+    {
+      "page": "/kids/teen",
+      "regex": "^/kids/teen(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/kids/teen(?:/)?$"
+    },
+    {
+      "page": "/manifest.webmanifest",
+      "regex": "^/manifest\\.webmanifest(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/manifest\\.webmanifest(?:/)?$"
+    },
+    {
+      "page": "/parents",
+      "regex": "^/parents(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/parents(?:/)?$"
+    },
+    {
+      "page": "/parents/onboarding",
+      "regex": "^/parents/onboarding(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/parents/onboarding(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

@@ -1,0 +1,94 @@
+services:
+  api-gateway-service:
+    build:
+      context: ..
+      dockerfile: apps/api-gateway-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+      AUTH_JWT_SECRET: local-dev-secret
+      IDENTITY_URL: http://identity-service:8081
+      PROFILE_URL: http://profile-service:8082
+      CATALOG_URL: http://catalog-service:8083
+      RECOMMENDATION_URL: http://recommendation-service:8084
+      PLAYBACK_URL: http://playback-service:8085
+      PROGRESS_URL: http://progress-service:8086
+      CREATOR_URL: http://identity-service:8081
+      BILLING_URL: http://billing-service:8089
+      ADMIN_STUDIO_URL: http://admin-studio-service:8090
+    ports:
+      - "8080:8080"
+    depends_on:
+      - identity-service
+      - profile-service
+      - catalog-service
+      - recommendation-service
+      - playback-service
+      - progress-service
+      - billing-service
+      - admin-studio-service
+
+  identity-service:
+    build:
+      context: ..
+      dockerfile: apps/identity-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+      AUTH_JWT_SECRET: local-dev-secret
+      PROFILE_URL: http://profile-service:8082
+
+  profile-service:
+    build:
+      context: ..
+      dockerfile: apps/profile-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+
+  catalog-service:
+    build:
+      context: ..
+      dockerfile: apps/catalog-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+
+  recommendation-service:
+    build:
+      context: ..
+      dockerfile: apps/recommendation-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+      CATALOG_URL: http://catalog-service:8083
+
+  playback-service:
+    build:
+      context: ..
+      dockerfile: apps/playback-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+      IDENTITY_URL: http://identity-service:8081
+      PROFILE_URL: http://profile-service:8082
+      BILLING_URL: http://billing-service:8089
+    depends_on:
+      - billing-service
+
+  progress-service:
+    build:
+      context: ..
+      dockerfile: apps/progress-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+      PROFILE_URL: http://profile-service:8082
+
+  billing-service:
+    build:
+      context: ..
+      dockerfile: apps/billing-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+
+  admin-studio-service:
+    build:
+      context: ..
+      dockerfile: apps/admin-studio-service/Dockerfile
+    environment:
+      AUTH_MODE: enforce
+      AUTH_JWT_SECRET: local-dev-secret

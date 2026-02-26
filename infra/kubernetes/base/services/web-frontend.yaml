@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-frontend
+  namespace: mikasmissions-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-frontend
+  template:
+    metadata:
+      labels:
+        app: web-frontend
+    spec:
+      containers:
+        - name: web-frontend
+          image: ghcr.io/delqhi/mikasmissions/web-frontend:latest
+          env:
+            - name: NEXT_PUBLIC_API_BASE_URL
+              value: http://api-gateway-service
+            - name: NEXT_PUBLIC_USE_API_FALLBACKS
+              value: "false"
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-frontend
+  namespace: mikasmissions-dev
+spec:
+  selector:
+    app: web-frontend
+  ports:
+    - port: 80
+      targetPort: 3000

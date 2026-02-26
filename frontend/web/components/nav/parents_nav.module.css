@@ -1,0 +1,52 @@
+.nav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+}
+
+.nav::-webkit-scrollbar {
+  height: 8px;
+}
+
+.nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+}
+
+.nav a {
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 800;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0.35rem 0.78rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.active {
+  background: linear-gradient(140deg, #f5c271, #fff0ca);
+  border-color: rgba(255, 215, 157, 0.92);
+  color: #22160c;
+}
+
+.idle {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(246, 249, 255, 0.88);
+}
+
+.idle:hover {
+  border-color: rgba(255, 255, 255, 0.38);
+  transform: translateY(-1px);
+}
+
+.nav a:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 205, 124, 0.46);
+  outline: none;
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "playback.sessions.v1.request",
+  "type": "object",
+  "required": ["child_profile_id", "episode_id", "device_type"],
+  "properties": {
+    "child_profile_id": {"type": "string"},
+    "episode_id": {"type": "string"},
+    "device_type": {"type": "string"},
+    "safety_mode": {"type": "string", "enum": ["strict", "balanced"]},
+    "parent_gate_token": {"type": "string"},
+    "session_limit_minutes": {"type": "integer"},
+    "session_minutes_used": {"type": "integer"},
+    "entitlement_status": {"type": "string", "enum": ["active", "inactive"]},
+    "autoplay_requested": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

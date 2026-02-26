@@ -1,0 +1,57 @@
+name: ci
+
+on:
+  push:
+    branches: ["main", "codex/**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+      - name: Guardrails
+        working-directory: .
+        run: make guard
+      - name: Tests
+        working-directory: .
+        run: make test
+      - name: Build
+        working-directory: .
+        run: make build
+      - name: E2E Smoke
+        working-directory: .
+        run: make e2e-smoke
+      - name: Auth Enforce Smoke
+        working-directory: .
+        run: make e2e-auth-smoke
+      - name: Admin Smoke
+        working-directory: .
+        run: make e2e-admin-smoke
+      - name: Generator Smoke
+        working-directory: .
+        run: make e2e-generator-smoke
+      - name: A11y Smoke
+        working-directory: .
+        run: make a11y-smoke
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Web Install
+        working-directory: frontend/web
+        run: npm ci
+      - name: Contract Artifact Check
+        working-directory: .
+        run: ./scripts/check_generated_contract_artifacts.sh
+      - name: OpenAPI Breaking Check
+        working-directory: .
+        run: ./scripts/check_openapi_breaking.sh
+      - name: Web Build
+        working-directory: frontend/web
+        env:
+          NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:8080
+          NEXT_PUBLIC_USE_API_FALLBACKS: "false"
+        run: npm run build

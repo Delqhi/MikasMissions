@@ -1,0 +1,20 @@
+{
+  "node": {
+    "40afb4673c45817049e6ceb7406a7063b50e124a6c": {
+      "workers": {
+        "app/parents/onboarding/page": {
+          "moduleId": 14808,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "app/parents/onboarding/page.tsx"
+        }
+      },
+      "layer": {
+        "app/parents/onboarding/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "app/parents/onboarding/page.tsx"
+    }
+  },
+  "edge": {}
+}

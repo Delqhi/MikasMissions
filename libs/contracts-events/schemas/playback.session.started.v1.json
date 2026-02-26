@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "playback.session.started.v1",
+  "type": "object",
+  "required": ["playback_session_id", "child_profile_id", "episode_id", "started_at", "safety_mode"],
+  "properties": {
+    "playback_session_id": {"type": "string"},
+    "child_profile_id": {"type": "string"},
+    "episode_id": {"type": "string"},
+    "started_at": {"type": "string"},
+    "safety_mode": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kids.progress.v1.response",
+  "type": "object",
+  "required": ["child_profile_id", "watched_minutes_today", "watched_minutes_7d", "completion_percent", "mission_streak_days", "session_limit_minutes", "session_minutes_used", "session_capped", "last_episode_id"],
+  "properties": {
+    "child_profile_id": {"type": "string"},
+    "watched_minutes_today": {"type": "integer"},
+    "watched_minutes_7d": {"type": "integer"},
+    "completion_percent": {"type": "integer"},
+    "mission_streak_days": {"type": "integer"},
+    "session_limit_minutes": {"type": "integer"},
+    "session_minutes_used": {"type": "integer"},
+    "session_capped": {"type": "boolean"},
+    "last_episode_id": {"type": "string"}
+  },
+  "additionalProperties": true
+}

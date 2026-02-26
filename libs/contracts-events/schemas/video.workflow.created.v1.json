@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "video.workflow.created.v1",
+  "type": "object",
+  "required": ["workflow_id", "version", "created_by", "created_at"],
+  "properties": {
+    "workflow_id": { "type": "string" },
+    "version": { "type": "integer", "minimum": 1 },
+    "created_by": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

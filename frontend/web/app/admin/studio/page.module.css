@@ -1,0 +1,158 @@
+.hero {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.hero article,
+.panel,
+.notice {
+  backdrop-filter: blur(10px);
+  background: rgba(8, 12, 19, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.3);
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.95rem;
+}
+
+.hero h2,
+.panel h2,
+.notice h2 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+.hero p,
+.panel p,
+.notice p {
+  color: rgba(234, 241, 255, 0.8);
+  margin: 0;
+}
+
+.notice a {
+  align-items: center;
+  background: linear-gradient(130deg, #b7d2ff, #ecf4ff);
+  border-radius: 999px;
+  color: #12243e;
+  display: inline-flex;
+  font-size: 0.8rem;
+  font-weight: 800;
+  min-height: 36px;
+  padding: 0.32rem 0.72rem;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.form {
+  display: grid;
+  gap: 0.62rem;
+}
+
+.form label,
+.inlineForm label {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.form label span,
+.inlineForm label span {
+  color: rgba(246, 250, 255, 0.94);
+  font-size: 0.79rem;
+  font-weight: 700;
+}
+
+.form input,
+.form select,
+.inlineForm input {
+  background: rgba(7, 10, 16, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  color: rgba(247, 251, 255, 0.95);
+  font: inherit;
+  min-height: 2.4rem;
+  padding: 0.5rem 0.62rem;
+}
+
+.form button,
+.inlineForm button {
+  background: linear-gradient(130deg, #b7d2ff, #ecf4ff);
+  border: none;
+  border-radius: 11px;
+  color: #13243d;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  min-height: 2.55rem;
+}
+
+.list {
+  display: grid;
+  gap: 0.7rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 15px;
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.72rem;
+}
+
+.workflowMeta {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.workflowMeta strong {
+  font-size: 0.98rem;
+}
+
+.workflowMeta span {
+  color: rgba(196, 213, 238, 0.88);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.workflowMeta em {
+  color: rgba(219, 231, 251, 0.84);
+  font-size: 0.78rem;
+  font-style: normal;
+}
+
+.inlineForm {
+  align-items: end;
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+}
+
+.empty {
+  color: rgba(231, 239, 255, 0.84);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 760px) {
+  .inlineForm {
+    grid-template-columns: 1fr;
+  }
+
+  .hero article,
+  .panel,
+  .notice {
+    padding: 0.82rem;
+  }
+}
