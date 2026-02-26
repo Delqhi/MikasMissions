@@ -66,6 +66,12 @@
   opacity: 0.86;
 }
 
+.primary {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--kids-secondary) 70%, #ffffff), color-mix(in srgb, var(--kids-primary) 76%, #ffffff)),
+    #ffffff;
+}
+
 .secondary {
   background: rgba(255, 255, 255, 0.84);
   border: 1px solid rgba(18, 57, 91, 0.22);
