@@ -9,6 +9,7 @@ on:
       - "frontend/web/**"
       - "scripts/check_web_security_headers.sh"
       - "scripts/check_web_vitals_budgets.sh"
+      - "scripts/check_cloudflare_live.sh"
 
 concurrency:
   group: cloudflare-prod
