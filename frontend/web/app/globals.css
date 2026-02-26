@@ -1,26 +1,83 @@
 :root {
   --font-body: var(--font-body-next), "Trebuchet MS", "Gill Sans", sans-serif;
-  --font-display: var(--font-display-next), "Rockwell", "Bookman", serif;
+  --font-display: var(--font-display-next), "Avenir Next", "Trebuchet MS", sans-serif;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+
+  --radius-1: 4px;
+  --radius-2: 8px;
+  --radius-3: 12px;
+  --radius-4: 16px;
+  --radius-5: 24px;
+  --radius-6: 28px;
+  --radius-7: 32px;
+
+  --ink-high: #f8fbff;
+  --ink-mid: rgba(233, 244, 255, 0.9);
+  --ink-low: rgba(201, 220, 247, 0.86);
+  --ink-on-light: #1f2b34;
+
+  --surface-bg: #080d1f;
+  --surface-card: rgba(13, 20, 37, 0.94);
+  --surface-card-soft: rgba(13, 20, 37, 0.78);
+  --surface-pill: rgba(255, 255, 255, 0.14);
+  --surface-pill-hover: rgba(255, 255, 255, 0.22);
+
+  --line-soft: rgba(173, 208, 255, 0.24);
+  --line-strong: rgba(206, 227, 255, 0.44);
+  --line-focus: rgba(255, 203, 132, 0.52);
+
+  --elevation-1: 0 14px 28px rgba(5, 8, 16, 0.34);
+  --elevation-2: 0 24px 46px rgba(5, 8, 16, 0.42);
+  --elevation-3: 0 36px 62px rgba(5, 8, 16, 0.52);
+
+  --motion-fast: 160ms;
+  --motion-medium: 240ms;
+  --motion-slow: 420ms;
+  --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --text-2xs: 0.72rem;
+  --text-xs: 0.8rem;
+  --text-sm: 0.88rem;
+  --text-md: 1rem;
+  --text-lg: 1.12rem;
+  --text-xl: 1.32rem;
+  --text-2xl: clamp(1.75rem, 4.8vw, 3rem);
+
+  --line-tight: 1.12;
+  --line-normal: 1.38;
+  --line-relaxed: 1.52;
+
+  --accent-sun: #ffc47f;
+  --accent-sky: #78c0ff;
+  --accent-teal: #53d2b3;
+
+  --ok: #23a35d;
+  --danger: #c24a38;
+
+  --focus-ring: var(--line-focus);
 
   --bg-main: #f6f8fb;
   --ink-primary: #1f2b34;
   --ink-secondary: #455663;
   --ink-muted: #657684;
   --ink-inverse: #f7fafc;
-
   --surface-base: #f4f7fb;
   --surface-elevated: #ffffff;
   --line-muted: #d6dee8;
   --shadow-soft: rgba(26, 42, 54, 0.14);
-
   --action-primary: #0f8e86;
   --action-secondary: #f1a12a;
   --accent-soft: #bfe6e3;
   --accent-strong: #2ea8a0;
-  --focus-ring: rgba(20, 123, 233, 0.38);
-
-  --ok: #23a35d;
-  --danger: #c24a38;
 }
 
 .mode-early {
@@ -64,22 +121,51 @@ body {
 
 body {
   background:
-    radial-gradient(circle at 5% 0%, color-mix(in srgb, var(--accent-soft) 66%, transparent), transparent 35%),
-    radial-gradient(circle at 95% 8%, color-mix(in srgb, var(--accent-strong) 18%, transparent), transparent 28%),
-    var(--bg-main);
-  color: var(--ink-primary);
+    radial-gradient(circle at 6% 0%, color-mix(in srgb, var(--accent-sun) 34%, transparent), transparent 35%),
+    radial-gradient(circle at 92% 4%, color-mix(in srgb, var(--accent-sky) 28%, transparent), transparent 30%),
+    radial-gradient(circle at 50% 110%, color-mix(in srgb, var(--accent-teal) 16%, transparent), transparent 48%),
+    var(--surface-bg);
+  color: var(--ink-high);
   font-family: var(--font-body);
-  line-height: 1.45;
+  font-size: var(--text-md);
+  line-height: var(--line-normal);
+  text-rendering: geometricPrecision;
 }
 
 a {
   color: inherit;
 }
 
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  transition:
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+a:hover,
+button:hover {
+  transform: translateY(-1px);
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
-select:focus-visible {
+select:focus-visible,
+textarea:focus-visible {
   box-shadow: 0 0 0 3px var(--focus-ring);
   outline: none;
 }
@@ -90,40 +176,40 @@ main {
 
 .railGrid {
   display: grid;
-  gap: 0.8rem;
+  gap: var(--space-3);
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .tileGrid {
   display: grid;
-  gap: 0.75rem;
+  gap: var(--space-3);
   grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
 }
 
 .stack {
   display: grid;
-  gap: 0.9rem;
+  gap: var(--space-4);
 }
 
 .railSection {
   display: grid;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .metaGrid {
   display: grid;
-  gap: 0.75rem;
+  gap: var(--space-3);
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .metaCard {
   background: var(--surface-elevated);
   border: 1px solid var(--line-muted);
-  border-radius: 18px;
+  border-radius: var(--radius-4);
   box-shadow: 0 12px 22px var(--shadow-soft);
   display: grid;
-  gap: 0.35rem;
-  padding: 0.85rem;
+  gap: var(--space-2);
+  padding: var(--space-4);
 }
 
 .metaCard h3 {
@@ -133,13 +219,13 @@ main {
 
 .metaCard p {
   color: var(--ink-secondary);
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
   margin: 0;
 }
 
 .metaCard span {
   color: var(--ink-muted);
-  font-size: 0.75rem;
+  font-size: var(--text-2xs);
   font-weight: 700;
   text-transform: uppercase;
 }

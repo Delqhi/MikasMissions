@@ -1,204 +1,462 @@
-import { demoProfiles, kidsHomeFallback } from "../lib/mock_payloads";
+import {
+  buildHomeHubViewModel,
+  type HomeHubInput,
+  type TopRankedItem
+} from "../lib/home_hub_model";
+import type { KidsMode, ProfileCard, RailItem } from "../lib/experience_types";
+import { fetchChildProfiles, type ChildProfileSummary } from "../lib/fetch_child_profiles";
+import { fetchKidsHome } from "../lib/fetch_kids_home";
+import { fetchKidsProgress } from "../lib/fetch_kids_progress";
+import { getLocaleAndMessages, supportedLocales, withLocalePath, type Locale } from "../lib/i18n";
+import { demoProfiles, kidsHomeFallback, kidsProgressFallback } from "../lib/mock_payloads";
+import { accessTokenFromCookie, parentUserIDFromCookie } from "../lib/server_auth";
 import styles from "./page.module.css";
 
-const featured = kidsHomeFallback.core.rails[0];
+export const dynamic = "force-dynamic";
 
-const modeDeck = [
-  {
-    key: "early",
-    title: "Early (3-5)",
-    detail: "Audio-guided play with calm pacing and simple interactions.",
-    href: "/kids/early?child_profile_id=child-early-01"
-  },
-  {
-    key: "core",
-    title: "Core (6-11)",
-    detail: "Mission arcs with learning checkpoints and progress rewards.",
-    href: "/kids/core?child_profile_id=child-core-01"
-  },
-  {
-    key: "teen",
-    title: "Teen (12-16)",
-    detail: "Studio-like discovery with guardrails and transparent reasoning.",
-    href: "/kids/teen?child_profile_id=child-teen-01"
+function modeForAgeBand(ageBand: string): KidsMode {
+  if (ageBand === "3-5") {
+    return "early";
   }
-] as const;
-
-const controlHighlights = [
-  { label: "Age modes", value: "3 adaptive worlds" },
-  { label: "Safety filter", value: "Always-on strict baseline" },
-  { label: "Parent control", value: "Realtime sync" },
-  { label: "Session caps", value: "Daily limit enforcement" }
-];
-
-const rows = [
-  {
-    title: "Top picks this week",
-    subtitle: "Most started missions",
-    items: [...kidsHomeFallback.core.rails, ...kidsHomeFallback.teen.rails]
-  },
-  {
-    title: "Early learning lane",
-    subtitle: "Guided stories for mini explorers",
-    items: kidsHomeFallback.early.rails
-  },
-  {
-    title: "Teen spotlight",
-    subtitle: "Creative and critical thinking missions",
-    items: kidsHomeFallback.teen.rails
+  if (ageBand === "12-16") {
+    return "teen";
   }
-];
+  return "core";
+}
 
-const trustRows = [
-  {
-    title: "Filter coverage",
-    detail: "Every recommendation rail includes safety metadata and transparent reason codes."
-  },
-  {
-    title: "Session limits",
-    detail: "Daily watch caps are enforced across all modes without manual intervention."
-  },
-  {
-    title: "Parent gate",
-    detail: "External links, purchases, and sensitive actions require adult verification."
+function subtitleForMode(mode: KidsMode): string {
+  if (mode === "early") {
+    return "Audio-guided missions";
   }
-];
+  if (mode === "teen") {
+    return "Explore with active safety";
+  }
+  return "Curated learning rails";
+}
 
-export default function HomePage() {
+function toProfileCard(profile: ChildProfileSummary): ProfileCard {
+  const mode = modeForAgeBand(profile.age_band);
+  return {
+    profile_id: profile.child_profile_id,
+    name: profile.display_name,
+    age_band: profile.age_band,
+    mode,
+    subtitle: subtitleForMode(mode),
+    href: `/kids/${mode}`
+  };
+}
+
+function fallbackInput(profile: ProfileCard): HomeHubInput {
+  return {
+    profile,
+    mode: profile.mode,
+    home: {
+      ...kidsHomeFallback[profile.mode],
+      child_profile_id: profile.profile_id
+    },
+    progress: {
+      ...kidsProgressFallback[profile.mode],
+      child_profile_id: profile.profile_id
+    }
+  };
+}
+
+async function loadProfiles(token: string, parentUserID: string): Promise<ProfileCard[]> {
+  if (token === "" || parentUserID === "") {
+    return demoProfiles;
+  }
+
+  try {
+    const profiles = await fetchChildProfiles(parentUserID, token);
+    if (profiles.length === 0) {
+      return demoProfiles;
+    }
+    return profiles.map(toProfileCard);
+  } catch {
+    return demoProfiles;
+  }
+}
+
+async function loadHomeHubInputs(profiles: ProfileCard[], token: string): Promise<HomeHubInput[]> {
+  return Promise.all(
+    profiles.map(async (profile) => {
+      try {
+        const [home, progress] = await Promise.all([
+          fetchKidsHome(profile.mode, profile.profile_id, token || undefined),
+          fetchKidsProgress(profile.mode, profile.profile_id, token || undefined)
+        ]);
+
+        return {
+          profile,
+          mode: profile.mode,
+          home,
+          progress
+        } satisfies HomeHubInput;
+      } catch {
+        return fallbackInput(profile);
+      }
+    })
+  );
+}
+
+function modeHref(mode: KidsMode, inputs: HomeHubInput[], locale: Locale): string {
+  const profile = inputs.find((item) => item.mode === mode)?.profile ?? inputs[0]?.profile ?? demoProfiles[0];
+  return withLocalePath(locale, `/kids/${mode}?child_profile_id=${encodeURIComponent(profile.profile_id)}`);
+}
+
+function episodeHref(episode: RailItem, inputs: HomeHubInput[], locale: Locale): string {
+  const mode = episode.content_suitability;
+  const profile = inputs.find((item) => item.mode === mode)?.profile ?? inputs[0]?.profile ?? demoProfiles[0];
+  return withLocalePath(locale, `/kids/${mode}?child_profile_id=${encodeURIComponent(profile.profile_id)}`);
+}
+
+type RankedCardProps = {
+  item: TopRankedItem;
+  rank?: number;
+  locale: Locale;
+  inputs: HomeHubInput[];
+  scoreLabel: string;
+};
+
+function RankedCard({ item, rank, locale, inputs, scoreLabel }: RankedCardProps) {
+  const href = episodeHref(item.episode, inputs, locale);
+
+  return (
+    <a className={styles.episodeCard} href={href}>
+      <img alt="" loading="lazy" src={item.episode.thumbnail_url} />
+      <div className={styles.episodeBody}>
+        {typeof rank === "number" ? <span className={styles.rank}>#{rank + 1}</span> : null}
+        <h3>{item.episode.title}</h3>
+        <p>{item.episode.summary}</p>
+        <div className={styles.cardMeta}>
+          <strong>
+            {scoreLabel}: {item.score}
+          </strong>
+          <span>{item.episode.learning_tags.join(" · ")}</span>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+export default async function HomePage() {
+  const [{ locale, messages }, token, parentUserID] = await Promise.all([
+    getLocaleAndMessages(),
+    accessTokenFromCookie(),
+    parentUserIDFromCookie()
+  ]);
+
+  const profiles = await loadProfiles(token, parentUserID);
+  const hubInputs = await loadHomeHubInputs(profiles, token);
+  const hub = buildHomeHubViewModel(hubInputs);
+
+  const featured = hub.featured ?? hubInputs[0]?.home.rails[0] ?? null;
+  const fallbackSummary = messages.home.heroFallbackSummary;
+
   return (
     <main className={styles.page}>
       <div aria-hidden="true" className={styles.noise} />
 
       <header className={styles.topBar}>
-        <a className={styles.brand} href="/">
-          MIKASMISSIONS
+        <a className={styles.brand} href={withLocalePath(locale, "/")}>
+          {messages.common.brand}
         </a>
-        <nav className={styles.navLinks} aria-label="Main navigation">
-          <a href="/parents/onboarding">Family setup</a>
-          <a href="/parents">Parents</a>
-          <a href="/admin/studio">Studio</a>
+
+        <nav aria-label="Main navigation" className={styles.navLinks}>
+          <a href={withLocalePath(locale, "/parents/onboarding")}>{messages.common.navFamilySetup}</a>
+          <a href={withLocalePath(locale, "/parents")}>{messages.common.navParents}</a>
+          <a href={withLocalePath(locale, "/admin/studio")}>{messages.common.navStudio}</a>
+        </nav>
+
+        <nav aria-label="Language navigation" className={styles.localeNav}>
+          {supportedLocales.map((supportedLocale) => (
+            <a
+              aria-current={supportedLocale === locale ? "page" : undefined}
+              href={withLocalePath(supportedLocale, "/")}
+              key={supportedLocale}
+            >
+              {supportedLocale.toUpperCase()}
+            </a>
+          ))}
         </nav>
       </header>
 
-      <section className={styles.hero} aria-label="Featured mission">
+      <section aria-label="Featured mission" className={styles.hero}>
         <div className={styles.heroVisual}>
-          <img alt="" className={styles.heroImage} src={featured.thumbnail_url} />
+          {featured ? <img alt="" className={styles.heroImage} src={featured.thumbnail_url} /> : null}
           <div className={styles.heroShade} />
 
           <div className={styles.heroContent}>
-            <span className={styles.heroTag}>Spotlight mission</span>
-            <h1>{featured.title}</h1>
-            <p>{featured.summary}</p>
+            <span className={styles.heroTag}>{messages.home.heroTag}</span>
+            <h1>{featured?.title ?? messages.common.brand}</h1>
+            <p>{featured?.summary ?? fallbackSummary}</p>
 
             <div className={styles.heroActions}>
-              <a className={styles.primaryButton} href="/kids/core?child_profile_id=child-core-01">
-                Play now
+              <a className={styles.primaryButton} href={modeHref("core", hubInputs, locale)}>
+                {messages.home.playNow}
               </a>
-              <a className={styles.secondaryButton} href="/parents/onboarding">
-                Start family setup
+              <a className={styles.secondaryButton} href={withLocalePath(locale, "/parents/onboarding")}>
+                {messages.home.startFamilySetup}
               </a>
             </div>
 
-            <ul className={styles.actionChips}>
-              {kidsHomeFallback.core.primary_actions.slice(0, 5).map((action) => (
-                <li key={action}>{action}</li>
-              ))}
-            </ul>
+            {featured ? (
+              <ul className={styles.actionChips}>
+                {featured.learning_tags.slice(0, 4).map((tag) => (
+                  <li key={tag}>{tag.replaceAll("_", " ")}</li>
+                ))}
+              </ul>
+            ) : null}
           </div>
         </div>
 
         <aside className={styles.heroPanel}>
-          <h2>Safety cockpit</h2>
+          <h2>{messages.home.sections.trust}</h2>
           <ul>
-            {controlHighlights.map((item) => (
-              <li key={item.label}>
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-              </li>
-            ))}
+            <li>
+              <span>{messages.home.safetyHighlights.ageModes}</span>
+              <strong>{messages.home.safetyHighlights.ageModesValue}</strong>
+            </li>
+            <li>
+              <span>{messages.home.safetyHighlights.safetyFilter}</span>
+              <strong>{messages.home.safetyHighlights.safetyFilterValue}</strong>
+            </li>
+            <li>
+              <span>{messages.home.safetyHighlights.parentControl}</span>
+              <strong>{messages.home.safetyHighlights.parentControlValue}</strong>
+            </li>
+            <li>
+              <span>{messages.home.safetyHighlights.sessionCaps}</span>
+              <strong>{messages.home.safetyHighlights.sessionCapsValue}</strong>
+            </li>
           </ul>
-          <a href="/parents">Open parent dashboard</a>
+          <a href={withLocalePath(locale, "/parents")}>{messages.common.openParentDashboard}</a>
         </aside>
       </section>
 
       <section className={styles.modeDeck}>
-        {modeDeck.map((mode) => (
-          <article className={`${styles.modeCard} ${styles[`mode_${mode.key}`]}`} key={mode.key}>
-            <h3>{mode.title}</h3>
-            <p>{mode.detail}</p>
-            <a href={mode.href}>Open mode</a>
-          </article>
-        ))}
+        <article className={`${styles.modeCard} ${styles.mode_early}`}>
+          <span className={styles.modeChip}>
+            {messages.common.profileAgePrefix} 3-5
+          </span>
+          <h3>{messages.home.modeDeck.earlyTitle}</h3>
+          <p>{messages.home.modeDeck.earlyDetail}</p>
+          <a href={modeHref("early", hubInputs, locale)}>{messages.common.openMode}</a>
+        </article>
+
+        <article className={`${styles.modeCard} ${styles.mode_core}`}>
+          <span className={styles.modeChip}>
+            {messages.common.profileAgePrefix} 6-11
+          </span>
+          <h3>{messages.home.modeDeck.coreTitle}</h3>
+          <p>{messages.home.modeDeck.coreDetail}</p>
+          <a href={modeHref("core", hubInputs, locale)}>{messages.common.openMode}</a>
+        </article>
+
+        <article className={`${styles.modeCard} ${styles.mode_teen}`}>
+          <span className={styles.modeChip}>
+            {messages.common.profileAgePrefix} 12-16
+          </span>
+          <h3>{messages.home.modeDeck.teenTitle}</h3>
+          <p>{messages.home.modeDeck.teenDetail}</p>
+          <a href={modeHref("teen", hubInputs, locale)}>{messages.common.openMode}</a>
+        </article>
       </section>
 
       <section className={styles.section}>
         <div className={styles.sectionHead}>
-          <h2>Choose a profile</h2>
-          <a href="/parents/onboarding">Create profile</a>
+          <h2>{messages.home.sections.chooseProfile}</h2>
+          <a href={withLocalePath(locale, "/parents/onboarding")}>{messages.common.createProfile}</a>
         </div>
 
         <div className={styles.profileGrid}>
-          {demoProfiles.map((profile) => (
+          {hub.profiles.map((profile) => (
             <a
-              key={profile.profile_id}
               className={`${styles.profileCard} ${styles[`profile_${profile.mode}`]}`}
-              href={`${profile.href}?child_profile_id=${profile.profile_id}`}
+              href={withLocalePath(
+                locale,
+                `/kids/${profile.mode}?child_profile_id=${encodeURIComponent(profile.profile_id)}`
+              )}
+              key={profile.profile_id}
             >
               <div className={styles.profileOrb}>{profile.name.slice(0, 1)}</div>
               <div>
                 <strong>{profile.name}</strong>
                 <p>{profile.subtitle}</p>
               </div>
-              <span className={styles.profileMeta}>Age {profile.age_band}</span>
+              <span className={styles.profileMeta}>
+                {messages.common.profileAgePrefix} {profile.age_band}
+              </span>
             </a>
           ))}
         </div>
       </section>
 
-      {rows.map((row) => (
-        <section className={styles.section} key={row.title}>
-          <div className={styles.sectionHead}>
-            <h2>{row.title}</h2>
-            <span>{row.subtitle}</span>
-          </div>
+      <section className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2>{messages.home.sections.continueWatching}</h2>
+          <span>{messages.home.sections.continueWatchingSub}</span>
+        </div>
 
-          <div className={styles.rail}>
-            {row.items.map((item, index) => (
-              <article key={`${row.title}-${item.episode_id}`} className={styles.episodeCard}>
-                <img alt="" src={item.thumbnail_url} />
-                <div className={styles.episodeBody}>
-                  <span className={styles.rank}>#{index + 1}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.summary}</p>
-                  <em>{item.learning_tags.join(" · ")}</em>
+        <div className={styles.rail}>
+          {hub.continueWatching.length === 0 ? (
+            <article className={styles.emptyCard}>{messages.home.labels.noContinueWatching}</article>
+          ) : (
+            hub.continueWatching.map((item) => (
+              <a className={styles.continueCard} href={withLocalePath(locale, item.href)} key={item.childProfileID}>
+                <img alt="" loading="lazy" src={item.episode.thumbnail_url} />
+                <div className={styles.continueBody}>
+                  <span>{item.profileName}</span>
+                  <h3>{item.episode.title}</h3>
+                  <p>
+                    {item.watchedMinutesToday} min today · {item.completionPercent}%
+                  </p>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+              </a>
+            ))
+          )}
+        </div>
+      </section>
 
       <section className={styles.section}>
         <div className={styles.sectionHead}>
-          <h2>Built for trust</h2>
-          <span>Parent-first guardrails with kid-friendly exploration</span>
+          <h2>{messages.home.sections.top10}</h2>
+          <span>{messages.home.sections.top10Sub}</span>
         </div>
 
-        <div className={styles.trustGrid}>
-          {trustRows.map((item) => (
-            <article className={styles.trustCard} key={item.title}>
-              <h3>{item.title}</h3>
-              <p>{item.detail}</p>
-            </article>
+        <div className={styles.rail}>
+          {hub.top10.map((item, index) => (
+            <RankedCard
+              inputs={hubInputs}
+              item={item}
+              key={item.episode.episode_id}
+              locale={locale}
+              rank={index}
+              scoreLabel={messages.home.labels.scoreLabel}
+            />
           ))}
         </div>
       </section>
 
+      <section className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2>{messages.home.sections.forYou}</h2>
+          <span>{messages.home.sections.forYouSub}</span>
+        </div>
+        <div className={styles.rail}>
+          {hub.categoryRows.forYou.map((item) => (
+            <RankedCard
+              inputs={hubInputs}
+              item={{
+                episode: item,
+                score: Math.round(item.age_fit_score * 100),
+                scoreBreakdown: { ageFit: Math.round(item.age_fit_score * 100), reasonBonus: 0, safetyBonus: 0 },
+                sourceModes: [item.content_suitability]
+              }}
+              key={`${item.episode_id}-for-you`}
+              locale={locale}
+              scoreLabel={messages.home.labels.topRankLabel}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2>{messages.home.sections.knowledge}</h2>
+          <span>{messages.home.sections.knowledgeSub}</span>
+        </div>
+        <div className={styles.rail}>
+          {hub.categoryRows.knowledge.map((item) => (
+            <RankedCard
+              inputs={hubInputs}
+              item={{
+                episode: item,
+                score: Math.round(item.age_fit_score * 100),
+                scoreBreakdown: { ageFit: Math.round(item.age_fit_score * 100), reasonBonus: 0, safetyBonus: 0 },
+                sourceModes: [item.content_suitability]
+              }}
+              key={`${item.episode_id}-knowledge`}
+              locale={locale}
+              scoreLabel={messages.home.labels.topRankLabel}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2>{messages.home.sections.creative}</h2>
+          <span>{messages.home.sections.creativeSub}</span>
+        </div>
+        <div className={styles.rail}>
+          {hub.categoryRows.creative.map((item) => (
+            <RankedCard
+              inputs={hubInputs}
+              item={{
+                episode: item,
+                score: Math.round(item.age_fit_score * 100),
+                scoreBreakdown: { ageFit: Math.round(item.age_fit_score * 100), reasonBonus: 0, safetyBonus: 0 },
+                sourceModes: [item.content_suitability]
+              }}
+              key={`${item.episode_id}-creative`}
+              locale={locale}
+              scoreLabel={messages.home.labels.topRankLabel}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2>{messages.home.sections.adventure}</h2>
+          <span>{messages.home.sections.adventureSub}</span>
+        </div>
+        <div className={styles.rail}>
+          {hub.categoryRows.adventure.map((item) => (
+            <RankedCard
+              inputs={hubInputs}
+              item={{
+                episode: item,
+                score: Math.round(item.age_fit_score * 100),
+                scoreBreakdown: { ageFit: Math.round(item.age_fit_score * 100), reasonBonus: 0, safetyBonus: 0 },
+                sourceModes: [item.content_suitability]
+              }}
+              key={`${item.episode_id}-adventure`}
+              locale={locale}
+              scoreLabel={messages.home.labels.topRankLabel}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHead}>
+          <h2>{messages.home.sections.trust}</h2>
+          <span>{messages.home.sections.trustSub}</span>
+        </div>
+
+        <div className={styles.trustGrid}>
+          <article className={styles.trustCard}>
+            <h3>{messages.home.trustCards.filterCoverageTitle}</h3>
+            <p>{messages.home.trustCards.filterCoverageDetail}</p>
+          </article>
+          <article className={styles.trustCard}>
+            <h3>{messages.home.trustCards.sessionLimitsTitle}</h3>
+            <p>{messages.home.trustCards.sessionLimitsDetail}</p>
+          </article>
+          <article className={styles.trustCard}>
+            <h3>{messages.home.trustCards.parentGateTitle}</h3>
+            <p>{messages.home.trustCards.parentGateDetail}</p>
+          </article>
+        </div>
+      </section>
+
       <footer className={styles.footer}>
-        <p>MikasMissions · Safe streaming for families</p>
+        <p>{messages.common.brand} · Family streaming, safe by default</p>
         <div>
-          <a href="/parents">Parent controls</a>
-          <a href="/admin/studio">Admin studio</a>
+          <a href={withLocalePath(locale, "/parents")}>{messages.common.navParents}</a>
+          <a href={withLocalePath(locale, "/admin/studio")}>{messages.common.navStudio}</a>
         </div>
       </footer>
     </main>

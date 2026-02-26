@@ -1,0 +1,310 @@
+import type { LocalizedMessages } from "./types";
+
+export const enMessages: LocalizedMessages = {
+  common: {
+    brand: "MikasMissions",
+    navFamilySetup: "Family setup",
+    navParents: "Parents",
+    navStudio: "Studio",
+    navHome: "Home",
+    createProfile: "Create profile",
+    openMode: "Open mode",
+    openParentDashboard: "Open parent dashboard",
+    backToHome: "Back to home",
+    parentsLabel: "Parents",
+    profileAgePrefix: "Age"
+  },
+  home: {
+    heroTag: "Spotlight mission",
+    heroFallbackSummary: "Safe family streaming with learning focus and clear parent controls.",
+    playNow: "Play now",
+    startFamilySetup: "Start family setup",
+    modeDeck: {
+      earlyTitle: "Early (3-5)",
+      earlyDetail: "Audio-guided play, calm pacing, simple interactions.",
+      coreTitle: "Core (6-11)",
+      coreDetail: "Mission arcs with learning checkpoints and visible progress.",
+      teenTitle: "Teen (12-16)",
+      teenDetail: "Higher autonomy with full safety boundaries."
+    },
+    sections: {
+      chooseProfile: "Choose a profile",
+      continueWatching: "Continue watching",
+      continueWatchingSub: "Last started episodes per profile.",
+      top10: "Top 10 in MikasMissions",
+      top10Sub: "Ranked by age fit, safety, and learning/progress signals.",
+      forYou: "For you",
+      forYouSub: "Recommended by activity and age-fit confidence.",
+      knowledge: "Knowledge",
+      knowledgeSub: "Learning-first content for exploration.",
+      creative: "Creative",
+      creativeSub: "Build, imagine, and make.",
+      adventure: "Adventure",
+      adventureSub: "Story-driven missions and teamwork.",
+      trust: "Trust & safety",
+      trustSub: "Parent-first guardrails with kid-friendly navigation."
+    },
+    labels: {
+      noContinueWatching: "No watch history yet",
+      scoreLabel: "Score",
+      topRankLabel: "Top",
+      categoryForYou: "For you",
+      categoryKnowledge: "Knowledge",
+      categoryCreative: "Creative",
+      categoryAdventure: "Adventure"
+    },
+    trustCards: {
+      filterCoverageTitle: "Filter coverage",
+      filterCoverageDetail: "All rails include safety metadata and transparent reason codes.",
+      sessionLimitsTitle: "Session limits",
+      sessionLimitsDetail: "Daily caps are enforced across all modes automatically.",
+      parentGateTitle: "Parent gate",
+      parentGateDetail: "External links and sensitive actions require adult approval."
+    },
+    safetyHighlights: {
+      ageModes: "Age modes",
+      ageModesValue: "3 adaptive worlds",
+      safetyFilter: "Safety filter",
+      safetyFilterValue: "Always on",
+      parentControl: "Parent control",
+      parentControlValue: "Realtime sync",
+      sessionCaps: "Session caps",
+      sessionCapsValue: "Daily limit active"
+    }
+  },
+  kids: {
+    shell: {
+      kicker: "MikasMissions",
+      note: "Strict safety defaults and age-fit rails are always active.",
+      modeTitle: {
+        early: "Kids Early (3-5)",
+        core: "Kids Core (6-11)",
+        teen: "Teens (12-16)"
+      }
+    },
+    nav: {
+      stories: "Stories",
+      missions: "Missions",
+      favorites: "Favorites",
+      bedtime: "Bedtime",
+      home: "Home",
+      discover: "Discover",
+      progress: "Progress",
+      library: "Library",
+      explore: "Explore",
+      watchlist: "Watchlist",
+      series: "Series",
+      learning: "Learning",
+      reports: "Reports"
+    },
+    switcher: {
+      early: "3-5",
+      core: "6-11",
+      teen: "12-16",
+      parents: "Parents"
+    },
+    page: {
+      missingProfileTitle: "Missing child profile",
+      missingProfileText: "Open parent onboarding and create a profile first.",
+      goToOnboarding: "Go to onboarding",
+      playFeatured: "Start featured",
+      parentControls: "Parent view",
+      continueTitle: "Continue learning",
+      continueDescription: "Structured missions without infinite scroll loops.",
+      exploreTitle: "Explore safely",
+      exploreDescription: "Curated by age fit and transparent recommendation signals.",
+      safetyTitle: "Safety & progress",
+      safetyDescription: "Session status, gate policies, and learning progress in one place.",
+      curatedSearchTitle: "Curated search only",
+      curatedSearchDescription: "No unrestricted text search on kid surfaces.",
+      progressClarityTitle: "Clear progress view",
+      progressClarityDescription: "Milestones and percentages without manipulative mechanics.",
+      audioGuidanceTitle: "Audio guidance",
+      audioGuidanceDescription: "Simple prompts support navigation and choices.",
+      noOpenFeedTitle: "No open feed",
+      noOpenFeedDescription: "Finite curated rails instead of endless recommendation streams.",
+      antiLoopTitle: "Anti-rabbit-hole",
+      antiLoopDescription: "Session caps and finite lists prevent endless consumption.",
+      watchlistTitle: "Watchlist with accountability",
+      watchlistDescription: "Watchlist behavior stays transparent and parent-controllable.",
+      featuredKicker: {
+        early: "Early featured",
+        core: "Core featured",
+        teen: "Teen featured"
+      }
+    },
+    gate: {
+      title: "Parent gate",
+      requestVerification: "Request verification",
+      verificationHint: "Adult verification is required",
+      requiresApproval: "This action requires parent approval via"
+    },
+    cards: {
+      openEpisode: "Open episode",
+      ageFit: "Age fit",
+      safety: "Safety",
+      safetyApplied: "Applied",
+      safetyOff: "Off",
+      episodePrefix: "Episode",
+      sessionHealth: "Session health",
+      sessionCap: "Session cap",
+      minLeftSuffix: "min left"
+    }
+  },
+  parents: {
+    shell: {
+      kicker: "Parent Command",
+      defaultDescription: "Consent, controls, reports, and overrides in one place.",
+      addChildProfile: "Add child profile",
+      switchProfile: "Switch profile"
+    },
+    nav: {
+      dashboard: "Dashboard",
+      controls: "Controls",
+      compliance: "Compliance",
+      onboarding: "Onboarding"
+    },
+    page: {
+      onboardingRequired: "Parent onboarding required",
+      noProfilesFound: "No child profiles found",
+      sessionMissingTitle: "Session missing",
+      sessionMissingText: "Start onboarding to create an authenticated parent session.",
+      createProfileTitle: "Create first child profile",
+      createProfileText: "A profile activates kids mode and policy controls.",
+      openOnboarding: "Open onboarding",
+      familySafetyHeading: "Family safety and learning operations",
+      familySafetyDescription: "Set defaults once, review daily behavior, adjust per child quickly.",
+      liveProfile: "Live profile",
+      openKidsMode: "Open kids mode",
+      addAnotherChild: "Add another child",
+      totalWatchedToday: "Total watched today",
+      currentSessionUsage: "Current session usage",
+      bedtimeWindow: "Bedtime window",
+      profilesQuickActionsTitle: "Profiles and quick actions",
+      profilesQuickActionsDescription: "Switch context without losing orientation.",
+      selected: "Selected",
+      manageProfile: "Manage profile",
+      complianceSnapshotTitle: "Compliance snapshot",
+      complianceSnapshotDescription: "Compact daily checks for policy confidence.",
+      sessionCapCompliance: "Session cap compliance",
+      safetyFilterCoverage: "Safety filter coverage",
+      auditReadiness: "Audit readiness",
+      adaptiveGateTitle: "Adaptive parent gate",
+      adaptiveGateText: "External links, purchases, and account changes require verification.",
+      policyRetained: "Policy retained",
+      trustSignal: "Trust signal",
+      operationalLog: "Operational log"
+    },
+    onboarding: {
+      heroKicker: "Family setup",
+      heroTitle: "Ready in 60 seconds",
+      heroText: "Sign up once, verify consent, and create a child profile right away.",
+      bulletOne: "Auto-select age-appropriate experience",
+      bulletTwo: "Strict safety defaults",
+      bulletThree: "Session limits active immediately",
+      launchTitle: "Parent quick launch",
+      launchText: "Signup, consent, login, and profile creation in one flow.",
+      emailLabel: "Email",
+      passwordLabel: "Password",
+      childNameLabel: "Child profile name",
+      ageBandLabel: "Age band",
+      avatarLabel: "Avatar",
+      submit: "Start now",
+      backToHome: "Back to home"
+    },
+    controlPanel: {
+      title: "Parent controls",
+      description: "Configure child-safe defaults without opening every advanced setting.",
+      badgeSafety: "Safety",
+      badgeSession: "Session",
+      safetyMode: "Safety mode",
+      strict: "Strict",
+      balanced: "Balanced",
+      sessionLimit: "Session limit (minutes)",
+      bedtimeWindow: "Bedtime window",
+      autoplayLabel: "Autoplay",
+      autoplayDetail: "Automatically continue to the next approved mission",
+      chatLabel: "Chat",
+      chatDetail: "Enable protected in-app conversation surfaces",
+      linksLabel: "External links",
+      linksDetail: "Allow leaving MikasMissions to third-party websites",
+      on: "On",
+      off: "Off",
+      saveControls: "Save controls",
+      saving: "Saving...",
+      strictModeDefault: "Strict mode active by default.",
+      savingMessage: "Saving parental controls...",
+      saveFailed: "Save failed. Please retry.",
+      saveSuccess: "Controls updated and audit logged."
+    }
+  },
+  admin: {
+    shell: {
+      kicker: "Admin Console",
+      home: "Home",
+      nav: {
+        studio: "Studio",
+        runs: "Runs",
+        login: "Login"
+      }
+    },
+    login: {
+      title: "Admin studio login",
+      subtitle: "Role-based entry for workflow orchestration and model profile management.",
+      cardTitle: "Authenticate as admin",
+      cardText: "Use your admin credentials to access workflows, model controls, and run operations.",
+      emailLabel: "Admin email",
+      passwordLabel: "Password",
+      submit: "Login"
+    },
+    studio: {
+      title: "Admin studio",
+      subtitle: "Configure model profiles, maintain workflows, and start runs safely.",
+      noSessionTitle: "Admin session missing",
+      noSessionText: "Login as admin to access workflow operations.",
+      openLogin: "Open admin login",
+      workflowTemplates: "Workflow templates",
+      templatesText: "Versioned templates tied to age band and safety suitability.",
+      modelProfile: "Model profile",
+      createWorkflow: "Create workflow",
+      updateModelProfile: "Update model profile",
+      createWorkflowButton: "Create workflow",
+      startRun: "Start run",
+      noTemplates: "No templates yet.",
+      stepsPrefix: "Steps",
+      labelProfileId: "Profile ID",
+      labelBaseUrl: "Base URL",
+      labelModelId: "Model ID",
+      labelTimeout: "Timeout (ms)",
+      labelMaxRetries: "Max retries",
+      labelSafetyPreset: "Safety preset",
+      labelName: "Name",
+      labelDescription: "Description",
+      labelContentSuitability: "Content suitability",
+      labelAgeBand: "Age band",
+      labelPipelineSteps: "Pipeline steps",
+      labelModelProfileId: "Model profile ID",
+      labelSafetyProfile: "Safety profile",
+      labelTitleHint: "Title hint",
+      labelTopic: "Topic"
+    },
+    runs: {
+      title: "Run operations",
+      subtitle: "Inspect each step, retry failures, or cancel active jobs.",
+      noSessionTitle: "Admin session missing",
+      noRunTitle: "No run selected",
+      openLogin: "Open admin login",
+      backToStudio: "Back to studio",
+      status: "Status",
+      workflow: "Workflow",
+      priority: "Priority",
+      runControls: "Run controls",
+      lastError: "Last error",
+      none: "none",
+      retryRun: "Retry run",
+      cancelRun: "Cancel run",
+      runLogs: "Run logs",
+      noLogs: "No logs available for this run yet."
+    }
+  }
+};

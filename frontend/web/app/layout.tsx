@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Fredoka, Nunito } from "next/font/google";
+import { Baloo_2, Nunito } from "next/font/google";
 import type { ReactNode } from "react";
+import { getLocaleFromRequest } from "../lib/i18n";
 import "./globals.css";
 
 const bodyFont = Nunito({
@@ -8,9 +9,10 @@ const bodyFont = Nunito({
   variable: "--font-body-next"
 });
 
-const displayFont = Fredoka({
+const displayFont = Baloo_2({
   subsets: ["latin"],
-  variable: "--font-display-next"
+  variable: "--font-display-next",
+  weight: ["500", "700", "800"]
 });
 
 export const metadata: Metadata = {
@@ -33,9 +35,11 @@ type RootLayoutProps = {
   children: ReactNode;
 };
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const locale = await getLocaleFromRequest();
+
   return (
-    <html className={`${bodyFont.variable} ${displayFont.variable}`} lang="de">
+    <html className={`${bodyFont.variable} ${displayFont.variable}`} lang={locale}>
       <body>{children}</body>
     </html>
   );

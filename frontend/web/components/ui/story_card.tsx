@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { RailItem } from "../../lib/experience_types";
+import type { LocalizedMessages } from "../../lib/messages/types";
 import { BigActionButton } from "./big_action_button";
 import { LearningBadge } from "./learning_badge";
 import styles from "./story_card.module.css";
@@ -7,12 +8,22 @@ import styles from "./story_card.module.css";
 type StoryCardProps = {
   item: RailItem;
   index: number;
+  labels?: Pick<LocalizedMessages["kids"]["cards"], "openEpisode" | "ageFit" | "safety" | "safetyApplied" | "safetyOff">;
 };
 
-export function StoryCard({ item, index }: StoryCardProps) {
+const defaultLabels = {
+  openEpisode: "Open episode",
+  ageFit: "Age fit",
+  safety: "Safety",
+  safetyApplied: "Applied",
+  safetyOff: "Off"
+} as const;
+
+export function StoryCard({ item, index, labels }: StoryCardProps) {
   const delayStyle = {
     "--stagger-delay": `${index * 70}ms`
   } as CSSProperties;
+  const text = labels ?? defaultLabels;
 
   return (
     <article className={styles.card} style={delayStyle}>
@@ -27,15 +38,15 @@ export function StoryCard({ item, index }: StoryCardProps) {
           ))}
         </div>
         <div className={styles.foot}>
-          <BigActionButton hint={item.content_suitability} label="Open episode" />
+          <BigActionButton hint={item.content_suitability} label={text.openEpisode} />
           <dl>
             <div>
-              <dt>Age fit</dt>
+              <dt>{text.ageFit}</dt>
               <dd>{Math.round(item.age_fit_score * 100)}%</dd>
             </div>
             <div>
-              <dt>Safety</dt>
-              <dd>{item.safety_applied ? "Applied" : "Off"}</dd>
+              <dt>{text.safety}</dt>
+              <dd>{item.safety_applied ? text.safetyApplied : text.safetyOff}</dd>
             </div>
           </dl>
         </div>

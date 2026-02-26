@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { AdminShell } from "../../../components/layout/admin_shell";
 import { apiBaseURL, safeJSONFetch } from "../../../lib/fetch_helpers";
+import { getLocaleAndMessages, getLocaleFromRequest, withLocalePath } from "../../../lib/i18n";
 import styles from "./page.module.css";
 
 type RunResponse = {
@@ -37,63 +38,67 @@ async function tokenFromCookie(): Promise<string> {
 
 async function retryRun(formData: FormData) {
   "use server";
-  const token = await tokenFromCookie();
+  const [token, locale] = await Promise.all([tokenFromCookie(), getLocaleFromRequest()]);
   if (token === "") {
-    redirect("/admin/login");
+    redirect(withLocalePath(locale, "/admin/login"));
   }
   const runID = String(formData.get("run_id") ?? "");
   await safeJSONFetch(new URL(`/v1/admin/runs/${encodeURIComponent(runID)}/retry`, apiBaseURL()).toString(), {
     method: "POST",
     token
   });
-  redirect(`/admin/runs?run_id=${encodeURIComponent(runID)}`);
+  redirect(withLocalePath(locale, `/admin/runs?run_id=${encodeURIComponent(runID)}`));
 }
 
 async function cancelRun(formData: FormData) {
   "use server";
-  const token = await tokenFromCookie();
+  const [token, locale] = await Promise.all([tokenFromCookie(), getLocaleFromRequest()]);
   if (token === "") {
-    redirect("/admin/login");
+    redirect(withLocalePath(locale, "/admin/login"));
   }
   const runID = String(formData.get("run_id") ?? "");
   await safeJSONFetch(new URL(`/v1/admin/runs/${encodeURIComponent(runID)}/cancel`, apiBaseURL()).toString(), {
     method: "POST",
     token
   });
-  redirect(`/admin/runs?run_id=${encodeURIComponent(runID)}`);
+  redirect(withLocalePath(locale, `/admin/runs?run_id=${encodeURIComponent(runID)}`));
 }
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminRunsPage({ searchParams }: RunsPageProps) {
-  const token = await tokenFromCookie();
+  const [{ locale, messages }, token, params] = await Promise.all([getLocaleAndMessages(), tokenFromCookie(), searchParams]);
+
   if (token === "") {
     return (
       <AdminShell
-        activeNav="Runs"
-        subtitle="Authenticate to inspect execution logs and run controls."
-        title="Run operations"
+        activeNav="runs"
+        labels={messages.admin.shell}
+        locale={locale}
+        subtitle={messages.admin.runs.subtitle}
+        title={messages.admin.runs.title}
       >
         <section className={styles.notice}>
-          <h2>Admin session missing</h2>
-          <a href="/admin/login">Open admin login</a>
+          <h2>{messages.admin.runs.noSessionTitle}</h2>
+          <a href={withLocalePath(locale, "/admin/login")}>{messages.admin.runs.openLogin}</a>
         </section>
       </AdminShell>
     );
   }
 
-  const params = await searchParams;
   const runID = typeof params.run_id === "string" ? params.run_id : "";
   if (runID === "") {
     return (
       <AdminShell
-        activeNav="Runs"
-        subtitle="Select a run id from Studio to inspect status and step logs."
-        title="Run operations"
+        activeNav="runs"
+        labels={messages.admin.shell}
+        locale={locale}
+        subtitle={messages.admin.runs.subtitle}
+        title={messages.admin.runs.title}
       >
         <section className={styles.notice}>
-          <h2>No run selected</h2>
-          <a href="/admin/studio">Back to studio</a>
+          <h2>{messages.admin.runs.noRunTitle}</h2>
+          <a href={withLocalePath(locale, "/admin/studio")}>{messages.admin.runs.backToStudio}</a>
         </section>
       </AdminShell>
     );
@@ -108,50 +113,54 @@ export default async function AdminRunsPage({ searchParams }: RunsPageProps) {
 
   return (
     <AdminShell
-      activeNav="Runs"
-      subtitle="Inspect each step, retry failures, or cancel active jobs with full status context."
-      title={`Run ${run.run_id}`}
+      activeNav="runs"
+      labels={messages.admin.shell}
+      locale={locale}
+      subtitle={messages.admin.runs.subtitle}
+      title={`${messages.admin.runs.title} · ${run.run_id}`}
     >
       <section className={styles.summary}>
         <article className={styles.metaCard}>
-          <span>Status</span>
+          <span>{messages.admin.runs.status}</span>
           <strong className={styles.statusPill} data-status={run.status.toLowerCase()}>
             {run.status}
           </strong>
         </article>
 
         <article className={styles.metaCard}>
-          <span>Workflow</span>
+          <span>{messages.admin.runs.workflow}</span>
           <strong>{run.workflow_id}</strong>
         </article>
 
         <article className={styles.metaCard}>
-          <span>Priority</span>
+          <span>{messages.admin.runs.priority}</span>
           <strong>{run.priority}</strong>
         </article>
       </section>
 
       <section className={styles.panel}>
-        <h2>Run controls</h2>
-        <p>Last error: {run.last_error || "none"}</p>
+        <h2>{messages.admin.runs.runControls}</h2>
+        <p>
+          {messages.admin.runs.lastError}: {run.last_error || messages.admin.runs.none}
+        </p>
         <div className={styles.actions}>
           <form action={retryRun}>
             <input name="run_id" type="hidden" value={run.run_id} />
-            <button type="submit">Retry run</button>
+            <button type="submit">{messages.admin.runs.retryRun}</button>
           </form>
           <form action={cancelRun}>
             <input name="run_id" type="hidden" value={run.run_id} />
-            <button type="submit">Cancel run</button>
+            <button type="submit">{messages.admin.runs.cancelRun}</button>
           </form>
-          <a href="/admin/studio">Back to studio</a>
+          <a href={withLocalePath(locale, "/admin/studio")}>{messages.admin.runs.backToStudio}</a>
         </div>
       </section>
 
       <section className={styles.panel}>
-        <h2>Run logs</h2>
+        <h2>{messages.admin.runs.runLogs}</h2>
         <ul className={styles.logList}>
           {logs.logs.length === 0 ? (
-            <li className={styles.empty}>No logs available for this run yet.</li>
+            <li className={styles.empty}>{messages.admin.runs.noLogs}</li>
           ) : (
             logs.logs.map((entry, index) => (
               <li key={`${entry.event_time}-${index}`}>

@@ -1,30 +1,38 @@
+import type { Locale } from "../../lib/i18n";
+import { withLocalePath } from "../../lib/i18n";
+import type { LocalizedMessages } from "../../lib/messages/types";
 import styles from "./parents_nav.module.css";
 
 type ParentsNavProps = {
-  active: string;
+  active: ParentNavKey;
+  locale: Locale;
+  labels: LocalizedMessages["parents"]["nav"];
 };
 
+export type ParentNavKey = "dashboard" | "controls" | "compliance" | "onboarding";
+
 type ParentNavItem = {
+  key: ParentNavKey;
   label: string;
   href: string;
 };
 
-const tabs: ParentNavItem[] = [
-  { label: "Dashboard", href: "/parents#dashboard" },
-  { label: "Controls", href: "/parents#controls" },
-  { label: "Compliance", href: "/parents#compliance" },
-  { label: "Onboarding", href: "/parents/onboarding" }
-];
+export function ParentsNav({ active, locale, labels }: ParentsNavProps) {
+  const tabs: ParentNavItem[] = [
+    { key: "dashboard", label: labels.dashboard, href: "/parents#dashboard" },
+    { key: "controls", label: labels.controls, href: "/parents#controls" },
+    { key: "compliance", label: labels.compliance, href: "/parents#compliance" },
+    { key: "onboarding", label: labels.onboarding, href: "/parents/onboarding" }
+  ];
 
-export function ParentsNav({ active }: ParentsNavProps) {
   return (
     <nav aria-label="Parents navigation" className={styles.nav}>
       {tabs.map((tab) => (
         <a
-          aria-current={tab.label === active ? "page" : undefined}
-          className={tab.label === active ? styles.active : styles.idle}
-          href={tab.href}
-          key={tab.label}
+          aria-current={tab.key === active ? "page" : undefined}
+          className={tab.key === active ? styles.active : styles.idle}
+          href={withLocalePath(locale, tab.href)}
+          key={tab.key}
         >
           {tab.label}
         </a>

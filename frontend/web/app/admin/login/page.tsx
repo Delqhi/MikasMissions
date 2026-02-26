@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { AdminShell } from "../../../components/layout/admin_shell";
 import { apiBaseURL, safeJSONFetch } from "../../../lib/fetch_helpers";
+import { getLocaleAndMessages, getLocaleFromRequest, withLocalePath } from "../../../lib/i18n";
 import styles from "./page.module.css";
 
 type AdminLoginResponse = {
@@ -14,6 +15,7 @@ type AdminLoginResponse = {
 async function loginAdmin(formData: FormData) {
   "use server";
 
+  const locale = await getLocaleFromRequest();
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
   const baseURL = apiBaseURL();
@@ -39,32 +41,36 @@ async function loginAdmin(formData: FormData) {
     secure: process.env.NODE_ENV === "production"
   });
 
-  redirect("/admin/studio");
+  redirect(withLocalePath(locale, "/admin/studio"));
 }
 
-export default function AdminLoginPage() {
+export default async function AdminLoginPage() {
+  const { locale, messages } = await getLocaleAndMessages();
+
   return (
     <AdminShell
-      activeNav="Login"
-      subtitle="Role-based entry for workflow orchestration and model profile management."
-      title="Admin studio login"
+      activeNav="login"
+      labels={messages.admin.shell}
+      locale={locale}
+      subtitle={messages.admin.login.subtitle}
+      title={messages.admin.login.title}
     >
       <section className={styles.card}>
-        <h2>Authenticate as admin</h2>
-        <p>Use your admin credentials to access workflow templates, model controls, and run operations.</p>
+        <h2>{messages.admin.login.cardTitle}</h2>
+        <p>{messages.admin.login.cardText}</p>
 
         <form action={loginAdmin} className={styles.form}>
           <label>
-            <span>Admin email</span>
+            <span>{messages.admin.login.emailLabel}</span>
             <input name="email" required type="email" />
           </label>
 
           <label>
-            <span>Passwort</span>
+            <span>{messages.admin.login.passwordLabel}</span>
             <input minLength={10} name="password" required type="password" />
           </label>
 
-          <button type="submit">Login</button>
+          <button type="submit">{messages.admin.login.submit}</button>
         </form>
       </section>
     </AdminShell>

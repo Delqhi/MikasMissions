@@ -5,6 +5,7 @@ import { EpisodeTile } from "../../../components/ui/episode_tile";
 import { ParentGatePrompt } from "../../../components/ui/parent_gate_prompt";
 import { fetchKidsHome } from "../../../lib/fetch_kids_home";
 import { fetchKidsProgress } from "../../../lib/fetch_kids_progress";
+import { getLocaleAndMessages, withLocalePath } from "../../../lib/i18n";
 import { accessTokenFromCookie } from "../../../lib/server_auth";
 import styles from "../kids_page.module.css";
 
@@ -15,126 +16,153 @@ type KidsPageProps = {
 };
 
 export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
-  const params = await searchParams;
+  const [{ locale, messages }, params] = await Promise.all([getLocaleAndMessages(), searchParams]);
+
   const childProfileID = typeof params.child_profile_id === "string" ? params.child_profile_id : "";
+
   if (childProfileID === "") {
     return (
       <KidsShell
-        activeNav="Stories"
+        activeNavKey="stories"
         ageBand="3-5"
+        locale={locale}
+        messages={messages.kids}
         mode="early"
         navItems={[
-          { label: "Stories", href: "/kids/early#featured" },
-          { label: "Missions", href: "/kids/early#missions" },
-          { label: "Favorites", href: "/kids/early#picks" },
-          { label: "Bedtime", href: "/parents/onboarding" }
+          { key: "stories", label: messages.kids.nav.stories, href: "/kids/early#featured" },
+          { key: "missions", label: messages.kids.nav.missions, href: "/kids/early#continue" },
+          { key: "favorites", label: messages.kids.nav.favorites, href: "/kids/early#recommended" },
+          { key: "bedtime", label: messages.kids.nav.bedtime, href: "/parents/onboarding" }
         ]}
-        profileName="Setup required"
+        profileName={messages.kids.page.missingProfileTitle}
         sessionLimitMinutes={0}
-        subtitle="Please create a child profile first"
+        subtitle={messages.kids.page.missingProfileText}
         watchedMinutes={0}
       >
         <div className="stack">
           <section className={styles.focusCard}>
-            <h3>Missing child profile</h3>
-            <p>Open parent onboarding and create a profile to continue.</p>
-            <a href="/parents/onboarding">Go to onboarding</a>
+            <h3>{messages.kids.page.missingProfileTitle}</h3>
+            <p>{messages.kids.page.missingProfileText}</p>
+            <a href={withLocalePath(locale, "/parents/onboarding")}>{messages.kids.page.goToOnboarding}</a>
           </section>
         </div>
       </KidsShell>
     );
   }
+
   const token = await accessTokenFromCookie();
   const [home, progress] = await Promise.all([
     fetchKidsHome("early", childProfileID, token),
     fetchKidsProgress("early", childProfileID, token)
   ]);
+
   const featured = home.rails[0];
-  const featuredItems = home.rails.slice(0, 2);
+  const continueItems = home.rails.slice(0, 2);
 
   return (
     <KidsShell
-      activeNav="Stories"
+      activeNavKey="stories"
       ageBand="3-5"
+      locale={locale}
+      messages={messages.kids}
       mode="early"
       navItems={[
-        { label: "Stories", href: `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#featured` },
-        { label: "Missions", href: `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#missions` },
-        { label: "Favorites", href: `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#picks` },
-        { label: "Bedtime", href: `/parents?child_profile_id=${encodeURIComponent(childProfileID)}` }
+        { key: "stories", label: messages.kids.nav.stories, href: `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#featured` },
+        {
+          key: "missions",
+          label: messages.kids.nav.missions,
+          href: `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#continue`
+        },
+        {
+          key: "favorites",
+          label: messages.kids.nav.favorites,
+          href: `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}#recommended`
+        },
+        {
+          key: "bedtime",
+          label: messages.kids.nav.bedtime,
+          href: `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`
+        }
       ]}
       profileName="Mika Mini"
       sessionLimitMinutes={progress.session_limit_minutes}
-      subtitle="Audio-guided and image-first"
+      subtitle={messages.kids.page.audioGuidanceTitle}
       watchedMinutes={progress.watched_minutes_today}
     >
       <div className="stack">
         <nav className={styles.switchRow}>
-          <a aria-current="page" href={`/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}`}>
-            3-5
+          <a
+            aria-current="page"
+            href={withLocalePath(locale, `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}`)}
+          >
+            {messages.kids.switcher.early}
           </a>
-          <a href={`/kids/core?child_profile_id=${encodeURIComponent(childProfileID)}`}>6-11</a>
-          <a href={`/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}`}>12-16</a>
-          <a href={`/parents?child_profile_id=${encodeURIComponent(childProfileID)}`}>Parents</a>
+          <a href={withLocalePath(locale, `/kids/core?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+            {messages.kids.switcher.core}
+          </a>
+          <a href={withLocalePath(locale, `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+            {messages.kids.switcher.teen}
+          </a>
+          <a href={withLocalePath(locale, `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+            {messages.kids.switcher.parents}
+          </a>
         </nav>
 
         <section className={styles.heroPanel} id="featured">
           <img alt="" src={featured.thumbnail_url} />
           <div className={styles.heroShade} />
           <div className={styles.heroBody}>
-            <span className={styles.heroKicker}>Early featured</span>
+            <span className={styles.heroKicker}>{messages.kids.page.featuredKicker.early}</span>
             <h2>{featured.title}</h2>
             <p>{featured.summary}</p>
             <div className={styles.heroActions}>
-              <a className={styles.heroPlay} href={`/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}`}>
-                Start story
+              <a className={styles.heroPlay} href={withLocalePath(locale, `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+                {messages.kids.page.playFeatured}
               </a>
-              <a className={styles.heroInfo} href={`/parents?child_profile_id=${encodeURIComponent(childProfileID)}`}>
-                Guardian view
+              <a className={styles.heroInfo} href={withLocalePath(locale, `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+                {messages.kids.page.parentControls}
               </a>
             </div>
             <ul className={styles.heroMeta}>
               <li>{progress.session_limit_minutes} min limit</li>
               <li>{progress.watched_minutes_today} min today</li>
-              <li>Guided-only navigation</li>
+              <li>{messages.kids.page.audioGuidanceTitle}</li>
             </ul>
           </div>
         </section>
 
-        <section className="railSection" id="missions">
-          <SectionHeading
-            description="Large visuals, guided audio prompts, and no free-search surface for early learners."
-            title="Today\'s guided adventures"
-          />
+        <section className="railSection" id="continue">
+          <SectionHeading description={messages.kids.page.continueDescription} title={messages.kids.page.continueTitle} />
           <div className={styles.storyRow}>
-            {featuredItems.map((item, index) => (
-              <StoryCard index={index} item={item} key={item.episode_id} />
+            {continueItems.map((item, index) => (
+              <StoryCard index={index} item={item} key={item.episode_id} labels={messages.kids.cards} />
             ))}
           </div>
         </section>
 
-        <section className="railSection" id="picks">
-          <SectionHeading
-            description="Every route has short click paths and clear return points to avoid confusion."
-            title="Safe picks"
-          />
+        <section className="railSection" id="recommended">
+          <SectionHeading description={messages.kids.page.exploreDescription} title={messages.kids.page.exploreTitle} />
           <div className={styles.tileRow}>
             {home.rails.map((item) => (
-              <EpisodeTile episode={item} key={item.episode_id} />
+              <EpisodeTile episode={item} key={item.episode_id} labels={messages.kids.cards} />
             ))}
           </div>
         </section>
 
-        <section className={styles.calloutGrid}>
+        <section className={styles.calloutGrid} id="safety">
           <article className={styles.focusCard}>
-            <h3>Audio-first guidance</h3>
-            <p>Focused prompts help non-readers complete actions without trial-and-error taps.</p>
+            <h3>{messages.kids.page.audioGuidanceTitle}</h3>
+            <p>{messages.kids.page.audioGuidanceDescription}</p>
           </article>
           <article className={styles.focusCard}>
-            <h3>No open exploration feed</h3>
-            <p>Finite curated rails prevent infinite browsing loops for ages 3-5.</p>
+            <h3>{messages.kids.page.noOpenFeedTitle}</h3>
+            <p>{messages.kids.page.noOpenFeedDescription}</p>
           </article>
-          <ParentGatePrompt actionLabel="Open external activity link" challengeType="device_confirm" />
+          <ParentGatePrompt
+            actionLabel="Open external activity link"
+            challengeType="device_confirm"
+            labels={messages.kids.gate}
+          />
         </section>
       </div>
     </KidsShell>

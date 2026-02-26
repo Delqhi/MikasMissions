@@ -1,15 +1,23 @@
 import { formatDurationMS } from "../../lib/formatters";
 import type { RailItem } from "../../lib/experience_types";
+import type { LocalizedMessages } from "../../lib/messages/types";
 import { LearningBadge } from "./learning_badge";
 import styles from "./episode_tile.module.css";
 
 type EpisodeTileProps = {
   episode: RailItem;
+  labels?: Pick<LocalizedMessages["kids"]["cards"], "episodePrefix">;
 };
 
-export function EpisodeTile({ episode }: EpisodeTileProps) {
+const defaultLabels = {
+  episodePrefix: "Episode"
+} as const;
+
+export function EpisodeTile({ episode, labels }: EpisodeTileProps) {
+  const text = labels ?? defaultLabels;
+
   return (
-    <article className={styles.tile} aria-label={`Episode ${episode.title}`}>
+    <article className={styles.tile} aria-label={`${text.episodePrefix} ${episode.title}`}>
       <img alt="" className={styles.thumb} loading="lazy" src={episode.thumbnail_url} />
       <div className={styles.body}>
         <div className={styles.topline}>

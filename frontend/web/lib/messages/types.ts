@@ -1,0 +1,308 @@
+export type LocalizedMessages = {
+  common: {
+    brand: string;
+    navFamilySetup: string;
+    navParents: string;
+    navStudio: string;
+    navHome: string;
+    createProfile: string;
+    openMode: string;
+    openParentDashboard: string;
+    backToHome: string;
+    parentsLabel: string;
+    profileAgePrefix: string;
+  };
+  home: {
+    heroTag: string;
+    heroFallbackSummary: string;
+    playNow: string;
+    startFamilySetup: string;
+    modeDeck: {
+      earlyTitle: string;
+      earlyDetail: string;
+      coreTitle: string;
+      coreDetail: string;
+      teenTitle: string;
+      teenDetail: string;
+    };
+    sections: {
+      chooseProfile: string;
+      continueWatching: string;
+      continueWatchingSub: string;
+      top10: string;
+      top10Sub: string;
+      forYou: string;
+      forYouSub: string;
+      knowledge: string;
+      knowledgeSub: string;
+      creative: string;
+      creativeSub: string;
+      adventure: string;
+      adventureSub: string;
+      trust: string;
+      trustSub: string;
+    };
+    labels: {
+      noContinueWatching: string;
+      scoreLabel: string;
+      topRankLabel: string;
+      categoryForYou: string;
+      categoryKnowledge: string;
+      categoryCreative: string;
+      categoryAdventure: string;
+    };
+    trustCards: {
+      filterCoverageTitle: string;
+      filterCoverageDetail: string;
+      sessionLimitsTitle: string;
+      sessionLimitsDetail: string;
+      parentGateTitle: string;
+      parentGateDetail: string;
+    };
+    safetyHighlights: {
+      ageModes: string;
+      ageModesValue: string;
+      safetyFilter: string;
+      safetyFilterValue: string;
+      parentControl: string;
+      parentControlValue: string;
+      sessionCaps: string;
+      sessionCapsValue: string;
+    };
+  };
+  kids: {
+    shell: {
+      kicker: string;
+      note: string;
+      modeTitle: {
+        early: string;
+        core: string;
+        teen: string;
+      };
+    };
+    nav: {
+      stories: string;
+      missions: string;
+      favorites: string;
+      bedtime: string;
+      home: string;
+      discover: string;
+      progress: string;
+      library: string;
+      explore: string;
+      watchlist: string;
+      series: string;
+      learning: string;
+      reports: string;
+    };
+    switcher: {
+      early: string;
+      core: string;
+      teen: string;
+      parents: string;
+    };
+    page: {
+      missingProfileTitle: string;
+      missingProfileText: string;
+      goToOnboarding: string;
+      playFeatured: string;
+      parentControls: string;
+      continueTitle: string;
+      continueDescription: string;
+      exploreTitle: string;
+      exploreDescription: string;
+      safetyTitle: string;
+      safetyDescription: string;
+      curatedSearchTitle: string;
+      curatedSearchDescription: string;
+      progressClarityTitle: string;
+      progressClarityDescription: string;
+      audioGuidanceTitle: string;
+      audioGuidanceDescription: string;
+      noOpenFeedTitle: string;
+      noOpenFeedDescription: string;
+      antiLoopTitle: string;
+      antiLoopDescription: string;
+      watchlistTitle: string;
+      watchlistDescription: string;
+      featuredKicker: {
+        early: string;
+        core: string;
+        teen: string;
+      };
+    };
+    gate: {
+      title: string;
+      requestVerification: string;
+      verificationHint: string;
+      requiresApproval: string;
+    };
+    cards: {
+      openEpisode: string;
+      ageFit: string;
+      safety: string;
+      safetyApplied: string;
+      safetyOff: string;
+      episodePrefix: string;
+      sessionHealth: string;
+      sessionCap: string;
+      minLeftSuffix: string;
+    };
+  };
+  parents: {
+    shell: {
+      kicker: string;
+      defaultDescription: string;
+      addChildProfile: string;
+      switchProfile: string;
+    };
+    nav: {
+      dashboard: string;
+      controls: string;
+      compliance: string;
+      onboarding: string;
+    };
+    page: {
+      onboardingRequired: string;
+      noProfilesFound: string;
+      sessionMissingTitle: string;
+      sessionMissingText: string;
+      createProfileTitle: string;
+      createProfileText: string;
+      openOnboarding: string;
+      familySafetyHeading: string;
+      familySafetyDescription: string;
+      liveProfile: string;
+      openKidsMode: string;
+      addAnotherChild: string;
+      totalWatchedToday: string;
+      currentSessionUsage: string;
+      bedtimeWindow: string;
+      profilesQuickActionsTitle: string;
+      profilesQuickActionsDescription: string;
+      selected: string;
+      manageProfile: string;
+      complianceSnapshotTitle: string;
+      complianceSnapshotDescription: string;
+      sessionCapCompliance: string;
+      safetyFilterCoverage: string;
+      auditReadiness: string;
+      adaptiveGateTitle: string;
+      adaptiveGateText: string;
+      policyRetained: string;
+      trustSignal: string;
+      operationalLog: string;
+    };
+    onboarding: {
+      heroKicker: string;
+      heroTitle: string;
+      heroText: string;
+      bulletOne: string;
+      bulletTwo: string;
+      bulletThree: string;
+      launchTitle: string;
+      launchText: string;
+      emailLabel: string;
+      passwordLabel: string;
+      childNameLabel: string;
+      ageBandLabel: string;
+      avatarLabel: string;
+      submit: string;
+      backToHome: string;
+    };
+    controlPanel: {
+      title: string;
+      description: string;
+      badgeSafety: string;
+      badgeSession: string;
+      safetyMode: string;
+      strict: string;
+      balanced: string;
+      sessionLimit: string;
+      bedtimeWindow: string;
+      autoplayLabel: string;
+      autoplayDetail: string;
+      chatLabel: string;
+      chatDetail: string;
+      linksLabel: string;
+      linksDetail: string;
+      on: string;
+      off: string;
+      saveControls: string;
+      saving: string;
+      strictModeDefault: string;
+      savingMessage: string;
+      saveFailed: string;
+      saveSuccess: string;
+    };
+  };
+  admin: {
+    shell: {
+      kicker: string;
+      home: string;
+      nav: {
+        studio: string;
+        runs: string;
+        login: string;
+      };
+    };
+    login: {
+      title: string;
+      subtitle: string;
+      cardTitle: string;
+      cardText: string;
+      emailLabel: string;
+      passwordLabel: string;
+      submit: string;
+    };
+    studio: {
+      title: string;
+      subtitle: string;
+      noSessionTitle: string;
+      noSessionText: string;
+      openLogin: string;
+      workflowTemplates: string;
+      templatesText: string;
+      modelProfile: string;
+      createWorkflow: string;
+      updateModelProfile: string;
+      createWorkflowButton: string;
+      startRun: string;
+      noTemplates: string;
+      stepsPrefix: string;
+      labelProfileId: string;
+      labelBaseUrl: string;
+      labelModelId: string;
+      labelTimeout: string;
+      labelMaxRetries: string;
+      labelSafetyPreset: string;
+      labelName: string;
+      labelDescription: string;
+      labelContentSuitability: string;
+      labelAgeBand: string;
+      labelPipelineSteps: string;
+      labelModelProfileId: string;
+      labelSafetyProfile: string;
+      labelTitleHint: string;
+      labelTopic: string;
+    };
+    runs: {
+      title: string;
+      subtitle: string;
+      noSessionTitle: string;
+      noRunTitle: string;
+      openLogin: string;
+      backToStudio: string;
+      status: string;
+      workflow: string;
+      priority: string;
+      runControls: string;
+      lastError: string;
+      none: string;
+      retryRun: string;
+      cancelRun: string;
+      runLogs: string;
+      noLogs: string;
+    };
+  };
+};

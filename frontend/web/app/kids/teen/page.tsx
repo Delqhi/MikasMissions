@@ -5,6 +5,7 @@ import { EpisodeTile } from "../../../components/ui/episode_tile";
 import { ParentGatePrompt } from "../../../components/ui/parent_gate_prompt";
 import { fetchKidsHome } from "../../../lib/fetch_kids_home";
 import { fetchKidsProgress } from "../../../lib/fetch_kids_progress";
+import { getLocaleAndMessages, withLocalePath } from "../../../lib/i18n";
 import { accessTokenFromCookie } from "../../../lib/server_auth";
 import styles from "../kids_page.module.css";
 
@@ -15,127 +16,160 @@ type KidsPageProps = {
 };
 
 export default async function KidsTeenPage({ searchParams }: KidsPageProps) {
-  const params = await searchParams;
+  const [{ locale, messages }, params] = await Promise.all([getLocaleAndMessages(), searchParams]);
+
   const childProfileID = typeof params.child_profile_id === "string" ? params.child_profile_id : "";
+
   if (childProfileID === "") {
     return (
       <KidsShell
-        activeNav="Explore"
+        activeNavKey="explore"
         ageBand="12-16"
+        locale={locale}
+        messages={messages.kids}
         mode="teen"
         navItems={[
-          { label: "Explore", href: "/kids/teen#featured" },
-          { label: "Watchlist", href: "/kids/teen#missions" },
-          { label: "Series", href: "/kids/teen#picks" },
-          { label: "Learning", href: "/kids/teen#status" },
-          { label: "Reports", href: "/parents/onboarding" }
+          { key: "explore", label: messages.kids.nav.explore, href: "/kids/teen#featured" },
+          { key: "watchlist", label: messages.kids.nav.watchlist, href: "/kids/teen#continue" },
+          { key: "series", label: messages.kids.nav.series, href: "/kids/teen#recommended" },
+          { key: "learning", label: messages.kids.nav.learning, href: "/kids/teen#safety" },
+          { key: "reports", label: messages.kids.nav.reports, href: "/parents/onboarding" }
         ]}
-        profileName="Setup required"
+        profileName={messages.kids.page.missingProfileTitle}
         sessionLimitMinutes={0}
-        subtitle="Please create a child profile first"
+        subtitle={messages.kids.page.missingProfileText}
         watchedMinutes={0}
       >
         <div className="stack">
           <section className={styles.focusCard}>
-            <h3>Missing child profile</h3>
-            <p>Open parent onboarding and create a profile to continue.</p>
-            <a href="/parents/onboarding">Go to onboarding</a>
+            <h3>{messages.kids.page.missingProfileTitle}</h3>
+            <p>{messages.kids.page.missingProfileText}</p>
+            <a href={withLocalePath(locale, "/parents/onboarding")}>{messages.kids.page.goToOnboarding}</a>
           </section>
         </div>
       </KidsShell>
     );
   }
+
   const token = await accessTokenFromCookie();
   const [home, progress] = await Promise.all([
     fetchKidsHome("teen", childProfileID, token),
     fetchKidsProgress("teen", childProfileID, token)
   ]);
+
   const featured = home.rails[0];
+  const continueItems = home.rails.slice(0, 3);
 
   return (
     <KidsShell
-      activeNav="Explore"
+      activeNavKey="explore"
       ageBand="12-16"
+      locale={locale}
+      messages={messages.kids}
       mode="teen"
       navItems={[
-        { label: "Explore", href: `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}#featured` },
-        { label: "Watchlist", href: `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}#missions` },
-        { label: "Series", href: `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}#picks` },
-        { label: "Learning", href: `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}#status` },
-        { label: "Reports", href: `/parents?child_profile_id=${encodeURIComponent(childProfileID)}` }
+        {
+          key: "explore",
+          label: messages.kids.nav.explore,
+          href: `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}#featured`
+        },
+        {
+          key: "watchlist",
+          label: messages.kids.nav.watchlist,
+          href: `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}#continue`
+        },
+        {
+          key: "series",
+          label: messages.kids.nav.series,
+          href: `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}#recommended`
+        },
+        {
+          key: "learning",
+          label: messages.kids.nav.learning,
+          href: `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}#safety`
+        },
+        {
+          key: "reports",
+          label: messages.kids.nav.reports,
+          href: `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`
+        }
       ]}
       profileName="Mika Studio"
       sessionLimitMinutes={progress.session_limit_minutes}
-      subtitle="Higher autonomy, safety filters still active"
+      subtitle={messages.kids.page.watchlistTitle}
       watchedMinutes={progress.watched_minutes_today}
     >
       <div className="stack">
         <nav className={styles.switchRow}>
-          <a href={`/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}`}>3-5</a>
-          <a href={`/kids/core?child_profile_id=${encodeURIComponent(childProfileID)}`}>6-11</a>
-          <a aria-current="page" href={`/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}`}>
-            12-16
+          <a href={withLocalePath(locale, `/kids/early?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+            {messages.kids.switcher.early}
           </a>
-          <a href={`/parents?child_profile_id=${encodeURIComponent(childProfileID)}`}>Parents</a>
+          <a href={withLocalePath(locale, `/kids/core?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+            {messages.kids.switcher.core}
+          </a>
+          <a aria-current="page" href={withLocalePath(locale, `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+            {messages.kids.switcher.teen}
+          </a>
+          <a href={withLocalePath(locale, `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+            {messages.kids.switcher.parents}
+          </a>
         </nav>
 
         <section className={styles.heroPanel} id="featured">
           <img alt="" src={featured.thumbnail_url} />
           <div className={styles.heroShade} />
           <div className={styles.heroBody}>
-            <span className={styles.heroKicker}>Teen featured</span>
+            <span className={styles.heroKicker}>{messages.kids.page.featuredKicker.teen}</span>
             <h2>{featured.title}</h2>
             <p>{featured.summary}</p>
             <div className={styles.heroActions}>
-              <a className={styles.heroPlay} href={`/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}`}>
-                Continue
+              <a className={styles.heroPlay} href={withLocalePath(locale, `/kids/teen?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+                {messages.kids.page.playFeatured}
               </a>
-              <a className={styles.heroInfo} href={`/parents?child_profile_id=${encodeURIComponent(childProfileID)}`}>
-                Safety report
+              <a className={styles.heroInfo} href={withLocalePath(locale, `/parents?child_profile_id=${encodeURIComponent(childProfileID)}`)}>
+                {messages.kids.page.parentControls}
               </a>
             </div>
             <ul className={styles.heroMeta}>
               <li>{progress.mission_streak_days} active mission days</li>
               <li>{progress.watched_minutes_today} min today</li>
-              <li>Age-aware recommendations</li>
+              <li>{messages.kids.page.antiLoopTitle}</li>
             </ul>
           </div>
         </section>
 
-        <section className="railSection" id="missions">
-          <SectionHeading
-            description="Dense but readable layout with shortcuts and explicit safety boundaries."
-            title="Explore studio rails"
-          />
+        <section className="railSection" id="continue">
+          <SectionHeading description={messages.kids.page.continueDescription} title={messages.kids.page.continueTitle} />
           <div className={styles.storyRow}>
-            {home.rails.map((item, index) => (
-              <StoryCard index={index} item={item} key={item.episode_id} />
+            {continueItems.map((item, index) => (
+              <StoryCard index={index} item={item} key={item.episode_id} labels={messages.kids.cards} />
             ))}
           </div>
         </section>
 
-        <section className="railSection" id="picks">
-          <SectionHeading
-            description="Transparent reason codes explain why each recommendation is shown."
-            title="Quick picks"
-          />
+        <section className="railSection" id="recommended">
+          <SectionHeading description={messages.kids.page.exploreDescription} title={messages.kids.page.exploreTitle} />
           <div className={styles.tileRow}>
             {home.rails.map((item) => (
-              <EpisodeTile episode={item} key={item.episode_id} />
+              <EpisodeTile episode={item} key={item.episode_id} labels={messages.kids.cards} />
             ))}
           </div>
         </section>
 
-        <section className={styles.calloutGrid} id="status">
+        <section className={styles.calloutGrid} id="safety">
           <article className={styles.focusCard}>
-            <h3>Anti-rabbit-hole defaults</h3>
-            <p>Session cap and finite exploration prevent endless algorithmic loops.</p>
+            <h3>{messages.kids.page.antiLoopTitle}</h3>
+            <p>{messages.kids.page.antiLoopDescription}</p>
           </article>
           <article className={styles.focusCard}>
-            <h3>Watchlist with accountability</h3>
-            <p>{progress.mission_streak_days} active mission days tracked without manipulative streak pressure.</p>
+            <h3>{messages.kids.page.watchlistTitle}</h3>
+            <p>{messages.kids.page.watchlistDescription}</p>
           </article>
-          <ParentGatePrompt actionLabel="Open third-party discussion room" challengeType="device_confirm" />
+          <ParentGatePrompt
+            actionLabel="Open third-party discussion room"
+            challengeType="device_confirm"
+            labels={messages.kids.gate}
+          />
         </section>
       </div>
     </KidsShell>

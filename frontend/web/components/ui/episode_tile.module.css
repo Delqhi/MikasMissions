@@ -1,9 +1,9 @@
 .tile {
   animation: pop-in 0.35s ease both;
-  background: #12131b;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
-  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.35);
+  background: #121b2f;
+  border: 1px solid rgba(194, 220, 255, 0.24);
+  border-radius: 20px;
+  box-shadow: var(--elevation-1);
   display: grid;
   gap: 0;
   min-width: 0;
@@ -12,14 +12,14 @@
 }
 
 .thumb {
-  height: 150px;
+  height: 164px;
   object-fit: cover;
   width: 100%;
 }
 
 .tile:hover {
-  border-color: rgba(255, 122, 161, 0.72);
-  transform: translateY(-2px);
+  border-color: rgba(234, 243, 255, 0.5);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .body {
@@ -37,7 +37,7 @@
 
 .topline h3 {
   font-family: var(--font-display);
-  font-size: 1.02rem;
+  font-size: 1.1rem;
   margin: 0;
 }
 

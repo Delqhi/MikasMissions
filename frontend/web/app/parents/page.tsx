@@ -4,6 +4,7 @@ import { SectionHeading } from "../../components/ui/section_heading";
 import { fetchChildProfiles } from "../../lib/fetch_child_profiles";
 import { fetchKidsProgress } from "../../lib/fetch_kids_progress";
 import { fetchParentControls } from "../../lib/fetch_parent_controls";
+import { getLocaleAndMessages, withLocalePath } from "../../lib/i18n";
 import { accessTokenFromCookie, parentUserIDFromCookie } from "../../lib/server_auth";
 import styles from "./page.module.css";
 
@@ -25,19 +26,25 @@ function modeForAgeBand(ageBand: string): "early" | "core" | "teen" {
 }
 
 export default async function ParentsPage({ searchParams }: ParentsPageProps) {
-  const token = await accessTokenFromCookie();
-  const parentUserID = await parentUserIDFromCookie();
+  const [{ locale, messages }, token, parentUserID] = await Promise.all([
+    getLocaleAndMessages(),
+    accessTokenFromCookie(),
+    parentUserIDFromCookie()
+  ]);
+
   if (token === "" || parentUserID === "") {
     return (
       <ParentsShell
-        activeNav="Onboarding"
-        description="A valid parent session is required before controls can be edited."
-        heading="Parent onboarding required"
+        activeNav="onboarding"
+        description={messages.parents.page.sessionMissingText}
+        heading={messages.parents.page.onboardingRequired}
+        locale={locale}
+        messages={messages.parents}
       >
         <section className={styles.notice}>
-          <h3>Session missing</h3>
-          <p>Start onboarding to create an authenticated parent session and unlock all controls.</p>
-          <a href="/parents/onboarding">Open onboarding</a>
+          <h3>{messages.parents.page.sessionMissingTitle}</h3>
+          <p>{messages.parents.page.sessionMissingText}</p>
+          <a href={withLocalePath(locale, "/parents/onboarding")}>{messages.parents.page.openOnboarding}</a>
         </section>
       </ParentsShell>
     );
@@ -47,14 +54,16 @@ export default async function ParentsPage({ searchParams }: ParentsPageProps) {
   if (profiles.length === 0) {
     return (
       <ParentsShell
-        activeNav="Onboarding"
-        description="Create at least one child profile to activate kids mode and policy controls."
-        heading="No child profiles found"
+        activeNav="onboarding"
+        description={messages.parents.page.createProfileText}
+        heading={messages.parents.page.noProfilesFound}
+        locale={locale}
+        messages={messages.parents}
       >
         <section className={styles.notice}>
-          <h3>Create first child profile</h3>
-          <p>Run onboarding once to create the first profile and initialize guardrails.</p>
-          <a href="/parents/onboarding">Create profile</a>
+          <h3>{messages.parents.page.createProfileTitle}</h3>
+          <p>{messages.parents.page.createProfileText}</p>
+          <a href={withLocalePath(locale, "/parents/onboarding")}>{messages.parents.page.openOnboarding}</a>
         </section>
       </ParentsShell>
     );
@@ -83,13 +92,15 @@ export default async function ParentsPage({ searchParams }: ParentsPageProps) {
 
   return (
     <ParentsShell
-      description="Set strict defaults once, review daily behavior quickly, and adjust per child in seconds."
-      heading="Family safety and learning operations"
+      description={messages.parents.page.familySafetyDescription}
+      heading={messages.parents.page.familySafetyHeading}
+      locale={locale}
+      messages={messages.parents}
     >
       <div className={styles.layout}>
         <section className={styles.hero} id="dashboard">
           <div className={styles.heroBody}>
-            <span className={styles.kicker}>Live profile</span>
+            <span className={styles.kicker}>{messages.parents.page.liveProfile}</span>
             <h2>
               {selectedProfile.display_name} · {selectedProfile.age_band}
             </h2>
@@ -98,28 +109,28 @@ export default async function ParentsPage({ searchParams }: ParentsPageProps) {
               tracked and policy changes are audit logged.
             </p>
             <div className={styles.heroActions}>
-              <a className={styles.primaryAction} href={selectedKidsModeHref}>
-                Open kids mode
+              <a className={styles.primaryAction} href={withLocalePath(locale, selectedKidsModeHref)}>
+                {messages.parents.page.openKidsMode}
               </a>
-              <a className={styles.secondaryAction} href="/parents/onboarding">
-                Add another child
+              <a className={styles.secondaryAction} href={withLocalePath(locale, "/parents/onboarding")}>
+                {messages.parents.page.addAnotherChild}
               </a>
             </div>
           </div>
 
           <ul className={styles.heroStats}>
             <li>
-              <span>Total watched today</span>
+              <span>{messages.parents.page.totalWatchedToday}</span>
               <strong>{watchedTodayTotal} min</strong>
             </li>
             <li>
-              <span>Current session usage</span>
+              <span>{messages.parents.page.currentSessionUsage}</span>
               <strong>
                 {selectedProgress.session_minutes_used}/{selectedProgress.session_limit_minutes} min
               </strong>
             </li>
             <li>
-              <span>Bedtime window</span>
+              <span>{messages.parents.page.bedtimeWindow}</span>
               <strong>{controls.controls.bedtime_window}</strong>
             </li>
           </ul>
@@ -127,8 +138,8 @@ export default async function ParentsPage({ searchParams }: ParentsPageProps) {
 
         <section className={styles.stack}>
           <SectionHeading
-            description="Switch profile context, jump into kids mode, and manage controls without losing orientation."
-            title="Profiles and quick actions"
+            description={messages.parents.page.profilesQuickActionsDescription}
+            title={messages.parents.page.profilesQuickActionsTitle}
           />
 
           <section className={styles.reportGrid}>
@@ -136,7 +147,7 @@ export default async function ParentsPage({ searchParams }: ParentsPageProps) {
               const isSelected = profile.child_profile_id === selectedProfile.child_profile_id;
               return (
                 <article className={styles.reportCard} key={profile.child_profile_id}>
-                  <span className={styles.cardTag}>{isSelected ? "Selected" : profile.age_band}</span>
+                  <span className={styles.cardTag}>{isSelected ? messages.parents.page.selected : profile.age_band}</span>
                   <h3>{profile.display_name}</h3>
                   <p>
                     Age band {profile.age_band}. Policies can be tuned independently while preserving global safety
@@ -145,15 +156,21 @@ export default async function ParentsPage({ searchParams }: ParentsPageProps) {
                   <div className={styles.cardActions}>
                     <a
                       className={styles.cardPrimary}
-                      href={`/parents?child_profile_id=${encodeURIComponent(profile.child_profile_id)}`}
+                      href={withLocalePath(
+                        locale,
+                        `/parents?child_profile_id=${encodeURIComponent(profile.child_profile_id)}`
+                      )}
                     >
-                      Manage profile
+                      {messages.parents.page.manageProfile}
                     </a>
                     <a
                       className={styles.cardSecondary}
-                      href={`/kids/${modeForAgeBand(profile.age_band)}?child_profile_id=${encodeURIComponent(profile.child_profile_id)}`}
+                      href={withLocalePath(
+                        locale,
+                        `/kids/${modeForAgeBand(profile.age_band)}?child_profile_id=${encodeURIComponent(profile.child_profile_id)}`
+                      )}
                     >
-                      Open kids mode
+                      {messages.parents.page.openKidsMode}
                     </a>
                   </div>
                 </article>
@@ -162,42 +179,45 @@ export default async function ParentsPage({ searchParams }: ParentsPageProps) {
           </section>
         </section>
 
-        <ParentControlPanel childProfileID={controls.child_profile_id} initialControls={controls.controls} />
+        <ParentControlPanel
+          childProfileID={controls.child_profile_id}
+          initialControls={controls.controls}
+          messages={messages.parents.controlPanel}
+        />
 
         <section className={styles.stack} id="compliance">
           <SectionHeading
-            description="A compact compliance view for daily checks and policy confidence."
-            title="Compliance snapshot"
+            description={messages.parents.page.complianceSnapshotDescription}
+            title={messages.parents.page.complianceSnapshotTitle}
           />
           <section className={styles.metricsGrid}>
             <article className={styles.metricCard}>
-              <h3>Session cap compliance</h3>
+              <h3>{messages.parents.page.sessionCapCompliance}</h3>
               <p>
                 {selectedProfile.display_name}: {selectedProgress.session_minutes_used}/
                 {selectedProgress.session_limit_minutes} min
               </p>
-              <span>Policy retained</span>
+              <span>{messages.parents.page.policyRetained}</span>
             </article>
 
             <article className={styles.metricCard}>
-              <h3>Safety filter coverage</h3>
+              <h3>{messages.parents.page.safetyFilterCoverage}</h3>
               <p>100% of recommendation rails include reason codes and safety metadata.</p>
-              <span>Trust signal</span>
+              <span>{messages.parents.page.trustSignal}</span>
             </article>
 
             <article className={styles.metricCard}>
-              <h3>Audit readiness</h3>
+              <h3>{messages.parents.page.auditReadiness}</h3>
               <p>Every control mutation writes to the parent audit trail and can be reviewed by run.</p>
-              <span>Operational log</span>
+              <span>{messages.parents.page.operationalLog}</span>
             </article>
           </section>
         </section>
 
         <section className={styles.gate}>
-          <h3>Adaptive parent gate</h3>
+          <h3>{messages.parents.page.adaptiveGateTitle}</h3>
           <p>
-            External links, purchases, and account changes require verification. Current policy: <strong>device
-            confirm + PIN fallback</strong>.
+            {messages.parents.page.adaptiveGateText} <strong>device confirm + PIN fallback</strong>.
           </p>
         </section>
       </div>

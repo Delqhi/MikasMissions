@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { apiBaseURL, safeJSONFetch } from "../../../lib/fetch_helpers";
+import { getLocaleAndMessages, getLocaleFromRequest, withLocalePath } from "../../../lib/i18n";
 import styles from "./page.module.css";
 
 type SignupResponse = {
@@ -32,6 +33,7 @@ function modeForAgeBand(ageBand: string): "early" | "core" | "teen" {
 async function completeOnboarding(formData: FormData) {
   "use server";
 
+  const locale = await getLocaleFromRequest();
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
   const displayName = String(formData.get("display_name") ?? "").trim();
@@ -47,7 +49,7 @@ async function completeOnboarding(formData: FormData) {
         accepted_terms: true,
         country: "DE",
         email,
-        language: "de",
+        language: locale,
         marketing: false,
         password
       }
@@ -99,49 +101,48 @@ async function completeOnboarding(formData: FormData) {
   });
 
   const mode = modeForAgeBand(ageBand);
-  redirect(`/kids/${mode}?child_profile_id=${encodeURIComponent(profile.child_profile_id)}`);
+  redirect(withLocalePath(locale, `/kids/${mode}?child_profile_id=${encodeURIComponent(profile.child_profile_id)}`));
 }
 
-export default function ParentOnboardingPage() {
+export default async function ParentOnboardingPage() {
+  const { locale, messages } = await getLocaleAndMessages();
+
   return (
     <main className={styles.wrapper}>
       <section className={styles.hero}>
-        <p className={styles.kicker}>Family setup</p>
-        <h1>In 60 Sekunden bereit</h1>
-        <p>
-          Einmal anmelden, Einwilligung prüfen und direkt ein Kinderprofil erstellen. Danach startet ihr sofort in den
-          passenden Kids-Modus.
-        </p>
+        <p className={styles.kicker}>{messages.parents.onboarding.heroKicker}</p>
+        <h1>{messages.parents.onboarding.heroTitle}</h1>
+        <p>{messages.parents.onboarding.heroText}</p>
         <ul>
-          <li>Altersgerechte Oberfläche automatisch auswählen</li>
-          <li>Strikte Safety-Einstellungen als Standard</li>
-          <li>Session-Limits und Elternkontrolle sofort aktiv</li>
+          <li>{messages.parents.onboarding.bulletOne}</li>
+          <li>{messages.parents.onboarding.bulletTwo}</li>
+          <li>{messages.parents.onboarding.bulletThree}</li>
         </ul>
       </section>
 
       <section className={styles.card}>
-        <h2>Parent quick launch</h2>
-        <p>Signup, consent, login und Profilerstellung in einem Flow.</p>
+        <h2>{messages.parents.onboarding.launchTitle}</h2>
+        <p>{messages.parents.onboarding.launchText}</p>
 
         <form action={completeOnboarding} className={styles.form}>
           <label>
-            <span>Email</span>
+            <span>{messages.parents.onboarding.emailLabel}</span>
             <input name="email" placeholder="parent@example.com" required type="email" />
           </label>
 
           <label>
-            <span>Passwort</span>
+            <span>{messages.parents.onboarding.passwordLabel}</span>
             <input minLength={10} name="password" required type="password" />
           </label>
 
           <label>
-            <span>Kinderprofil Name</span>
+            <span>{messages.parents.onboarding.childNameLabel}</span>
             <input name="display_name" placeholder="Mika" required type="text" />
           </label>
 
           <div className={styles.row}>
             <label>
-              <span>Altersband</span>
+              <span>{messages.parents.onboarding.ageBandLabel}</span>
               <select defaultValue="6-11" name="age_band">
                 <option value="3-5">3-5</option>
                 <option value="6-11">6-11</option>
@@ -150,16 +151,16 @@ export default function ParentOnboardingPage() {
             </label>
 
             <label>
-              <span>Avatar</span>
+              <span>{messages.parents.onboarding.avatarLabel}</span>
               <input defaultValue="robot" name="avatar" type="text" />
             </label>
           </div>
 
-          <button type="submit">Jetzt starten</button>
+          <button type="submit">{messages.parents.onboarding.submit}</button>
         </form>
 
-        <a className={styles.backLink} href="/">
-          Zur Startseite
+        <a className={styles.backLink} href={withLocalePath(locale, "/")}>
+          {messages.parents.onboarding.backToHome}
         </a>
       </section>
     </main>

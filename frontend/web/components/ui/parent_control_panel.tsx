@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import type { ParentalControls } from "../../lib/experience_types";
+import type { LocalizedMessages } from "../../lib/messages/types";
 import styles from "./parent_control_panel.module.css";
 
 type ParentControlPanelProps = {
   childProfileID: string;
   initialControls: ParentalControls;
+  messages: LocalizedMessages["parents"]["controlPanel"];
 };
 
 type ToggleField = "autoplay" | "chat_enabled" | "external_links";
@@ -16,25 +18,24 @@ type ToggleMeta = {
   detail: string;
 };
 
-const toggleMeta: Record<ToggleField, ToggleMeta> = {
-  autoplay: {
-    label: "Autoplay",
-    detail: "Automatically continue to the next approved mission"
-  },
-  chat_enabled: {
-    label: "Chat",
-    detail: "Enable protected in-app conversation surfaces"
-  },
-  external_links: {
-    label: "External links",
-    detail: "Allow leaving MikasMissions to third-party websites"
-  }
-};
-
 export function ParentControlPanel(props: ParentControlPanelProps) {
-  const { childProfileID, initialControls } = props;
+  const { childProfileID, initialControls, messages } = props;
+  const toggleMeta: Record<ToggleField, ToggleMeta> = {
+    autoplay: {
+      label: messages.autoplayLabel,
+      detail: messages.autoplayDetail
+    },
+    chat_enabled: {
+      label: messages.chatLabel,
+      detail: messages.chatDetail
+    },
+    external_links: {
+      label: messages.linksLabel,
+      detail: messages.linksDetail
+    }
+  };
   const [controls, setControls] = useState(initialControls);
-  const [message, setMessage] = useState("Strict mode active by default.");
+  const [message, setMessage] = useState(messages.strictModeDefault);
   const [saving, setSaving] = useState(false);
 
   function toggle(field: ToggleField) {
@@ -46,7 +47,7 @@ export function ParentControlPanel(props: ParentControlPanelProps) {
 
   async function saveControls() {
     setSaving(true);
-    setMessage("Saving parental controls...");
+    setMessage(messages.savingMessage);
 
     try {
       const response = await fetch(`/api/parents/controls/${childProfileID}`, {
@@ -58,13 +59,13 @@ export function ParentControlPanel(props: ParentControlPanelProps) {
       });
 
       if (!response.ok) {
-        setMessage("Save failed. Please retry.");
+        setMessage(messages.saveFailed);
         return;
       }
 
-      setMessage("Controls updated and audit logged.");
+      setMessage(messages.saveSuccess);
     } catch {
-      setMessage("Save failed. Please retry.");
+      setMessage(messages.saveFailed);
     } finally {
       setSaving(false);
     }
@@ -74,18 +75,22 @@ export function ParentControlPanel(props: ParentControlPanelProps) {
     <section className={styles.panel} aria-label="Parent control panel" id="controls">
       <header className={styles.header}>
         <div>
-          <h3>Parent controls</h3>
-          <p>Configure child-safe defaults without opening every advanced setting.</p>
+          <h3>{messages.title}</h3>
+          <p>{messages.description}</p>
         </div>
         <div className={styles.badges}>
-          <span>Safety: {controls.safety_mode}</span>
-          <span>Session: {controls.session_limit_minutes} min</span>
+          <span>
+            {messages.badgeSafety}: {controls.safety_mode}
+          </span>
+          <span>
+            {messages.badgeSession}: {controls.session_limit_minutes} min
+          </span>
         </div>
       </header>
 
       <div className={styles.grid}>
         <label>
-          Safety mode
+          {messages.safetyMode}
           <select
             onChange={(event) =>
               setControls((prev) => ({
@@ -95,13 +100,13 @@ export function ParentControlPanel(props: ParentControlPanelProps) {
             }
             value={controls.safety_mode}
           >
-            <option value="strict">Strict</option>
-            <option value="balanced">Balanced</option>
+            <option value="strict">{messages.strict}</option>
+            <option value="balanced">{messages.balanced}</option>
           </select>
         </label>
 
         <label>
-          Session limit (minutes)
+          {messages.sessionLimit}
           <input
             max={120}
             min={15}
@@ -118,7 +123,7 @@ export function ParentControlPanel(props: ParentControlPanelProps) {
         </label>
 
         <label>
-          Bedtime window
+          {messages.bedtimeWindow}
           <input
             onChange={(event) =>
               setControls((prev) => ({
@@ -146,7 +151,7 @@ export function ParentControlPanel(props: ParentControlPanelProps) {
                 <span>{toggleMeta[field].label}</span>
                 <small>{toggleMeta[field].detail}</small>
               </div>
-              <strong>{controls[field] ? "On" : "Off"}</strong>
+              <strong>{controls[field] ? messages.on : messages.off}</strong>
             </button>
           </li>
         ))}
@@ -155,7 +160,7 @@ export function ParentControlPanel(props: ParentControlPanelProps) {
       <footer className={styles.footer}>
         <p role="status">{message}</p>
         <button disabled={saving} onClick={saveControls} type="button">
-          {saving ? "Saving..." : "Save controls"}
+          {saving ? messages.saving : messages.saveControls}
         </button>
       </footer>
     </section>

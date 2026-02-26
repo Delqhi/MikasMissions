@@ -7,7 +7,7 @@
 .nav a {
   align-items: center;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--line-soft);
   cursor: pointer;
   display: inline-flex;
   font-size: 0.88rem;
@@ -16,6 +16,10 @@
   min-height: 54px;
   padding: 0.55rem 0.7rem;
   text-decoration: none;
+  transition:
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .active {
@@ -24,11 +28,17 @@
 }
 
 .idle {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--surface-pill);
   color: #f4f6ff;
 }
 
+.idle:hover {
+  background: var(--surface-pill-hover);
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
 .nav a:focus-visible {
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  box-shadow: 0 0 0 3px var(--line-focus);
   outline: none;
 }

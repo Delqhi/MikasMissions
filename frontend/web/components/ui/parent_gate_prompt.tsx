@@ -1,19 +1,30 @@
 import { BigActionButton } from "./big_action_button";
+import type { LocalizedMessages } from "../../lib/messages/types";
 import styles from "./parent_gate_prompt.module.css";
 
 type ParentGatePromptProps = {
   actionLabel: string;
   challengeType: "pin" | "device_confirm";
+  labels?: LocalizedMessages["kids"]["gate"];
 };
 
-export function ParentGatePrompt({ actionLabel, challengeType }: ParentGatePromptProps) {
+const defaultLabels = {
+  title: "Parent Gate",
+  requestVerification: "Request verification",
+  verificationHint: "Adult verification is required",
+  requiresApproval: "The action requires parent approval via"
+} as const;
+
+export function ParentGatePrompt({ actionLabel, challengeType, labels }: ParentGatePromptProps) {
+  const text = labels ?? defaultLabels;
+
   return (
     <aside className={styles.card} aria-label="Parental gate required">
-      <h3>Parent Gate</h3>
+      <h3>{text.title}</h3>
       <p>
-        The action <strong>{actionLabel}</strong> requires parent approval via {challengeType.replace("_", " ")}.
+        {text.requiresApproval} <strong>{actionLabel}</strong> via {challengeType.replace("_", " ")}.
       </p>
-      <BigActionButton hint="Adult verification is required" label="Request verification" variant="secondary" />
+      <BigActionButton hint={text.verificationHint} label={text.requestVerification} variant="secondary" />
     </aside>
   );
 }

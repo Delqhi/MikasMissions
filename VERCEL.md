@@ -10,6 +10,7 @@ Last updated: 2026-02-26
 - Local app path: `/Users/jeremy/dev/projects/family-projects/MikasMissions/frontend/web`
 - Local project link file: `/Users/jeremy/dev/projects/family-projects/MikasMissions/frontend/web/.vercel/project.json`
 - Current production URL: `https://web-cyan-three-26.vercel.app`
+- Latest preview URL: `https://web-hf87f67ki-info-zukunftsories-projects.vercel.app`
 
 ## Hard Rule
 - Never create new Vercel projects for this repository.
