@@ -23,6 +23,7 @@ Required CI secrets for `.github/workflows/cloudflare-deploy.yml`:
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
 - `NEXT_PUBLIC_API_BASE_URL`
+- `CLOUDFLARE_WORKERS_DEV_URL`
 
 ## R0 Local Exit Check
 

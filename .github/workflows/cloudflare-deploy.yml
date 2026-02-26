@@ -33,9 +33,10 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+          CLOUDFLARE_WORKERS_DEV_URL: ${{ secrets.CLOUDFLARE_WORKERS_DEV_URL }}
         run: |
           set -euo pipefail
-          for key in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID NEXT_PUBLIC_API_BASE_URL; do
+          for key in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID NEXT_PUBLIC_API_BASE_URL CLOUDFLARE_WORKERS_DEV_URL; do
             if [ -z "${!key:-}" ]; then
               echo "[FAIL] missing required secret: ${key}"
               exit 1
@@ -65,3 +66,7 @@ jobs:
           NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
           NEXT_PUBLIC_USE_API_FALLBACKS: "false"
         run: pnpm run cloudflare:deploy
+      - name: Live smoke check (Cloudflare)
+        env:
+          CLOUDFLARE_WORKERS_DEV_URL: ${{ secrets.CLOUDFLARE_WORKERS_DEV_URL }}
+        run: bash ./scripts/check_cloudflare_live.sh
