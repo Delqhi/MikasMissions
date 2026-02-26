@@ -56,4 +56,11 @@ if [[ "$parents_status" != "200" ]]; then
   exit 1
 fi
 
+profiles_status="$(page_status "/v1/children/profiles?parent_user_id=parent-demo-01")"
+echo "[metric] v1_profiles_status=${profiles_status}"
+if [[ "$profiles_status" != "200" ]]; then
+  echo "[FAIL] /v1/children/profiles must return 200 (actual: ${profiles_status})"
+  exit 1
+fi
+
 echo "[OK] live Cloudflare smoke passed"
