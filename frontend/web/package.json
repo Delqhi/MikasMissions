@@ -1,13 +1,20 @@
 {
   "name": "mikasmissions-web",
   "private": true,
+  "packageManager": "pnpm@10.28.2",
   "scripts": {
     "dev": "node ./node_modules/next/dist/bin/next dev",
     "build": "node ./node_modules/next/dist/bin/next build",
     "start": "node ./node_modules/next/dist/bin/next start",
+    "cloudflare:build": "SKIP_WRANGLER_CONFIG_CHECK=yes opennextjs-cloudflare build --skipWranglerConfigCheck",
+    "cloudflare:deploy": "opennextjs-cloudflare deploy",
+    "preview": "pnpm run cloudflare:build && opennextjs-cloudflare preview",
+    "deploy": "pnpm run cloudflare:build && pnpm run cloudflare:deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "contracts:generate": "openapi-typescript ../../libs/contracts-api/openapi/v1.yaml -o lib/generated/api-types.ts"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "1.17.1",
     "next": "16.1.6",
     "react": "19.2.0",
     "react-dom": "19.2.0"
@@ -15,6 +22,8 @@
   "devDependencies": {
     "@types/node": "^25.3.1",
     "@types/react": "^19.2.14",
-    "openapi-typescript": "^7.13.0"
+    "lighthouse": "12.8.2",
+    "openapi-typescript": "^7.13.0",
+    "wrangler": "4.69.0"
   }
 }

@@ -3,6 +3,11 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "[FAIL] missing required command: pnpm"
+  exit 1
+fi
+
 tmp_dir=$(mktemp -d)
 trap 'rm -rf "$tmp_dir"' EXIT
 
@@ -17,7 +22,7 @@ go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.4.1 \
 
 (
   cd frontend/web
-  npx openapi-typescript ../../libs/contracts-api/openapi/v1.yaml -o "$tmp_ts" >/dev/null
+  pnpm dlx openapi-typescript@7.13.0 ../../libs/contracts-api/openapi/v1.yaml -o "$tmp_ts" >/dev/null
 )
 
 if ! cmp -s "$tmp_go" libs/contracts-api/generated/openapi_types.gen.go; then

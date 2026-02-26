@@ -1,0 +1,67 @@
+name: cloudflare-deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/cloudflare-deploy.yml"
+      - "frontend/web/**"
+      - "scripts/check_web_security_headers.sh"
+      - "scripts/check_web_vitals_budgets.sh"
+
+concurrency:
+  group: cloudflare-prod
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: frontend/web/pnpm-lock.yaml
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
+      - name: Validate required secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+        run: |
+          set -euo pipefail
+          for key in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID NEXT_PUBLIC_API_BASE_URL; do
+            if [ -z "${!key:-}" ]; then
+              echo "[FAIL] missing required secret: ${key}"
+              exit 1
+            fi
+          done
+      - name: Web install
+        working-directory: frontend/web
+        run: pnpm install --frozen-lockfile
+      - name: Web security header gate
+        run: bash ./scripts/check_web_security_headers.sh
+      - name: Web vitals budget gate
+        run: bash ./scripts/check_web_vitals_budgets.sh
+      - name: Build Cloudflare Worker Artifact
+        working-directory: frontend/web
+        env:
+          CI: "true"
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+          NEXT_PUBLIC_USE_API_FALLBACKS: "false"
+          SKIP_WRANGLER_CONFIG_CHECK: "yes"
+        run: pnpm run cloudflare:build
+      - name: Deploy to Cloudflare Workers
+        working-directory: frontend/web
+        env:
+          CI: "true"
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+          NEXT_PUBLIC_USE_API_FALLBACKS: "false"
+        run: pnpm run cloudflare:deploy

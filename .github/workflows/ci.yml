@@ -40,9 +40,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'pnpm'
+          cache-dependency-path: frontend/web/pnpm-lock.yaml
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
       - name: Web Install
         working-directory: frontend/web
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       - name: Contract Artifact Check
         working-directory: .
         run: ./scripts/check_generated_contract_artifacts.sh
@@ -54,4 +59,10 @@ jobs:
         env:
           NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:8080
           NEXT_PUBLIC_USE_API_FALLBACKS: "false"
-        run: npm run build
+        run: pnpm run build
+      - name: Web Security Headers Gate
+        working-directory: .
+        run: bash ./scripts/check_web_security_headers.sh
+      - name: Web Vitals Budget Gate
+        working-directory: .
+        run: bash ./scripts/check_web_vitals_budgets.sh

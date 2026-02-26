@@ -1,0 +1,7 @@
+{
+  "lcp_ms_max": 2500,
+  "inp_ms_max": 200,
+  "cls_max": 0.1,
+  "lighthouse_performance_score_min": 90,
+  "lighthouse_accessibility_score_min": 95
+}

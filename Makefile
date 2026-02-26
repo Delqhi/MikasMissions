@@ -2,7 +2,7 @@ SHELL := /bin/bash
 GOCACHE ?= $(CURDIR)/.cache/go-build
 GOENV := GOCACHE=$(GOCACHE)
 
-.PHONY: fmt test lint guard build contract contract-check migrate-db e2e-smoke e2e-auth-smoke e2e-admin-smoke e2e-generator-smoke a11y-smoke compose-smoke launch-preflight launch-go-nogo launch-stage launch-decision-packet launch-readiness-gate today-ready kube-validate staging-soak staging-deploy staging-deploy-dry-run staging-rollback outbox-replay run-gateway run-identity run-profile run-catalog run-playback run-progress run-recommendation run-creator run-admin run-moderation run-billing run-outbox-relay
+.PHONY: fmt test lint guard build contract contract-check migrate-db e2e-smoke e2e-auth-smoke e2e-admin-smoke e2e-generator-smoke a11y-smoke web-security-gate web-vitals-gate web-enterprise-gate web-cloudflare-build web-cloudflare-preview web-cloudflare-deploy compose-smoke launch-preflight launch-go-nogo launch-stage launch-decision-packet launch-readiness-gate today-ready kube-validate staging-soak staging-deploy staging-deploy-dry-run staging-rollback outbox-replay run-gateway run-identity run-profile run-catalog run-playback run-progress run-recommendation run-creator run-admin run-moderation run-billing run-outbox-relay
 
 fmt:
 	gofmt -w $$(find . -name '*.go' -not -path './bin/*')
@@ -45,6 +45,23 @@ e2e-generator-smoke:
 
 a11y-smoke:
 	./scripts/a11y_smoke.sh
+
+web-security-gate:
+	bash ./scripts/check_web_security_headers.sh
+
+web-vitals-gate:
+	bash ./scripts/check_web_vitals_budgets.sh
+
+web-enterprise-gate: web-security-gate web-vitals-gate
+
+web-cloudflare-build:
+	cd frontend/web && pnpm run build && pnpm run cloudflare:build
+
+web-cloudflare-preview:
+	cd frontend/web && pnpm run preview
+
+web-cloudflare-deploy:
+	cd frontend/web && pnpm run deploy
 
 compose-smoke:
 	./scripts/compose_smoke.sh

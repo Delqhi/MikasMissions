@@ -10,6 +10,39 @@ import {
 } from "./lib/i18n";
 
 const localeCookieMaxAgeSeconds = 60 * 60 * 24 * 365;
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: https:",
+  "object-src 'none'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "connect-src 'self' https:",
+  "frame-ancestors 'none'",
+  "form-action 'self'"
+].join("; ");
+
+const securityHeaders = [
+  ["Content-Security-Policy", contentSecurityPolicy],
+  ["Cross-Origin-Opener-Policy", "same-origin"],
+  ["Cross-Origin-Resource-Policy", "same-origin"],
+  ["Origin-Agent-Cluster", "?1"],
+  ["Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()"],
+  ["Referrer-Policy", "strict-origin-when-cross-origin"],
+  ["Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload"],
+  ["X-Content-Type-Options", "nosniff"],
+  ["X-DNS-Prefetch-Control", "off"],
+  ["X-Frame-Options", "DENY"],
+  ["X-Permitted-Cross-Domain-Policies", "none"]
+] as const;
+
+function withSecurityHeaders(response: NextResponse): NextResponse {
+  for (const [key, value] of securityHeaders) {
+    response.headers.set(key, value);
+  }
+  return response;
+}
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -34,7 +67,18 @@ export function middleware(request: NextRequest) {
       sameSite: "lax"
     });
 
-    return response;
+    return withSecurityHeaders(response);
+  }
+
+  const localeFromRewrite = request.headers.get(i18nRequestHeader);
+  if (isLocale(localeFromRewrite)) {
+    const response = NextResponse.next();
+    response.cookies.set(localeCookieName, localeFromRewrite, {
+      maxAge: localeCookieMaxAgeSeconds,
+      path: "/",
+      sameSite: "lax"
+    });
+    return withSecurityHeaders(response);
   }
 
   const preferredLocale = resolvePreferredLocale(
@@ -52,7 +96,7 @@ export function middleware(request: NextRequest) {
     sameSite: "lax"
   });
 
-  return response;
+  return withSecurityHeaders(response);
 }
 
 export const config = {

@@ -10,6 +10,20 @@ make test
 make build
 ```
 
+## Cloudflare Deploy (Workers + OpenNext)
+
+Local deploy from `frontend/web`:
+
+```bash
+pnpm install --frozen-lockfile
+NEXT_PUBLIC_API_BASE_URL=https://api.example.com NEXT_PUBLIC_USE_API_FALLBACKS=false pnpm run deploy
+```
+
+Required CI secrets for `.github/workflows/cloudflare-deploy.yml`:
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `NEXT_PUBLIC_API_BASE_URL`
+
 ## R0 Local Exit Check
 
 ```bash
@@ -19,8 +33,8 @@ make build
 make contract-check
 make e2e-smoke
 cd frontend/web
-npm ci
-npm run build
+pnpm install --frozen-lockfile
+pnpm run build
 ```
 
 ## Contract Source Of Truth
@@ -100,7 +114,7 @@ The web app uses strict API mode by default. To enable mock fallback data explic
 
 ```bash
 cd frontend/web
-NEXT_PUBLIC_USE_API_FALLBACKS=true npm run dev
+NEXT_PUBLIC_USE_API_FALLBACKS=true pnpm run dev
 ```
 
 ## Launch Preflight (Public Go-Live)

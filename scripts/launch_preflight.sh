@@ -45,46 +45,52 @@ check_runtime_defaults() {
 
 require_cmd go
 require_cmd make
-require_cmd npm
+require_cmd pnpm
 require_cmd curl
 
-step "1/11" "Guardrails"
+step "1/13" "Guardrails"
 make guard
 
-step "2/11" "Unit and integration tests"
+step "2/13" "Unit and integration tests"
 make test
 
-step "3/11" "Build all Go binaries"
+step "3/13" "Build all Go binaries"
 make build
 
-step "4/11" "Contract checks"
+step "4/13" "Contract checks"
 make contract-check
 
-step "5/11" "End-to-end smoke"
+step "5/13" "End-to-end smoke"
 make e2e-smoke
 
-step "6/11" "Auth enforce smoke"
+step "6/13" "Auth enforce smoke"
 make e2e-auth-smoke
 
-step "7/11" "Admin smoke"
+step "7/13" "Admin smoke"
 make e2e-admin-smoke
 
-step "8/11" "Generator worker smoke"
+step "8/13" "Generator worker smoke"
 make e2e-generator-smoke
 
-step "9/11" "A11y smoke"
+step "9/13" "A11y smoke"
 make a11y-smoke
 
-step "10/11" "Web production build (fail-closed)"
+step "10/13" "Web production build (fail-closed)"
 (
   cd frontend/web
   if [[ ! -d node_modules ]]; then
-    npm ci
+    pnpm install --frozen-lockfile
   fi
-  NEXT_PUBLIC_API_BASE_URL="$api_base_url" NEXT_PUBLIC_USE_API_FALLBACKS=false npm run build
+  CI=true NEXT_PUBLIC_API_BASE_URL="$api_base_url" NEXT_PUBLIC_USE_API_FALLBACKS=false pnpm run build
 )
 
-step "11/11" "Runtime defaults static verification"
+step "11/13" "Web security header gate"
+bash ./scripts/check_web_security_headers.sh
+
+step "12/13" "Web vitals budget gate"
+bash ./scripts/check_web_vitals_budgets.sh
+
+step "13/13" "Runtime defaults static verification"
 check_runtime_defaults
 
 echo
