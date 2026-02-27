@@ -24,6 +24,9 @@ export function ParentsShell({
 }: ParentsShellProps) {
   return (
     <div className={`${styles.page} mode-parent`}>
+      <a className={styles.skipLink} href="#parents-main">
+        Skip to main content
+      </a>
       <div aria-hidden="true" className={styles.backdrop} />
 
       <header className={styles.header}>
@@ -44,7 +47,9 @@ export function ParentsShell({
 
       <ParentsNav active={activeNav} labels={messages.nav} locale={locale} />
 
-      <main className={styles.main}>{children}</main>
+      <main className={styles.main} id="parents-main">
+        {children}
+      </main>
     </div>
   );
 }

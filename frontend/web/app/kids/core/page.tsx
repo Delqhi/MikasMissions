@@ -148,6 +148,26 @@ export default async function KidsCorePage({ searchParams }: KidsPageProps) {
           </div>
         </section>
 
+        <section className={styles.moodGrid}>
+          <article className={styles.moodCard}>
+            <span className={styles.moodPill}>{messages.kids.nav.progress}</span>
+            <h3>
+              {progress.completion_percent}% {messages.kids.page.progressClarityTitle}
+            </h3>
+            <p>{messages.kids.page.progressClarityDescription}</p>
+          </article>
+          <article className={styles.moodCard}>
+            <span className={styles.moodPill}>{messages.kids.nav.discover}</span>
+            <h3>{messages.kids.page.exploreTitle}</h3>
+            <p>{messages.kids.page.exploreDescription}</p>
+          </article>
+          <article className={styles.moodCard}>
+            <span className={styles.moodPill}>{messages.kids.cards.sessionCap}</span>
+            <h3>{minutesLeft} min</h3>
+            <p>{messages.kids.page.safetyDescription}</p>
+          </article>
+        </section>
+
         <section className={styles.quickStrip}>
           {quickItems.map((item) => (
             <a
@@ -156,10 +176,30 @@ export default async function KidsCorePage({ searchParams }: KidsPageProps) {
               key={`${item.episode_id}-quick`}
             >
               <strong>{item.title}</strong>
-              <span>
-                {Math.round(item.age_fit_score * 100)}% {messages.kids.cards.ageFit}
-              </span>
+              <span>{Math.round((Number(item.age_fit_score) || 0) * 100)}% {messages.kids.cards.ageFit}</span>
+              <em>{messages.kids.nav.missions}</em>
             </a>
+          ))}
+        </section>
+
+        <section className={styles.missionBanner}>
+          <h3>{messages.kids.page.continueTitle}</h3>
+          <p>{messages.kids.page.continueDescription}</p>
+          <a href={withLocalePath(locale, `/kids/core?child_profile_id=${encodeURIComponent(childProfileID)}#continue`)}>
+            {messages.kids.page.playFeatured}
+          </a>
+        </section>
+
+        <section className={styles.challengeTrack}>
+          {quickItems.slice(0, 3).map((item) => (
+            <article className={styles.challengeCard} key={`${item.episode_id}-challenge`}>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+              <div className={styles.challengeMeta}>
+                <span>{Math.round((Number(item.age_fit_score) || 0) * 100)}% {messages.kids.cards.ageFit}</span>
+                <span>{messages.kids.nav.missions}</span>
+              </div>
+            </article>
           ))}
         </section>
 

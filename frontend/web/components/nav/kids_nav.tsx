@@ -14,19 +14,32 @@ type KidsNavProps = {
   locale: Locale;
 };
 
+function isParentEntry(item: KidsNavItem): boolean {
+  return item.key.toLowerCase().includes("parent") || item.href.toLowerCase().includes("/parents");
+}
+
 export function KidsNav({ items, activeKey, locale }: KidsNavProps) {
   return (
     <nav aria-label="Kids navigation" className={styles.nav}>
-      {items.map((item) => (
-        <a
-          aria-current={item.key === activeKey ? "page" : undefined}
-          className={item.key === activeKey ? styles.active : styles.idle}
-          href={withLocalePath(locale, item.href)}
-          key={`${item.key}-${item.href}`}
-        >
-          {item.label}
-        </a>
-      ))}
+      {items.map((item) => {
+        const active = item.key === activeKey;
+        const parentEntry = isParentEntry(item);
+        const className = [active ? styles.active : styles.idle, parentEntry ? styles.parentEntry : ""]
+          .filter(Boolean)
+          .join(" ");
+
+        return (
+          <a
+            aria-current={active ? "page" : undefined}
+            className={className}
+            data-parent-entry={parentEntry ? "true" : undefined}
+            href={withLocalePath(locale, item.href)}
+            key={`${item.key}-${item.href}`}
+          >
+            {item.label}
+          </a>
+        );
+      })}
     </nav>
   );
 }

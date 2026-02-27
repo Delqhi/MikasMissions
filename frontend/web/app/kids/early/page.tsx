@@ -153,7 +153,7 @@ export default async function KidsEarlyPage({ searchParams }: KidsPageProps) {
               key={`${item.episode_id}-quick`}
             >
               <strong>{item.title}</strong>
-              <span>{item.learning_tags[0]?.replaceAll("_", " ") ?? messages.kids.nav.stories}</span>
+              <span>{item.learning_tags?.[0]?.replaceAll("_", " ") ?? messages.kids.nav.stories}</span>
             </a>
           ))}
         </section>

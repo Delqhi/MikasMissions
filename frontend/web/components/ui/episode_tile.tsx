@@ -16,6 +16,7 @@ const defaultLabels = {
 export function EpisodeTile({ episode, labels }: EpisodeTileProps) {
   const text = labels ?? defaultLabels;
   const tags = Array.isArray(episode.learning_tags) ? episode.learning_tags : [];
+  const durationMS = Number(episode.duration_ms) || 0;
 
   return (
     <article className={styles.tile} aria-label={`${text.episodePrefix} ${episode.title}`}>
@@ -23,7 +24,7 @@ export function EpisodeTile({ episode, labels }: EpisodeTileProps) {
       <div className={styles.body}>
         <div className={styles.topline}>
           <h3>{episode.title}</h3>
-          <span>{formatDurationMS(episode.duration_ms)}</span>
+          <span>{formatDurationMS(durationMS)}</span>
         </div>
         <p>{episode.summary}</p>
         <div className={styles.badges}>

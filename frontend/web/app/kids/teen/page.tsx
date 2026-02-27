@@ -160,7 +160,7 @@ export default async function KidsTeenPage({ searchParams }: KidsPageProps) {
               key={`${item.episode_id}-quick`}
             >
               <strong>{item.title}</strong>
-              <span>{item.reason_code.replaceAll("_", " ")}</span>
+              <span>{typeof item.reason_code === "string" ? item.reason_code.replaceAll("_", " ") : messages.kids.nav.explore}</span>
             </a>
           ))}
         </section>
