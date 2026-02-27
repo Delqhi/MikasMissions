@@ -288,6 +288,60 @@
   text-decoration: none;
 }
 
+.challengeTrack {
+  display: grid;
+  gap: 0.68rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.challengeCard {
+  background:
+    radial-gradient(circle at 85% 14%, rgba(255, 214, 157, 0.2), transparent 36%),
+    linear-gradient(142deg, rgba(16, 53, 86, 0.94), rgba(13, 43, 72, 0.94));
+  border: 1px solid rgba(176, 206, 247, 0.34);
+  border-radius: 18px;
+  box-shadow: 0 14px 26px rgba(24, 47, 71, 0.2);
+  display: grid;
+  gap: 0.36rem;
+  padding: 0.72rem;
+}
+
+.challengeCard h3 {
+  color: #f6fbff;
+  font-family: var(--font-display);
+  font-size: 1.04rem;
+  margin: 0;
+}
+
+.challengeCard p {
+  color: rgba(225, 239, 255, 0.86);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.challengeMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.36rem;
+}
+
+.challengeMeta span {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(210, 228, 255, 0.4);
+  border-radius: 999px;
+  color: #eef8ff;
+  display: inline-flex;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  min-height: 28px;
+  min-width: 28px;
+  padding: 0.18rem 0.56rem;
+  text-transform: uppercase;
+}
+
 .moodGrid {
   display: grid;
   gap: 0.7rem;
@@ -437,6 +491,10 @@
   }
 
   .missionBanner {
+    grid-template-columns: 1fr;
+  }
+
+  .challengeTrack {
     grid-template-columns: 1fr;
   }
 

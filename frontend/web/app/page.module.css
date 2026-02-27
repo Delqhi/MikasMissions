@@ -370,6 +370,104 @@
   margin: 0.2rem 0 0;
 }
 
+.modeShowcase {
+  display: grid;
+  gap: 0.72rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0.96rem auto 0;
+  max-width: 1360px;
+}
+
+.modeShowcaseCard {
+  border: 1px solid rgba(170, 200, 246, 0.4);
+  border-radius: 22px;
+  box-shadow: 0 24px 44px rgba(3, 9, 24, 0.5);
+  min-height: 240px;
+  overflow: hidden;
+  position: relative;
+  transition:
+    transform var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.modeShowcaseCard img {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+}
+
+.modeShade {
+  inset: 0;
+  position: absolute;
+}
+
+.mode_early .modeShade {
+  background:
+    linear-gradient(180deg, rgba(19, 44, 74, 0.22), rgba(19, 44, 74, 0.86)),
+    radial-gradient(circle at 86% 10%, rgba(255, 212, 150, 0.3), transparent 40%);
+}
+
+.mode_core .modeShade {
+  background:
+    linear-gradient(180deg, rgba(10, 40, 66, 0.24), rgba(10, 40, 66, 0.88)),
+    radial-gradient(circle at 82% 12%, rgba(145, 219, 255, 0.28), transparent 40%);
+}
+
+.mode_teen .modeShade {
+  background:
+    linear-gradient(180deg, rgba(17, 38, 72, 0.24), rgba(17, 38, 72, 0.9)),
+    radial-gradient(circle at 82% 12%, rgba(162, 199, 255, 0.28), transparent 40%);
+}
+
+.modeBody {
+  bottom: 0;
+  display: grid;
+  gap: 0.36rem;
+  padding: 0.76rem;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.modeBody h3 {
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1.16rem;
+  margin: 0;
+}
+
+.modeBody p {
+  color: rgba(230, 241, 255, 0.86);
+  font-size: 0.84rem;
+  line-height: 1.44;
+  margin: 0;
+}
+
+.modeBody a {
+  align-items: center;
+  background: linear-gradient(135deg, #ffe2b1, #fff3db);
+  border: 1px solid rgba(237, 188, 103, 0.48);
+  border-radius: 10px;
+  color: #3a260f;
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 900;
+  min-height: 38px;
+  min-width: 38px;
+  padding: 0.34rem 0.72rem;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.modeShowcaseCard:hover {
+  border-color: rgba(220, 233, 255, 0.7);
+  box-shadow: 0 30px 52px rgba(3, 9, 24, 0.58);
+  transform: translateY(-2px) scale(1.01);
+}
+
 .section {
   animation: fade-rise 620ms var(--motion-ease-enter) both;
   display: grid;
@@ -764,6 +862,10 @@
   }
 
   .sparkStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .modeShowcase {
     grid-template-columns: 1fr;
   }
 }

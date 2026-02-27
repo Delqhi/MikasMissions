@@ -190,6 +190,19 @@ export default async function KidsCorePage({ searchParams }: KidsPageProps) {
           </a>
         </section>
 
+        <section className={styles.challengeTrack}>
+          {quickItems.slice(0, 3).map((item) => (
+            <article className={styles.challengeCard} key={`${item.episode_id}-challenge`}>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+              <div className={styles.challengeMeta}>
+                <span>{Math.round((Number(item.age_fit_score) || 0) * 100)}% {messages.kids.cards.ageFit}</span>
+                <span>{messages.kids.nav.missions}</span>
+              </div>
+            </article>
+          ))}
+        </section>
+
         <section className="railSection" id="continue">
           <SectionHeading description={messages.kids.page.continueDescription} title={messages.kids.page.continueTitle} />
           <div className={styles.storyRow}>

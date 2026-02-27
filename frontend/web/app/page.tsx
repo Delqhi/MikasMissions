@@ -262,6 +262,30 @@ export default async function HomePage() {
     }
   ] as const;
 
+  const modeShowcase = [
+    {
+      key: "early",
+      title: messages.home.modeDeck.earlyTitle,
+      detail: messages.home.modeDeck.earlyDetail,
+      href: modeHref("early", hubInputs, locale),
+      art: hubInputs.find((input) => input.mode === "early")?.home.rails[0]?.thumbnail_url ?? featuredImage
+    },
+    {
+      key: "core",
+      title: messages.home.modeDeck.coreTitle,
+      detail: messages.home.modeDeck.coreDetail,
+      href: modeHref("core", hubInputs, locale),
+      art: hubInputs.find((input) => input.mode === "core")?.home.rails[0]?.thumbnail_url ?? featuredImage
+    },
+    {
+      key: "teen",
+      title: messages.home.modeDeck.teenTitle,
+      detail: messages.home.modeDeck.teenDetail,
+      href: modeHref("teen", hubInputs, locale),
+      art: hubInputs.find((input) => input.mode === "teen")?.home.rails[0]?.thumbnail_url ?? featuredImage
+    }
+  ] as const;
+
   return (
     <main className={styles.page}>
       <a className={styles.skipLink} href="#main-content">
@@ -346,6 +370,20 @@ export default async function HomePage() {
               <p>{card.subtitle}</p>
             </div>
           </a>
+        ))}
+      </section>
+
+      <section className={styles.modeShowcase} id="mode-showcase">
+        {modeShowcase.map((mode) => (
+          <article className={`${styles.modeShowcaseCard} ${styles[`mode_${mode.key}`]}`} key={mode.key}>
+            {mode.art ? <img alt={mode.title} loading="lazy" src={mode.art} /> : null}
+            <div className={styles.modeShade} />
+            <div className={styles.modeBody}>
+              <h3>{mode.title}</h3>
+              <p>{mode.detail}</p>
+              <a href={mode.href}>{messages.common.openMode}</a>
+            </div>
+          </article>
         ))}
       </section>
 
