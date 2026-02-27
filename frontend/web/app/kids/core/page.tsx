@@ -182,6 +182,14 @@ export default async function KidsCorePage({ searchParams }: KidsPageProps) {
           ))}
         </section>
 
+        <section className={styles.missionBanner}>
+          <h3>{messages.kids.page.continueTitle}</h3>
+          <p>{messages.kids.page.continueDescription}</p>
+          <a href={withLocalePath(locale, `/kids/core?child_profile_id=${encodeURIComponent(childProfileID)}#continue`)}>
+            {messages.kids.page.playFeatured}
+          </a>
+        </section>
+
         <section className="railSection" id="continue">
           <SectionHeading description={messages.kids.page.continueDescription} title={messages.kids.page.continueTitle} />
           <div className={styles.storyRow}>

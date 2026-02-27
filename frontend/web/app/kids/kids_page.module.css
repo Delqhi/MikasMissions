@@ -245,6 +245,49 @@
   text-transform: uppercase;
 }
 
+.missionBanner {
+  align-items: center;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255, 214, 157, 0.24), transparent 40%),
+    linear-gradient(136deg, rgba(18, 62, 99, 0.94), rgba(13, 49, 81, 0.94));
+  border: 1px solid rgba(184, 213, 255, 0.34);
+  border-radius: 20px;
+  box-shadow: 0 16px 30px rgba(22, 44, 67, 0.24);
+  display: grid;
+  gap: 0.36rem;
+  grid-template-columns: 1fr auto;
+  padding: 0.76rem 0.82rem;
+}
+
+.missionBanner h3 {
+  color: #f5faff;
+  font-family: var(--font-display);
+  font-size: 1.16rem;
+  margin: 0;
+}
+
+.missionBanner p {
+  color: rgba(232, 245, 255, 0.86);
+  font-size: 0.86rem;
+  margin: 0;
+}
+
+.missionBanner a {
+  align-items: center;
+  background: linear-gradient(135deg, #ffe0a8, #fff4df);
+  border: 1px solid rgba(237, 186, 96, 0.42);
+  border-radius: 11px;
+  color: #3b260f;
+  display: inline-flex;
+  font-size: 0.84rem;
+  font-weight: 800;
+  justify-content: center;
+  min-height: 38px;
+  min-width: 38px;
+  padding: 0.36rem 0.72rem;
+  text-decoration: none;
+}
+
 .moodGrid {
   display: grid;
   gap: 0.7rem;
@@ -390,6 +433,10 @@
   }
 
   .moodGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .missionBanner {
     grid-template-columns: 1fr;
   }
 

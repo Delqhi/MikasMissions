@@ -169,9 +169,10 @@ type ContinueWatchingRailProps = {
   subtitle: string;
   items: ContinueWatchingItem[];
   locale: Locale;
+  emptyLabel: string;
 };
 
-function ContinueWatchingRail({ title, subtitle, items, locale }: ContinueWatchingRailProps) {
+function ContinueWatchingRail({ title, subtitle, items, locale, emptyLabel }: ContinueWatchingRailProps) {
   return (
     <section className={styles.section} id="continue">
       <header className={styles.sectionHead}>
@@ -180,7 +181,7 @@ function ContinueWatchingRail({ title, subtitle, items, locale }: ContinueWatchi
       </header>
 
       {items.length === 0 ? (
-        <article className={styles.emptyState}>No adventures started yet.</article>
+        <article className={styles.emptyState}>{emptyLabel}</article>
       ) : (
         <div className={styles.continueRail}>
           {items.map((item) => (
@@ -219,6 +220,7 @@ export default async function HomePage() {
   const featuredTitle = featured?.title ?? messages.common.brand;
   const featuredSummary = featured?.summary ?? messages.home.heroFallbackSummary;
   const featuredImage = featured?.thumbnail_url ?? hubInputs[0]?.home.rails[0]?.thumbnail_url ?? "";
+  const featuredChips = featured?.learning_tags.slice(0, 4) ?? [];
   const featuredHref = featured ? episodeHref(featured, hubInputs, locale) : modeHref("core", hubInputs, locale);
   const featuredKicker =
     featuredMode === "early"
@@ -311,6 +313,13 @@ export default async function HomePage() {
               {messages.common.openMode}
             </a>
           </div>
+          {featuredChips.length > 0 ? (
+            <ul className={styles.heroChips}>
+              {featuredChips.map((chip) => (
+                <li key={chip}>{chip.replaceAll("_", " ")}</li>
+              ))}
+            </ul>
+          ) : null}
           <ul className={styles.heroStats}>
             <li>
               <strong>{hub.profiles.length}</strong>
@@ -363,6 +372,7 @@ export default async function HomePage() {
 
       <div id="main-content">
         <ContinueWatchingRail
+          emptyLabel={messages.home.labels.noContinueWatching}
           items={hub.continueWatching}
           locale={locale}
           subtitle={messages.home.sections.continueWatchingSub}
