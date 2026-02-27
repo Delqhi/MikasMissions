@@ -209,10 +209,20 @@
   box-shadow: 0 12px 24px rgba(31, 57, 83, 0.12);
   color: #17395b;
   display: grid;
-  gap: 0.24rem;
+  gap: 0.3rem;
   padding: 0.68rem 0.74rem;
   scroll-snap-align: start;
   text-decoration: none;
+  transition:
+    transform var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.quickCard:hover {
+  border-color: rgba(25, 72, 113, 0.3);
+  box-shadow: 0 18px 30px rgba(31, 57, 83, 0.18);
+  transform: translateY(-2px);
 }
 
 .quickCard strong {
@@ -224,6 +234,62 @@
   color: #54708a;
   font-size: 0.78rem;
   font-weight: 700;
+}
+
+.quickCard em {
+  color: #2f5f8e;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.moodGrid {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.moodCard {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(255, 214, 157, 0.16), transparent 36%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(246, 251, 255, 0.94));
+  border: 1px solid rgba(24, 70, 109, 0.15);
+  border-radius: 18px;
+  box-shadow: 0 12px 22px rgba(31, 57, 83, 0.1);
+  display: grid;
+  gap: 0.38rem;
+  padding: 0.7rem;
+}
+
+.moodPill {
+  align-items: center;
+  background: rgba(222, 239, 255, 0.76);
+  border: 1px solid rgba(78, 125, 168, 0.28);
+  border-radius: 999px;
+  color: #1c4d79;
+  display: inline-flex;
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.54rem;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.moodCard h3 {
+  color: #163d61;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.moodCard p {
+  color: #52708a;
+  font-size: 0.84rem;
+  line-height: 1.44;
+  margin: 0;
 }
 
 .storyRow {
@@ -320,6 +386,10 @@
   }
 
   .heroMeta {
+    grid-template-columns: 1fr;
+  }
+
+  .moodGrid {
     grid-template-columns: 1fr;
   }
 

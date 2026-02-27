@@ -148,6 +148,26 @@ export default async function KidsCorePage({ searchParams }: KidsPageProps) {
           </div>
         </section>
 
+        <section className={styles.moodGrid}>
+          <article className={styles.moodCard}>
+            <span className={styles.moodPill}>{messages.kids.nav.progress}</span>
+            <h3>
+              {progress.completion_percent}% {messages.kids.page.progressClarityTitle}
+            </h3>
+            <p>{messages.kids.page.progressClarityDescription}</p>
+          </article>
+          <article className={styles.moodCard}>
+            <span className={styles.moodPill}>{messages.kids.nav.discover}</span>
+            <h3>{messages.kids.page.exploreTitle}</h3>
+            <p>{messages.kids.page.exploreDescription}</p>
+          </article>
+          <article className={styles.moodCard}>
+            <span className={styles.moodPill}>{messages.kids.cards.sessionCap}</span>
+            <h3>{minutesLeft} min</h3>
+            <p>{messages.kids.page.safetyDescription}</p>
+          </article>
+        </section>
+
         <section className={styles.quickStrip}>
           {quickItems.map((item) => (
             <a
@@ -157,6 +177,7 @@ export default async function KidsCorePage({ searchParams }: KidsPageProps) {
             >
               <strong>{item.title}</strong>
               <span>{Math.round((Number(item.age_fit_score) || 0) * 100)}% {messages.kids.cards.ageFit}</span>
+              <em>{messages.kids.nav.missions}</em>
             </a>
           ))}
         </section>
